@@ -21,6 +21,7 @@
   },
   "homepage": "https://github.com/ekidhaja/traderapp-assets#readme",
   "dependencies": {
+    "@prisma/client": "^4.9.0",
     "axios": "^1.2.1",
     "cors": "^2.8.5",
     "dotenv": "^16.0.3",
@@ -45,6 +46,7 @@
     "eslint-plugin-promise": "^6.1.1",
     "jest": "^29.3.1",
     "prettier": "^2.8.1",
+    "prisma": "^4.9.0",
     "supertest": "^6.3.3",
     "ts-jest": "^29.0.3",
     "ts-node": "^10.9.1",

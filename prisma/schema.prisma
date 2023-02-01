@@ -10,28 +10,50 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model Post {
-  id        Int      @id @default(autoincrement())
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  title     String   @db.VarChar(255)
-  content   String?
-  published Boolean  @default(false)
-  author    User     @relation(fields: [authorId], references: [id])
-  authorId  Int
+model Coin {
+  id              Int            @id @default(autoincrement())
+  coin            String         @db.VarChar(255)
+  code            String         @db.VarChar(10)
+  imgUrl          String         @db.VarChar(255)
+  description     String         @db.Text
+  isTradingActive Boolean
+  createdAt       DateTime       @default(now())
+  updatedAt       DateTime       @updatedAt
+  currency        Currency?
+  exchagePairs    ExchangePair[]
 }
 
-model Profile {
-  id     Int     @id @default(autoincrement())
-  bio    String?
-  user   User    @relation(fields: [userId], references: [id])
-  userId Int     @unique
+model Currency {
+  coinId        Int            @id
+  isActive      Boolean
+  createdAt     DateTime       @default(now())
+  updatedAt     DateTime       @updatedAt
+  coin          Coin           @relation(fields: [coinId], references: [id])
+  exchangePairs ExchangePair[]
 }
 
-model User {
-  id      Int      @id @default(autoincrement())
-  email   String   @unique
-  name    String?
-  posts   Post[]
-  profile Profile?
+model Exchange {
+  id              Int            @id
+  name            String
+  imgUrl          String         @db.VarChar(255)
+  isTradingActive Boolean
+  createdAt       DateTime       @default(now())
+  updatedAt       DateTime       @updatedAt
+  exchangePairs   ExchangePair[]
+}
+
+model ExchangePair {
+  exchangeId Int
+  coinId     Int
+  currencyId Int
+  exchange   Exchange @relation(fields: [exchangeId], references: [id])
+  coin       Coin     @relation(fields: [coinId], references: [id])
+  currency   Currency @relation(fields: [currencyId], references: [coinId])
+
+  @@id([exchangeId, coinId, currencyId])
+}
+
+model CoinImage {
+  id     Int    @id @default(autoincrement())
+  imgUrl String @db.VarChar(255)
 }

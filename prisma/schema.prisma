@@ -11,35 +11,45 @@ datasource db {
 }
 
 model Coin {
-  id              Int            @id @default(autoincrement())
-  coin            String         @db.VarChar(255)
-  code            String         @db.VarChar(10)
-  imgUrl          String         @db.VarChar(255)
+  id              Int            @id
+  name            String         @db.VarChar(255)
+  slug            String         @db.VarChar(255)
+  symbol          String         @db.VarChar(10)
+  logo            String         @db.VarChar(255)
   description     String         @db.Text
-  isTradingActive Boolean
-  createdAt       DateTime       @default(now())
-  updatedAt       DateTime       @updatedAt
+  urls            String         @db.Text
+  rank            Int
+  isCoinActive    Boolean
+  isTradingActive Boolean        @default(true)
+  dateLaunched    DateTime       @default(now())
   currency        Currency?
   exchagePairs    ExchangePair[]
+
+  @@index([symbol])
 }
 
 model Currency {
-  coinId        Int            @id
-  isActive      Boolean
-  createdAt     DateTime       @default(now())
-  updatedAt     DateTime       @updatedAt
-  coin          Coin           @relation(fields: [coinId], references: [id])
-  exchangePairs ExchangePair[]
+  coinId          Int            @id
+  isTradingActive Boolean        @default(true)
+  createdAt       DateTime       @default(now())
+  updatedAt       DateTime       @default(now()) @updatedAt
+  coin            Coin           @relation(fields: [coinId], references: [id])
+  exchangePairs   ExchangePair[]
 }
 
 model Exchange {
   id              Int            @id
   name            String
-  imgUrl          String         @db.VarChar(255)
-  isTradingActive Boolean
-  createdAt       DateTime       @default(now())
-  updatedAt       DateTime       @updatedAt
+  slug            String
+  logo            String         @db.VarChar(255)
+  description     String?        @db.Text
+  isTradingActive Boolean        @default(false)
+  urls            String         @db.Text
+  makerFee        Float
+  takerFee        Float
+  dateLaunched    DateTime       @default(now())
   exchangePairs   ExchangePair[]
+  coinsUnknown    CoinsUnknown[]
 }
 
 model ExchangePair {
@@ -54,6 +64,13 @@ model ExchangePair {
 }
 
 model CoinImage {
-  id     Int    @id @default(autoincrement())
-  imgUrl String @db.VarChar(255)
+  id   Int    @id @default(autoincrement())
+  logo String @db.VarChar(255)
+}
+
+model CoinsUnknown {
+  id         Int      @id @default(autoincrement())
+  symbol     String   @db.VarChar(10)
+  exchangeId Int
+  exchange   Exchange @relation(fields: [exchangeId], references: [id])
 }

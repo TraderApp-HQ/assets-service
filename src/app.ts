@@ -1,7 +1,10 @@
-import express, { Request, Response, NextFunction } from "express";
-import cors from 'cors';
+import express, { Application, Request, Response, NextFunction } from "express";
+import cors from "cors";
 
-const app = express();
+import { CoinRoutes } from "./routes";
+
+const app: Application = express();
+const baseUri = "api/v1";
 
 app.listen(8000, () => {
 	console.log("Server listening at port 8000");
@@ -22,9 +25,10 @@ function startServer() {
 	app.use(express.json());
 
 	//api routes
+	app.use(`/${baseUri}/coins`, CoinRoutes);
 
 	//health check
-	app.get("/api/v1/ping", (_req, res) => {
+	app.get(`/${baseUri}/ping`, (_req, res) => {
 		res.status(200).send({ message: "pong" });
 	});
 
@@ -42,14 +46,8 @@ function startServer() {
 		else {
 			statusCode = 500;
 			error = "InternalServerError";
-			error_message =
-				"Something went wrong. Please try again after a while.";
-			console.log(
-				"Error name: ",
-				err.name,
-				"Error message: ",
-				err.message
-			);
+			error_message = "Something went wrong. Please try again after a while.";
+			console.log("Error name: ", err.name, "Error message: ", err.message);
 		}
 
 		res.status(statusCode).json({ status, error, error_message });

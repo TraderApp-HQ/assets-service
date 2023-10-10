@@ -6,7 +6,7 @@
 	"scripts": {
 		"build": "concurrently \"rm -rf build/\" \"npx tsc\"",
 		"start": "node build/app.js",
-		"dev": "nodemon src/app.ts",
+		"dev": "npx nodemon src/app.ts",
 		"test": "jest"
 	},
 	"repository": {

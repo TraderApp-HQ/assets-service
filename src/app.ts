@@ -1,13 +1,17 @@
 import express, { Application, Request, Response, NextFunction } from "express";
 import cors from "cors";
+import { config } from "dotenv";
+
+config();
 
 import { CoinRoutes } from "./routes";
 
 const app: Application = express();
 const baseUri = "api/v1";
+const port = process.env.PORT || 8080;
 
-app.listen(8000, () => {
-	console.log("Server listening at port 8000");
+app.listen(port, () => {
+	console.log(`Server listening at port ${port}`);
 	startServer();
 });
 
@@ -25,10 +29,10 @@ function startServer() {
 	app.use(express.json());
 
 	//api routes
-	app.use(`/${baseUri}/coins`, CoinRoutes);
+	app.use(`/coins`, CoinRoutes);
 
 	//health check
-	app.get(`/${baseUri}/ping`, (_req, res) => {
+	app.get(`/ping`, (_req, res) => {
 		res.status(200).send({ message: "pong" });
 	});
 

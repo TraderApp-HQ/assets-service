@@ -31,7 +31,7 @@ export async function checkUser(req: Request) {
 
 	//check if access token was supplied and throw error if not
 	if (!accessToken) {
-		const error = new Error("Invalid Token");
+		const error = new Error("No access token");
 		error.name = "Unauthorized";
 		throw error;
 	}

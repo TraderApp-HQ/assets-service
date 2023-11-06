@@ -1,18 +1,19 @@
 import express, { Application, Request, Response, NextFunction } from "express";
 import cors from "cors";
 import { config } from "dotenv";
+import initSecrets from "./config/secrets";
 
 config();
 
 import { CoinRoutes } from "./routes";
 
 const app: Application = express();
-const baseUri = "api/v1";
 const port = process.env.PORT || 8080;
 
-app.listen(port, () => {
-	console.log(`Server listening at port ${port}`);
+app.listen(port, async () => {
+	await initSecrets();
 	startServer();
+	console.log(`Server listening at port ${port}`);
 });
 
 function startServer() {

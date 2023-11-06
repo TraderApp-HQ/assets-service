@@ -7,20 +7,12 @@
 		"build": "concurrently \"rm -rf build/\" \"npx tsc\"",
 		"start": "node build/app.js",
 		"dev": "npx nodemon src/app.ts",
-		"test": "jest"
+		"test": "jest",
+		"init-exchanges": "npx ts-node scripts/initialize-exchanges-script",
+		"init-coins": "npx ts-node scripts/initialize-coins-script"
 	},
-	"repository": {
-		"type": "git",
-		"url": "git+https://github.com/ekidhaja/traderapp-assets.git"
-	},
-	"keywords": [],
-	"author": "",
-	"license": "ISC",
-	"bugs": {
-		"url": "https://github.com/ekidhaja/traderapp-assets/issues"
-	},
-	"homepage": "https://github.com/ekidhaja/traderapp-assets#readme",
 	"dependencies": {
+		"@aws-sdk/client-secrets-manager": "^3.437.0",
 		"@prisma/client": "^4.9.0",
 		"axios": "^1.2.1",
 		"cors": "^2.8.5",

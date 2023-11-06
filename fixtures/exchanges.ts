@@ -63,5 +63,3 @@ export async function getExchanges() {
 		console.log("Error getting exchanges: ", err.message);
 	}
 }
-
-getExchanges();

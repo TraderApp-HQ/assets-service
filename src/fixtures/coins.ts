@@ -1,8 +1,11 @@
+/* eslint-disable no-unneeded-ternary */
+/* eslint-disable @typescript-eslint/consistent-indexed-object-style */
+/* eslint-disable @typescript-eslint/restrict-template-expressions */
 import axios from "axios";
 import { config } from "dotenv";
 import { PrismaClient } from "@prisma/client";
 
-//load env variables
+// load env variables
 config();
 
 const prisma = new PrismaClient();
@@ -75,15 +78,15 @@ async function getCoins(start: number) {
 	const data: any[] = [];
 	const currencies: any[] = [];
 
-	//get the first 1000 coins on coinmarketcap
-	let url = `https://pro-api.coinmarketcap.com/v1/cryptocurrency/map?sort=cmc_rank&start=${start}&limit=${limit}`;
+	// get the first 1000 coins on coinmarketcap
+	const url = `https://pro-api.coinmarketcap.com/v1/cryptocurrency/map?sort=cmc_rank&start=${start}&limit=${limit}`;
 	console.log(`Getting coins from ${start} to ${start + limit}`);
 
 	try {
-		//get coins
+		// get coins
 		const result = await getCoinsRequest(url);
 
-		//loop through coins and get id, rank, etc
+		// loop through coins and get id, rank, etc
 		Object.values(result.data).forEach((coin: any) => {
 			coins[coin.id] = {
 				id: coin.id,
@@ -91,33 +94,33 @@ async function getCoins(start: number) {
 				isActive: coin.is_active,
 			};
 
-			//get currencies. USDT etc.
+			// get currencies. USDT etc.
 			if (coin.symbol === "USDT") currencies.push({ coinId: coin.id });
 		});
 
 		const coinsArr = Object.values(coins);
 
-		//add the first coinArr item id to the url
+		// add the first coinArr item id to the url
 		let url2 = `https://pro-api.coinmarketcap.com/v2/cryptocurrency/info?id=${coinsArr[0].id}`;
 
-		//attach the rest of coin id to url string
+		// attach the rest of coin id to url string
 		for (let i = 1; i < coinsArr.length; i++) {
 			url2 += `,${coinsArr[i].id}`;
 		}
 
-		//make request to get coins metadata
+		// make request to get coins metadata
 		const result2 = await getCoinsMetadata(url2);
 		Object.values(result2.data).forEach((coin: any) => {
-			let id = coin.id;
-			let name = coin.name;
-			let slug = coin.slug;
-			let symbol = coin.symbol;
-			let description = coin.description;
-			let logo = coin.logo;
-			let urls = JSON.stringify(coin.urls);
-			let rank = coins[id].rank;
-			let isCoinActive = coins[id].isActive === 1 ? true : false;
-			let dateLaunched = coin.date_launched ? coin.date_launched : coin.date_added;
+			const id = coin.id;
+			const name = coin.name;
+			const slug = coin.slug;
+			const symbol = coin.symbol;
+			const description = coin.description;
+			const logo = coin.logo;
+			const urls = JSON.stringify(coin.urls);
+			const rank = coins[id].rank;
+			const isCoinActive = coins[id].isActive === 1 ? true : false;
+			const dateLaunched = coin.date_launched ? coin.date_launched : coin.date_added;
 
 			data.push({
 				id,
@@ -133,13 +136,13 @@ async function getCoins(start: number) {
 			});
 		});
 
-		//insert records into db
+		// insert records into db
 		if (data.length) {
 			await prisma.coin.createMany({ data });
 			console.log(`inserted ${data.length} coins from ${start} to ${start + limit}`);
 		}
 
-		//insert currencies
+		// insert currencies
 		if (currencies.length) {
 			await prisma.currency.createMany({ data: currencies });
 			console.log("currencies inserted");

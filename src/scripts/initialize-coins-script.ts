@@ -4,4 +4,4 @@ async function initCoins() {
 	await getCoins();
 }
 
-initCoins();
+void initCoins();

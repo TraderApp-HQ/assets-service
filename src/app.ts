@@ -1,23 +1,31 @@
+/* eslint-disable @typescript-eslint/restrict-template-expressions */
+/* eslint-disable @typescript-eslint/naming-convention */
 import express, { Application, Request, Response, NextFunction } from "express";
 import cors from "cors";
 import { config } from "dotenv";
 import initSecrets from "./config/secrets";
 
-config();
-
 import { CoinRoutes } from "./routes";
 
-const app: Application = express();
-const port = process.env.PORT || 8080;
+config();
 
-app.listen(port, async () => {
-	await initSecrets();
-	startServer();
-	console.log(`Server listening at port ${port}`);
-});
+const app: Application = express();
+
+initSecrets()
+	.then(() => {
+		const port = process.env.PORT;
+		app.listen(port, async () => {
+			startServer();
+			console.log(`Server listening at port ${port}`);
+		});
+	})
+	.catch((err) => {
+		console.log(`Error getting secrets. === ${JSON.stringify(err)}`);
+		throw err;
+	});
 
 function startServer() {
-	//cors
+	// cors
 	app.use(
 		cors({
 			origin: "http://localhost:3000",
@@ -25,19 +33,19 @@ function startServer() {
 		})
 	);
 
-	//parse incoming requests
+	// parse incoming requests
 	app.use(express.urlencoded({ extended: true }));
 	app.use(express.json());
 
-	//api routes
+	// api routes
 	app.use(`/coins`, CoinRoutes);
 
-	//health check
+	// health check
 	app.get(`/ping`, (_req, res) => {
 		res.status(200).send({ message: "pong" });
 	});
 
-	//handle errors
+	// handle errors
 	app.use((err: Error, _req: Request, res: Response, _next: NextFunction) => {
 		const status = "ERROR";
 		let error = err.name;

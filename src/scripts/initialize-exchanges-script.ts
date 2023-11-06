@@ -4,4 +4,4 @@ async function initExchanges() {
 	await getExchanges();
 }
 
-initExchanges();
+void initExchanges();

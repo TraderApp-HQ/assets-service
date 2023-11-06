@@ -2,7 +2,7 @@ import axios from "axios";
 import { config } from "dotenv";
 import { PrismaClient } from "@prisma/client";
 
-//load env variables
+// load env variables
 config();
 
 const prisma = new PrismaClient();
@@ -12,7 +12,7 @@ const exchanges = ["binance", "kucoin"];
 let url = `https://pro-api.coinmarketcap.com/v1/exchange/info?slug=${exchanges[0]}`;
 const data: any[] = [];
 
-//attach the rest of exchange items to url string
+// attach the rest of exchange items to url string
 for (let i = 1; i < exchanges.length; i++) {
 	url += `,${exchanges[i]}`;
 }
@@ -31,17 +31,17 @@ export async function getExchanges() {
 
 		const result = res.data;
 
-		//get returned values
+		// get returned values
 		Object.values(result.data).forEach((exchange: any) => {
-			let id = exchange.id;
-			let name = exchange.name;
-			let slug = exchange.slug;
-			let description = exchange.description;
-			let logo = exchange.logo;
-			let makerFee = exchange.maker_fee;
-			let takerFee = exchange.taker_fee;
-			let urls = JSON.stringify(exchange.urls);
-			let dateLaunched = exchange.date_launched;
+			const id = exchange.id;
+			const name = exchange.name;
+			const slug = exchange.slug;
+			const description = exchange.description;
+			const logo = exchange.logo;
+			const makerFee = exchange.maker_fee;
+			const takerFee = exchange.taker_fee;
+			const urls = JSON.stringify(exchange.urls);
+			const dateLaunched = exchange.date_launched;
 
 			data.push({
 				id,
@@ -56,7 +56,7 @@ export async function getExchanges() {
 			});
 		});
 
-		//insert records into db
+		// insert records into db
 		const ex = await prisma.exchange.createMany({ data });
 		console.log("records inserted: ", ex);
 	} catch (err: any) {

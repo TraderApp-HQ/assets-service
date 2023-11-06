@@ -66,3 +66,5 @@ function startServer() {
 		res.status(statusCode).json({ status, error, error_message });
 	});
 }
+
+export { app };

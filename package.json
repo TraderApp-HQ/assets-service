@@ -7,22 +7,17 @@
 		"build": "concurrently \"rm -rf build/\" \"npx tsc\"",
 		"start": "node build/app.js",
 		"dev": "npx nodemon src/app.ts",
-		"test": "jest"
+		"test": "jest",
+		"init-exchanges": "npx ts-node src/scripts/initialize-exchanges-script",
+		"init-coins": "npx ts-node src/scripts/initialize-coins-script",
+		"init-binance": "npx ts-node src/scripts/initialize-binance-script",
+		"init-kucoin": "npx ts-node src/scripts/initialize-kucoin-script",
+		"prepare": "husky install"
 	},
-	"repository": {
-		"type": "git",
-		"url": "git+https://github.com/ekidhaja/traderapp-assets.git"
-	},
-	"keywords": [],
-	"author": "",
-	"license": "ISC",
-	"bugs": {
-		"url": "https://github.com/ekidhaja/traderapp-assets/issues"
-	},
-	"homepage": "https://github.com/ekidhaja/traderapp-assets#readme",
 	"dependencies": {
+		"@aws-sdk/client-secrets-manager": "^3.437.0",
 		"@prisma/client": "^4.9.0",
-		"axios": "^1.2.1",
+		"axios": "^1.6.0",
 		"cors": "^2.8.5",
 		"dotenv": "^16.0.3",
 		"express": "^4.18.2",
@@ -44,7 +39,9 @@
 		"eslint-plugin-import": "^2.26.0",
 		"eslint-plugin-n": "^15.6.0",
 		"eslint-plugin-promise": "^6.1.1",
+		"husky": "^8.0.0",
 		"jest": "^29.3.1",
+		"lint-staged": "^15.0.2",
 		"prettier": "^2.8.1",
 		"prisma": "^4.9.0",
 		"supertest": "^6.3.3",

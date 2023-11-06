@@ -6,7 +6,7 @@ generator client {
 }
 
 datasource db {
-  provider = "mysql"
+  provider = "postgres"
   url      = env("DATABASE_URL")
 }
 
@@ -14,7 +14,7 @@ model Coin {
   id              Int            @id
   name            String         @db.VarChar(255)
   slug            String         @db.VarChar(255)
-  symbol          String         @db.VarChar(10)
+  symbol          String         @db.VarChar(255)
   logo            String         @db.VarChar(255)
   description     String         @db.Text
   urls            String         @db.Text

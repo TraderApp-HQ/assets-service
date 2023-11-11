@@ -1,10 +1,11 @@
 import JWT from "jsonwebtoken";
 import { config } from "dotenv";
 import { Request } from "express";
+import { UserRoles } from "../config/enums";
 
 config();
 
-export function verifyAccessToken(accessToken: string) {
+export async function verifyAccessToken(accessToken: string) {
 	const secret = process.env.ACCESS_TOKEN_SECRET as string;
 
 	return new Promise((resolve, reject) => {
@@ -15,7 +16,7 @@ export function verifyAccessToken(accessToken: string) {
 				reject(err);
 			}
 
-			//return payload
+			// return payload
 			resolve(payload);
 		});
 	});
@@ -23,23 +24,23 @@ export function verifyAccessToken(accessToken: string) {
 
 // A function to get accessToken from headers, verify it and check if user is admin
 export async function checkUser(req: Request) {
-	//admin role IDs
-	const roles = [3, 4];
+	// admin role IDs
+	const roles = [UserRoles.ADMIN, UserRoles.SUPER_ADMIN];
 
-	//get accessToken from req headers
+	// get accessToken from req headers
 	const accessToken = req.headers.authorization?.split(" ")[1];
 
-	//check if access token was supplied and throw error if not
+	// check if access token was supplied and throw error if not
 	if (!accessToken) {
 		const error = new Error("No access token");
 		error.name = "Unauthorized";
 		throw error;
 	}
 
-	//verify accessToken
+	// verify accessToken
 	const { role } = (await verifyAccessToken(accessToken)) as any;
 
-	//check if user role is admin and throw error if not
+	// check if user role is admin and throw error if not
 	if (roles.indexOf(role) === -1) {
 		const error = new Error(
 			"You don't have the necessary permission to perform this operation."

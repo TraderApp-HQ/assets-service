@@ -6,7 +6,7 @@ import { ENVIRONMENTS } from "./constants";
 const client = new SecretsManagerClient({ region: "eu-west-1" });
 const env = process.env.NODE_ENV || "development";
 const suffix = ENVIRONMENTS[env] || "dev";
-const secretNames = ["common-secrets"];
+const secretNames = ["common-secrets", "assets-service-secrets"];
 
 async function initSecrets() {
 	console.debug(`Getting secrets for ${env} and ${suffix} environment`);

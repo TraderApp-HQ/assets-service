@@ -1,12 +1,12 @@
-import { PrismaClient } from "@prisma/client";
+// import { PrismaClient } from "@prisma/client";
 import { Request, Response, NextFunction } from "express";
-
-const db = new PrismaClient();
+import { prismaClient } from "../config/database";
 
 // A function to get all coins
 export async function coinsHandler(req: Request, res: Response, next: NextFunction) {
 	try {
-		//fetch all coins from db where trading is active
+		// fetch all coins from db where trading is active
+		const db = await prismaClient();
 		const coinsArr: any = await db.coin.findMany({
 			take: 10,
 			where: { isTradingActive: true, isCoinActive: true },
@@ -20,7 +20,7 @@ export async function coinsHandler(req: Request, res: Response, next: NextFuncti
 			},
 		});
 
-		//parse urls back to js Object. NB: Urls was stored in db as strings using JSON.stringify
+		// parse urls back to js Object. NB: Urls was stored in db as strings using JSON.stringify
 		const coins = coinsArr.map((coin: any) => {
 			return { ...coin, urls: JSON.parse(coin.urls) };
 		});
@@ -33,16 +33,17 @@ export async function coinsHandler(req: Request, res: Response, next: NextFuncti
 
 // A function to get coin, exchange and currency details for a coin
 export async function coinHandler(req: Request, res: Response, next: NextFunction) {
-	const exchangesTable: { [k: number]: any } = {};
-	const currenciesTable: { [k: number]: any } = {};
+	const exchangesTable: Record<number, any> = {};
+	const currenciesTable: Record<number, any> = {};
 	const exchanges: any[] = [];
 	const currencies: any[] = [];
 
 	try {
-		//get coin id from req params and convert to int
+		// get coin id from req params and convert to int
 		const id = Number(req.params.id);
 
-		//fetch coin by id
+		// fetch coin by id
+		const db = await prismaClient();
 		const coin: any = await db.coin.findUnique({
 			where: { id },
 			select: {
@@ -51,17 +52,17 @@ export async function coinHandler(req: Request, res: Response, next: NextFunctio
 				slug: true,
 				symbol: true,
 				logo: true,
-				//add exchange pair relation
+				// add exchange pair relation
 				exchagePairs: {
 					include: {
-						//get exchange relation
+						// get exchange relation
 						exchange: {
 							select: { id: true, name: true, slug: true, logo: true },
 						},
-						//get currency relation
+						// get currency relation
 						currency: {
 							include: {
-								//get coin relation
+								// get coin relation
 								coin: {
 									select: { id: true, name: true, slug: true, logo: true },
 								},
@@ -72,22 +73,22 @@ export async function coinHandler(req: Request, res: Response, next: NextFunctio
 			},
 		});
 
-		//loop through coin exchange pairs
+		// loop through coin exchange pairs
 		coin?.exchagePairs.forEach((pair: any) => {
-			//get exchanges
+			// get exchanges
 			if (!exchangesTable[pair.exchangeId]) {
 				exchangesTable[pair.exchangeId] = true;
 				exchanges.push({ ...pair.exchange });
 			}
 
-			//get currencies
+			// get currencies
 			if (!currenciesTable[pair.currencyId]) {
 				currenciesTable[pair.currencyId] = true;
 				currencies.push({ ...pair.currency?.coin });
 			}
 		});
 
-		//delete exchange pairs property from returned result
+		// delete exchange pairs property from returned result
 		delete coin?.exchagePairs;
 
 		res.status(200).json({ ...coin, exchanges, currencies });

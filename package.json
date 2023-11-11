@@ -8,6 +8,7 @@
 		"start": "node build/app.js",
 		"dev": "npx nodemon src/app.ts",
 		"test": "npx jest",
+		"db:init": "npx prisma migrate dev --name init",
 		"init-exchanges": "npx ts-node src/scripts/initialize-exchanges-script",
 		"init-coins": "npx ts-node src/scripts/initialize-coins-script",
 		"init-binance": "npx ts-node src/scripts/initialize-binance-script",

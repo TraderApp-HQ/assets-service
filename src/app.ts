@@ -4,6 +4,7 @@ import express, { Application, Request, Response, NextFunction } from "express";
 import cors from "cors";
 import { config } from "dotenv";
 import initSecrets from "./config/secrets";
+import initDatabase from "./config/database";
 
 import { CoinRoutes } from "./routes";
 
@@ -15,6 +16,7 @@ initSecrets()
 	.then(() => {
 		const port = process.env.PORT;
 		app.listen(port, async () => {
+			await initDatabase();
 			startServer();
 			console.log(`Server listening at port ${port}`);
 		});

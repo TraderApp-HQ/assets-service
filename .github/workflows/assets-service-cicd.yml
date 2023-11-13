@@ -12,7 +12,7 @@ jobs:
   build: # first job - to build the application first with npm
     runs-on: ubuntu-latest
     environment:
-      name: development
+      name: staging
 
     steps:
       - name: Checkout code # first step in this build JOB is to checkout code from branch
@@ -38,7 +38,7 @@ jobs:
   docker_build_then_push_to_ecr_and_ecs:
     runs-on: ubuntu-latest
     environment:
-      name: development
+      name: staging
 
     steps:
       - name: Check out code

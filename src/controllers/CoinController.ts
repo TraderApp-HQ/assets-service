@@ -5,10 +5,24 @@ import { prismaClient } from "../config/database";
 // A function to get all coins
 export async function coinsHandler(req: Request, res: Response, next: NextFunction) {
 	try {
-		// fetch all coins from db where trading is active
-		const db = await prismaClient();
+		const db = await prismaClient()
+		//fetch all coins from db where trading is active
+		const page: number = parseInt(req.query.page as string) || 1;
+    	const pageSize:number = parseInt(req.query.pageSize as string) || 10;
+		const order = req.query.orderBy as string || 'asc';
+		const sort = req.query.sort as string || 'name';
+		
+		const variable = sort 
+		const orderby = {
+			[variable]: order
+		}
+
 		const coinsArr: any = await db.coin.findMany({
-			take: 10,
+			take: pageSize,
+			skip: page,
+			orderBy: [
+				orderby
+			],
 			where: { isTradingActive: true, isCoinActive: true },
 			select: {
 				id: true,

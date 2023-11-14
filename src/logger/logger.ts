@@ -2,7 +2,6 @@
 import winston from 'winston';
 import dotenv from "dotenv";
 
-//init env variables
 dotenv.config();
 
 const { format } = require("winston");
@@ -43,7 +42,7 @@ const customFormat = printf(({ level, message, timestamp }: { level: string, mes
       ]
   });
 
-  class logger {
+  class Logger {
 
     grafana: winston.Logger;
     cloudWatch: winston.Logger;
@@ -79,4 +78,4 @@ const customFormat = printf(({ level, message, timestamp }: { level: string, mes
 
   }
 
-  export default new logger();
+  export default new Logger();

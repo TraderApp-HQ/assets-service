@@ -9,7 +9,6 @@ import initDatabase from "./config/database";
 import { CoinRoutes } from "./routes";
 import { PrismaClient } from "@prisma/client";
 import logger from "./logger/logger";
-const prisma = new PrismaClient();
 
 config();
 
@@ -71,10 +70,10 @@ function startServer() {
 		res.status(statusCode).json({ status, error, error_message });
 	});
 
-	prisma.$use(async (params, next) => {
-		if (params.action === 'findMany') {
+	new PrismaClient().$use(async (params, next) => {
+		if (params.action === 'findMany') {logger.log(params)
 			const skip = params.args.skip || 0;
-			const take = params.args.take || 20;
+			const take = params.args.take || 30;
 			const offset = skip <= 0 ? 0 : (skip - 1) * take; 
 			params.args.skip = offset;
 		  }

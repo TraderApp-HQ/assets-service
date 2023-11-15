@@ -12,7 +12,7 @@ export interface IPagedResult {
     rowsPerPage: number;
     sortBy: string,
     orderBy: string,
-    items: []
+    coins: []
   }
 
   export interface IQueryParameter{

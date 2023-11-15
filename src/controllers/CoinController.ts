@@ -8,7 +8,9 @@ export async function coinsHandler(req: Request, res: Response, next: NextFuncti
 		const db = await prismaClient()
 
 		const page: number = parseInt(req.query.page as string) || 1;
-    	const pageSize:number = parseInt(req.query.pageSize as string) || 10;
+    	let pageSize:number = parseInt(req.query.pageSize as string) || 10;
+		pageSize = pageSize > 30 ? 30: pageSize;
+		
 		const order = req.query.orderBy as string || 'asc';
 		const sort = req.query.sort as string || 'rank';
 		const offset = page <= 0 ? 0 : (page - 1) * pageSize; 
@@ -58,7 +60,7 @@ export async function coinsHandler(req: Request, res: Response, next: NextFuncti
 			  rowsPerPage: pageSize,
 			  sortBy: sort,
 			  orderBy: order,
-			  items: coins,
+			  coins: coins,
 			}
 		  }; 
 

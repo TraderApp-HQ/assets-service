@@ -1,18 +1,27 @@
 /* eslint-disable @typescript-eslint/restrict-template-expressions */
 /* eslint-disable @typescript-eslint/naming-convention */
 import express, { Application, Request, Response, NextFunction } from "express";
+import { initSecrets } from "@traderapp/shared-resources";
 import cors from "cors";
 import { config } from "dotenv";
-import initSecrets from "./config/secrets";
 import initDatabase from "./config/database";
 
 import { CoinRoutes } from "./routes";
+import secretsJson from "./env.json";
+import { ENVIRONMENTS } from "./config/constants";
 
 config();
-
 const app: Application = express();
 
-initSecrets()
+const env = process.env.NODE_ENV || "development";
+const suffix = ENVIRONMENTS[env] || "dev";
+const secretNames = ["common-secrets", "assets-service-secrets"];
+
+initSecrets({
+	env: suffix,
+	secretNames,
+	secretsJson,
+})
 	.then(() => {
 		const port = process.env.PORT;
 		app.listen(port, async () => {

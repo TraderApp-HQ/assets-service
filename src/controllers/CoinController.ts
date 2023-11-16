@@ -9,8 +9,8 @@ export async function coinsHandler(req: Request, res: Response, next: NextFuncti
 
 		const page: number = parseInt(req.query.page as string) || 1;
     	let pageSize:number = parseInt(req.query.pageSize as string) || 10;
-		pageSize = pageSize > 30 ? 30: pageSize;
-		
+		pageSize = pageSize > 100 ? 100: pageSize;
+
 		const order = req.query.orderBy as string || 'asc';
 		const sort = req.query.sort as string || 'rank';
 		const offset = page <= 0 ? 0 : (page - 1) * pageSize; 

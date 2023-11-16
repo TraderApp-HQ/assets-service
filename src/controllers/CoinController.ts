@@ -1,6 +1,7 @@
 // import { PrismaClient } from "@prisma/client";
 import { Request, Response, NextFunction } from "express";
 import { prismaClient } from "../config/database";
+import { apiResponseHandler } from "@traderapp/shared-resources";
 
 // A function to get all coins
 export async function coinsHandler(req: Request, res: Response, next: NextFunction) {
@@ -25,7 +26,7 @@ export async function coinsHandler(req: Request, res: Response, next: NextFuncti
 			return { ...coin, urls: JSON.parse(coin.urls) };
 		});
 
-		res.status(200).json({ coins });
+		res.status(200).json(apiResponseHandler({ object: coins }));
 	} catch (err: any) {
 		next(err);
 	}
@@ -91,7 +92,7 @@ export async function coinHandler(req: Request, res: Response, next: NextFunctio
 		// delete exchange pairs property from returned result
 		delete coin?.exchagePairs;
 
-		res.status(200).json({ ...coin, exchanges, currencies });
+		res.status(200).json(apiResponseHandler({ object: { ...coin, exchanges, currencies } }));
 	} catch (err: any) {
 		next(err);
 	}

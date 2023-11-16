@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/restrict-template-expressions */
 /* eslint-disable @typescript-eslint/naming-convention */
 import express, { Application, Request, Response, NextFunction } from "express";
-import { initSecrets } from "@traderapp/shared-resources";
+import { apiResponseHandler, initSecrets } from "@traderapp/shared-resources";
 import cors from "cors";
 import { config } from "dotenv";
 import initDatabase from "./config/database";
@@ -53,13 +53,13 @@ function startServer() {
 
 	// health check
 	app.get(`/ping`, (_req, res) => {
-		res.status(200).send({ message: "pong" });
+		res.status(200).send(apiResponseHandler({ message: "pong" }));
 	});
 
 	// handle errors
 	app.use((err: Error, _req: Request, res: Response, _next: NextFunction) => {
 		const status = "ERROR";
-		let error = err.name;
+		const error = err;
 		let error_message = err.message;
 		let statusCode;
 
@@ -69,12 +69,18 @@ function startServer() {
 		else if (err.name === "NotFound") statusCode = 404;
 		else {
 			statusCode = 500;
-			error = "InternalServerError";
+			error.name = "InternalServerError";
 			error_message = "Something went wrong. Please try again after a while.";
 			console.log("Error name: ", err.name, "Error message: ", err.message);
 		}
 
-		res.status(statusCode).json({ status, error, error_message });
+		res.status(statusCode).json(
+			apiResponseHandler({
+				type: status,
+				object: error,
+				message: error_message,
+			})
+		);
 	});
 }
 

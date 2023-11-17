@@ -58,7 +58,6 @@ function startServer() {
 
 	// handle errors
 	app.use((err: Error, _req: Request, res: Response, _next: NextFunction) => {
-		const status = "ERROR";
 		const error = err;
 		let error_message = err.message;
 		let statusCode;
@@ -76,7 +75,7 @@ function startServer() {
 
 		res.status(statusCode).json(
 			apiResponseHandler({
-				type: status,
+				type: "error",
 				object: error,
 				message: error_message,
 			})

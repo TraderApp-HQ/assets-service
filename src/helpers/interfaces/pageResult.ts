@@ -1,10 +1,3 @@
-export interface IPagedResult {
-    isSuccessful: boolean;
-    message: string;
-    code: string;
-    data: IPagedResultData;
-  }
-
   export interface IPagedResultData {
     currentPage: number;
     itemsCount: number;
@@ -16,8 +9,8 @@ export interface IPagedResult {
   }
 
   export interface IQueryParameter{
-    args: any,
-    query: any,
-    operations: any,
-    model: any
+    args: object,
+    query: object,
+    operations: object,
+    model: object
   }

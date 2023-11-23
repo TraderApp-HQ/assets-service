@@ -1,6 +1,7 @@
 import { Request, Response, NextFunction } from "express";
 import { prismaClient } from "../config/database";
-import { IPagedResult } from "../helpers/interfaces/pageResult";
+import { IPagedResultData } from "../helpers/interfaces/pageResult";
+import { apiResponseHandler } from "@traderapp/shared-resources";
 
 //	A function to get all coins
 export async function coinsHandler(req: Request, res: Response, next: NextFunction) {
@@ -8,12 +9,12 @@ export async function coinsHandler(req: Request, res: Response, next: NextFuncti
 		const db = await prismaClient()
 
 		const page: number = parseInt(req.query.page as string) || 1;
-    	let pageSize:number = parseInt(req.query.pageSize as string) || 10;
-		pageSize = pageSize > 100 ? 100: pageSize;
+    	let rowsPerPage:number = parseInt(req.query.rowsPerPage as string) || 10;
+		rowsPerPage = rowsPerPage > 100 ? 100: rowsPerPage;
 
 		const order = req.query.orderBy as string || 'asc';
 		const sort = req.query.sort as string || 'rank';
-		const offset = page <= 0 ? 0 : (page - 1) * pageSize; 
+		const offset = page <= 0 ? 0 : (page - 1) * rowsPerPage; 
 
 		const variable = sort 
 		const orderby = {
@@ -21,7 +22,7 @@ export async function coinsHandler(req: Request, res: Response, next: NextFuncti
 		}
 
 		const coinsArr: any = await db.coin.findMany({
-			take: pageSize,
+			take: rowsPerPage,
 			skip: offset,
 			orderBy: [
 				orderby
@@ -47,24 +48,19 @@ export async function coinsHandler(req: Request, res: Response, next: NextFuncti
 			where: { isTradingActive: true, isCoinActive: true },
 		})
 
-		const pageCount = Math.ceil(count / pageSize);
+		const pageCount = Math.ceil(count / rowsPerPage);
 
-		const response: IPagedResult = {
-			code: "00",
-			isSuccessful: true,
-			message: "Request processed successfully",
-			data: {
-			  currentPage : page,
+		const response: IPagedResultData = {
+			currentPage : page,
 			  itemsCount: count,
 			  pageCount: pageCount,
-			  rowsPerPage: pageSize,
+			  rowsPerPage: rowsPerPage,
 			  sortBy: sort,
 			  orderBy: order,
 			  coins: coins,
-			}
 		  }; 
 
-		res.status(200).json(response);
+		  res.status(200).json(apiResponseHandler({ object: response }));
 	} catch (err: any) {
 		next(err);
 	}
@@ -130,7 +126,7 @@ export async function coinHandler(req: Request, res: Response, next: NextFunctio
 		//	delete exchange pairs property from returned result
 		delete coin?.exchagePairs;
 
-		res.status(200).json({ ...coin, exchanges, currencies });
+		res.status(200).json(apiResponseHandler({ object: { ...coin, exchanges, currencies } }));
 	} catch (err: any) {
 		next(err);
 	}

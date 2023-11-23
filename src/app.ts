@@ -1,20 +1,27 @@
 /* eslint-disable @typescript-eslint/restrict-template-expressions */
 /* eslint-disable @typescript-eslint/naming-convention */
 import express, { Application, Request, Response, NextFunction } from "express";
+import { apiResponseHandler, initSecrets, logger } from "@traderapp/shared-resources";
 import cors from "cors";
 import { config } from "dotenv";
-import initSecrets from "./config/secrets";
 import initDatabase from "./config/database";
 
 import { CoinRoutes } from "./routes";
-import { PrismaClient } from "@prisma/client";
-import logger from "./logger/logger";
+import secretsJson from "./env.json";
+import { ENVIRONMENTS } from "./config/constants";
 
 config();
-
 const app: Application = express();
 
-initSecrets()
+const env = process.env.NODE_ENV || "development";
+const suffix = ENVIRONMENTS[env] || "dev";
+const secretNames = ["common-secrets", "assets-service-secrets"];
+
+initSecrets({
+	env: suffix,
+	secretNames,
+	secretsJson,
+})
 	.then(() => {
 		const port = process.env.PORT;
 		app.listen(port, async () => {
@@ -46,13 +53,12 @@ function startServer() {
 
 	// health check
 	app.get(`/ping`, (_req, res) => {
-		res.status(200).send({ message: "pong" });
+		res.status(200).send(apiResponseHandler({ message: "pong" }));
 	});
 
 	// handle errors
 	app.use((err: Error, _req: Request, res: Response, _next: NextFunction) => {
-		const status = "ERROR";
-		let error = err.name;
+		const error = err;
 		let error_message = err.message;
 		let statusCode;
 
@@ -62,23 +68,19 @@ function startServer() {
 		else if (err.name === "NotFound") statusCode = 404;
 		else {
 			statusCode = 500;
-			error = "InternalServerError";
+			error.name = "InternalServerError";
 			error_message = "Something went wrong. Please try again after a while.";
 			console.log("Error name: ", err.name, "Error message: ", err.message);
 		}
 
-		res.status(statusCode).json({ status, error, error_message });
+		res.status(statusCode).json(
+			apiResponseHandler({
+				type: "error",
+				object: error,
+				message: error_message,
+			})
+		);
 	});
-
-	new PrismaClient().$use(async (params, next) => {
-		if (params.action === 'findMany') {logger.log(params)
-			const skip = params.args.skip || 0;
-			const take = params.args.take || 30;
-			const offset = skip <= 0 ? 0 : (skip - 1) * take; 
-			params.args.skip = offset;
-		  }
-		return next(params)
-	  });
 }
 
 export { app };

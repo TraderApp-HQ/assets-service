@@ -9,8 +9,8 @@
   }
 
   export interface IQueryParameter{
-    args: object,
-    query: object,
-    operations: object,
-    model: object
+    args: any,
+    query: any,
+    operations: any,
+    model: any
   }

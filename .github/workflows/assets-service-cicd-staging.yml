@@ -1,0 +1,95 @@
+name: assets-service-ci-cd-staging
+
+on:
+  #push:
+  #   branches:
+  #   - staging
+  #    - pull_request
+  # pull_request:  #for PRs against dev
+  workflow_dispatch: # manual runs of the pipeline.
+
+jobs:
+  build: # first job - to build the application first with npm
+    runs-on: ubuntu-latest
+    environment:
+      name: staging
+
+    steps:
+      - name: Checkout code # first step in this build JOB is to checkout code from branch
+        uses: actions/checkout@v2
+
+      - name: Install Node.js # second step is to set up environment for node build
+        uses: actions/setup-node@v2
+        with:
+          node-version: 16.15
+
+      - name: Install dependencies # third step is to install dependencies
+        run: npm install
+
+      - name: Build # fourth step is to test by trying to build node
+        # - this uses the build script in the script file
+        run: npm run build
+
+      - name: Start #  start the server
+              # - this uses the startscript in the script file
+        run: npm run start &
+
+
+  docker_build_then_push_to_ecr_and_ecs:
+    runs-on: ubuntu-latest
+    environment:
+      name: staging
+
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v2
+
+      - name: Check out code
+        uses: actions/checkout@v2
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{vars.AWS_REGION}}
+
+      - name: Login to Amazon ECR
+        id: ecr-login-id #this is an id for this step. So u can use the id to ref d step later in d workflow.
+        uses: aws-actions/amazon-ecr-login@v1
+
+      - name: Build Docker Image, tag and push image to ECR
+      # THIS IS WHERE PROD VARS N TEST VARS ARE DEFINED N USED BASED ON BRANCH RUNNING FROM
+        id: builder_pusher
+        env:   # here we r creating env vars n assigning values to them.
+          ECR_REGISTRY: ${{ steps.ecr-login-id.outputs.registry }}
+          IMAGE_TAG: ${{github.run_id}}
+          ECR_REPOSITORY: ${{vars.ECR_REPOSITORY}}
+        run: |
+          docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
+          docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
+          echo "::set-output name=built_image::$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG"
+#end of CI
+
+#start CD: download the task definition.json template & create a new task definition.
+      - name: Create ECS Task Definition for new Release
+        run: |
+          aws ecs describe-task-definition --task-definition ${{ vars.ASSETS_SERVICE_TASK_DEF_ARN_DEV }} \
+          --query taskDefinition > task-definition.json
+
+      - name: Put the newly built image into the new ECS task definition
+        id: task-def
+        uses: aws-actions/amazon-ecs-render-task-definition@v1
+        with:
+          task-definition: task-definition.json
+          container-name: ${{ vars.ASSETS_SRVC_CONTAINER_NAME_DEV }}
+          image: ${{ steps.builder_pusher.outputs.built_image }}
+
+      - name: Deploy the ECS task definition's Service as new Release
+        uses: aws-actions/amazon-ecs-deploy-task-definition@v1
+        with:
+          task-definition: ${{ steps.task-def.outputs.task-definition }}
+          service: ${{ vars.ECS_SERVICE }}
+          cluster: ${{ vars.ECS_CLUSTER }}
+          wait-for-service-stability: true
+#end of CD

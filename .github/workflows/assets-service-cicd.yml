@@ -76,7 +76,7 @@ jobs:
       #start CD: download the task definition.json template & create a new task definition.
       - name: Create ECS Task Definition for new Release
         run: |
-          aws ecs describe-task-definition --task-definition ${{ vars.USERS_SERVICE_TASK_DEF_ARN }} \
+          aws ecs describe-task-definition --task-definition ${{ vars.ASSETS_SERVICE_TASK_DEF_ARN }} \
           --query taskDefinition > task-definition.json
 
       - name: Put the newly built image into the new ECS task definition
@@ -84,7 +84,7 @@ jobs:
         uses: aws-actions/amazon-ecs-render-task-definition@v1
         with:
           task-definition: task-definition.json
-          container-name: ${{ vars.USERS_SERVICE_CONTAINER_NAME }}
+          container-name: ${{ vars.ASSETS_SERVICE_CONTAINER_NAME }}
           image: ${{ steps.builder_pusher.outputs.built_image }}
 
       - name: Deploy the ECS task definition's Service as new Release

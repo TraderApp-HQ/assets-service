@@ -27,7 +27,7 @@ jobs:
           node-version: 16.15
 
       - name: Install dependencies # third step is to install dependencies
-        run: npm install
+        run: npm install --force
 
       - name: Build # fourth step is to test by trying to build node
         # - this uses the build script in the script file

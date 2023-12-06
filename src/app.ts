@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/restrict-template-expressions */
 /* eslint-disable @typescript-eslint/naming-convention */
 import express, { Application, Request, Response, NextFunction } from "express";
-import { apiResponseHandler, initSecrets } from "@traderapp/shared-resources";
+import { apiResponseHandler, initSecrets, logger } from "@traderapp/shared-resources";
 import cors from "cors";
 import { config } from "dotenv";
 import initDatabase from "./config/database";
@@ -27,11 +27,11 @@ initSecrets({
 		app.listen(port, async () => {
 			await initDatabase();
 			startServer();
-			console.log(`Server listening at port ${port}`);
+			logger.log(`Server listening at port ${port}`);
 		});
 	})
 	.catch((err) => {
-		console.log(`Error getting secrets. === ${JSON.stringify(err)}`);
+		logger.log(`Error getting secrets. === ${JSON.stringify(err)}`);
 		throw err;
 	});
 

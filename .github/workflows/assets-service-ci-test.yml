@@ -11,7 +11,7 @@ jobs:
     build: # this is the first job - to build the application first with npm
         runs-on: ubuntu-latest
         environment:
-          name: ${{ github.ref_name }}
+          name: ${{ github.event_name == 'pull_request' && 'dev' || github.ref_name }}
                            
         steps:
             - name: Checkout code from branch  # 1st step in this build JOB

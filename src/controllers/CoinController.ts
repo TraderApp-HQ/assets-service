@@ -9,25 +9,38 @@ export async function coinsHandler(req: Request, res: Response, next: NextFuncti
 		const db = await prismaClient()
 
 		const page: number = parseInt(req.query.page as string) || 1;
-    	let rowsPerPage:number = parseInt(req.query.rowsPerPage as string) || 10;
-		rowsPerPage = rowsPerPage > 100 ? 100: rowsPerPage;
+		let rowsPerPage: number = parseInt(req.query.rowsPerPage as string) || 10;
+		rowsPerPage = rowsPerPage > 100 ? 100 : rowsPerPage;
 
 		const order = req.query.orderBy as string || 'asc';
 		const sort = req.query.sort as string || 'rank';
-		const offset = page <= 0 ? 0 : (page - 1) * rowsPerPage; 
+		const offset = page <= 0 ? 0 : (page - 1) * rowsPerPage;
+		const term = req.query.term as string || ''
 
-		const variable = sort 
+		if(term !=='' && term.length < 4)
+		{
+			res.status(200).json(apiResponseHandler({ object: { } }));
+		}
+
+		const variable = sort
 		const orderby = {
 			[variable]: order
 		}
 
+		const whereCalause = { isTradingActive: true, isCoinActive: true } ;
 		const coinsArr: any = await db.coin.findMany({
 			take: rowsPerPage,
 			skip: offset,
 			orderBy: [
 				orderby
 			],
-			where: { isTradingActive: true, isCoinActive: true },
+			where: {
+				...whereCalause,
+				name: {
+					contains: term,
+					mode: 'insensitive',
+				}
+			},
 			select: {
 				id: true,
 				name: true,
@@ -45,22 +58,28 @@ export async function coinsHandler(req: Request, res: Response, next: NextFuncti
 		});
 
 		const count = await db.coin.count({
-			where: { isTradingActive: true, isCoinActive: true },
+			where:{
+				...whereCalause,
+				name: {
+					contains: term,
+					mode: 'insensitive',
+				}
+			}
 		})
 
 		const pageCount = Math.ceil(count / rowsPerPage);
 
 		const response: IPagedResultData = {
-			currentPage : page,
-			  itemsCount: count,
-			  pageCount: pageCount,
-			  rowsPerPage: rowsPerPage,
-			  sortBy: sort,
-			  orderBy: order,
-			  coins: coins,
-		  }; 
+			currentPage: page,
+			itemsCount: count,
+			pageCount: pageCount,
+			rowsPerPage: rowsPerPage,
+			sortBy: sort,
+			orderBy: order,
+			coins: coins,
+		};
 
-		  res.status(200).json(apiResponseHandler({ object: response }));
+		res.status(200).json(apiResponseHandler({ object: response }));
 	} catch (err: any) {
 		next(err);
 	}

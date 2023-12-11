@@ -1,0 +1,268 @@
+[31merror[39m: uncaughtException: ⨯ Unable to compile TypeScript:
+[96msrc/controllers/CoinController.ts[0m:[93m40[0m:[93m4[0m - [91merror[0m[90m TS2322: [0mType '{ isTradingActive: boolean; isCoinActive: boolean; } | { name: { startsWith: string; mode: string; }; isTradingActive: boolean; isCoinActive: boolean; }' is not assignable to type 'CoinWhereInput | undefined'.
+  Type '{ name: { startsWith: string; mode: string; }; isTradingActive: boolean; isCoinActive: boolean; }' is not assignable to type 'CoinWhereInput'.
+    Types of property 'name' are incompatible.
+      Type '{ startsWith: string; mode: string; }' is not assignable to type 'string | StringFilter | undefined'.
+        Type '{ startsWith: string; mode: string; }' is not assignable to type 'StringFilter'.
+          Types of property 'mode' are incompatible.
+            Type 'string' is not assignable to type 'QueryMode | undefined'.
+
+[7m40[0m    where: where,
+[7m  [0m [91m   ~~~~~[0m
+[96msrc/controllers/CoinController.ts[0m:[93m58[0m:[93m4[0m - [91merror[0m[90m TS2322: [0mType '{ isTradingActive: boolean; isCoinActive: boolean; } | { name: { startsWith: string; mode: string; }; isTradingActive: boolean; isCoinActive: boolean; }' is not assignable to type 'CoinWhereInput | undefined'.
+
+[7m58[0m    where: where,
+[7m  [0m [91m   ~~~~~[0m
+
+TSError: ⨯ Unable to compile TypeScript:
+[96msrc/controllers/CoinController.ts[0m:[93m40[0m:[93m4[0m - [91merror[0m[90m TS2322: [0mType '{ isTradingActive: boolean; isCoinActive: boolean; } | { name: { startsWith: string; mode: string; }; isTradingActive: boolean; isCoinActive: boolean; }' is not assignable to type 'CoinWhereInput | undefined'.
+  Type '{ name: { startsWith: string; mode: string; }; isTradingActive: boolean; isCoinActive: boolean; }' is not assignable to type 'CoinWhereInput'.
+    Types of property 'name' are incompatible.
+      Type '{ startsWith: string; mode: string; }' is not assignable to type 'string | StringFilter | undefined'.
+        Type '{ startsWith: string; mode: string; }' is not assignable to type 'StringFilter'.
+          Types of property 'mode' are incompatible.
+            Type 'string' is not assignable to type 'QueryMode | undefined'.
+
+[7m40[0m    where: where,
+[7m  [0m [91m   ~~~~~[0m
+[96msrc/controllers/CoinController.ts[0m:[93m58[0m:[93m4[0m - [91merror[0m[90m TS2322: [0mType '{ isTradingActive: boolean; isCoinActive: boolean; } | { name: { startsWith: string; mode: string; }; isTradingActive: boolean; isCoinActive: boolean; }' is not assignable to type 'CoinWhereInput | undefined'.
+
+[7m58[0m    where: where,
+[7m  [0m [91m   ~~~~~[0m
+
+    at createTSError (C:\projects\TraderApp\assets-service\node_modules\ts-node\src\index.ts:859:12)
+    at reportTSError (C:\projects\TraderApp\assets-service\node_modules\ts-node\src\index.ts:863:19)
+    at getOutput (C:\projects\TraderApp\assets-service\node_modules\ts-node\src\index.ts:1077:36)
+    at Object.compile (C:\projects\TraderApp\assets-service\node_modules\ts-node\src\index.ts:1433:41)
+    at Module.m._compile (C:\projects\TraderApp\assets-service\node_modules\ts-node\src\index.ts:1617:30)
+    at Module._extensions..js (node:internal/modules/cjs/loader:1159:10)
+    at Object.require.extensions.<computed> [as .ts] (C:\projects\TraderApp\assets-service\node_modules\ts-node\src\index.ts:1621:12)
+    at Module.load (node:internal/modules/cjs/loader:981:32)
+    at Function.Module._load (node:internal/modules/cjs/loader:822:12)
+    at Module.require (node:internal/modules/cjs/loader:1005:19) [assets-service] development 2023-12-10 23:00:31
+error: uncaughtException: ⨯ Unable to compile TypeScript:
+[96msrc/controllers/CoinController.ts[0m:[93m40[0m:[93m4[0m - [91merror[0m[90m TS2322: [0mType '{ isTradingActive: boolean; isCoinActive: boolean; } | { name: { startsWith: string; mode: string; }; isTradingActive: boolean; isCoinActive: boolean; }' is not assignable to type 'CoinWhereInput | undefined'.
+  Type '{ name: { startsWith: string; mode: string; }; isTradingActive: boolean; isCoinActive: boolean; }' is not assignable to type 'CoinWhereInput'.
+    Types of property 'name' are incompatible.
+      Type '{ startsWith: string; mode: string; }' is not assignable to type 'string | StringFilter | undefined'.
+        Type '{ startsWith: string; mode: string; }' is not assignable to type 'StringFilter'.
+          Types of property 'mode' are incompatible.
+            Type 'string' is not assignable to type 'QueryMode | undefined'.
+
+[7m40[0m    where: where,
+[7m  [0m [91m   ~~~~~[0m
+[96msrc/controllers/CoinController.ts[0m:[93m58[0m:[93m4[0m - [91merror[0m[90m TS2322: [0mType '{ isTradingActive: boolean; isCoinActive: boolean; } | { name: { startsWith: string; mode: string; }; isTradingActive: boolean; isCoinActive: boolean; }' is not assignable to type 'CoinWhereInput | undefined'.
+
+[7m58[0m    where: where,
+[7m  [0m [91m   ~~~~~[0m
+
+TSError: ⨯ Unable to compile TypeScript:
+[96msrc/controllers/CoinController.ts[0m:[93m40[0m:[93m4[0m - [91merror[0m[90m TS2322: [0mType '{ isTradingActive: boolean; isCoinActive: boolean; } | { name: { startsWith: string; mode: string; }; isTradingActive: boolean; isCoinActive: boolean; }' is not assignable to type 'CoinWhereInput | undefined'.
+  Type '{ name: { startsWith: string; mode: string; }; isTradingActive: boolean; isCoinActive: boolean; }' is not assignable to type 'CoinWhereInput'.
+    Types of property 'name' are incompatible.
+      Type '{ startsWith: string; mode: string; }' is not assignable to type 'string | StringFilter | undefined'.
+        Type '{ startsWith: string; mode: string; }' is not assignable to type 'StringFilter'.
+          Types of property 'mode' are incompatible.
+            Type 'string' is not assignable to type 'QueryMode | undefined'.
+
+[7m40[0m    where: where,
+[7m  [0m [91m   ~~~~~[0m
+[96msrc/controllers/CoinController.ts[0m:[93m58[0m:[93m4[0m - [91merror[0m[90m TS2322: [0mType '{ isTradingActive: boolean; isCoinActive: boolean; } | { name: { startsWith: string; mode: string; }; isTradingActive: boolean; isCoinActive: boolean; }' is not assignable to type 'CoinWhereInput | undefined'.
+
+[7m58[0m    where: where,
+[7m  [0m [91m   ~~~~~[0m
+
+    at createTSError (C:\projects\TraderApp\assets-service\node_modules\ts-node\src\index.ts:859:12)
+    at reportTSError (C:\projects\TraderApp\assets-service\node_modules\ts-node\src\index.ts:863:19)
+    at getOutput (C:\projects\TraderApp\assets-service\node_modules\ts-node\src\index.ts:1077:36)
+    at Object.compile (C:\projects\TraderApp\assets-service\node_modules\ts-node\src\index.ts:1433:41)
+    at Module.m._compile (C:\projects\TraderApp\assets-service\node_modules\ts-node\src\index.ts:1617:30)
+    at Module._extensions..js (node:internal/modules/cjs/loader:1159:10)
+    at Object.require.extensions.<computed> [as .ts] (C:\projects\TraderApp\assets-service\node_modules\ts-node\src\index.ts:1621:12)
+    at Module.load (node:internal/modules/cjs/loader:981:32)
+    at Function.Module._load (node:internal/modules/cjs/loader:822:12)
+    at Module.require (node:internal/modules/cjs/loader:1005:19) [assets-service] development 2023-12-10T22:00:31.507Z
+[31merror[39m: uncaughtException: ⨯ Unable to compile TypeScript:
+[96msrc/controllers/CoinController.ts[0m:[93m11[0m:[93m62[0m - [91merror[0m[90m TS2304: [0mCannot find name 'PAGINATION'.
+
+[7m11[0m   const page: number = parseInt(req.query.page as string) || PAGINATION.PAGE;
+[7m  [0m [91m                                                             ~~~~~~~~~~[0m
+[96msrc/controllers/CoinController.ts[0m:[93m12[0m:[93m74[0m - [91merror[0m[90m TS2304: [0mCannot find name 'PAGINATION'.
+
+[7m12[0m   let rowsPerPage: number = parseInt(req.query.rowsPerPage as string) || PAGINATION.LIMIT;
+[7m  [0m [91m                                                                         ~~~~~~~~~~[0m
+
+TSError: ⨯ Unable to compile TypeScript:
+[96msrc/controllers/CoinController.ts[0m:[93m11[0m:[93m62[0m - [91merror[0m[90m TS2304: [0mCannot find name 'PAGINATION'.
+
+[7m11[0m   const page: number = parseInt(req.query.page as string) || PAGINATION.PAGE;
+[7m  [0m [91m                                                             ~~~~~~~~~~[0m
+[96msrc/controllers/CoinController.ts[0m:[93m12[0m:[93m74[0m - [91merror[0m[90m TS2304: [0mCannot find name 'PAGINATION'.
+
+[7m12[0m   let rowsPerPage: number = parseInt(req.query.rowsPerPage as string) || PAGINATION.LIMIT;
+[7m  [0m [91m                                                                         ~~~~~~~~~~[0m
+
+    at createTSError (C:\projects\TraderApp\assets-service\node_modules\ts-node\src\index.ts:859:12)
+    at reportTSError (C:\projects\TraderApp\assets-service\node_modules\ts-node\src\index.ts:863:19)
+    at getOutput (C:\projects\TraderApp\assets-service\node_modules\ts-node\src\index.ts:1077:36)
+    at Object.compile (C:\projects\TraderApp\assets-service\node_modules\ts-node\src\index.ts:1433:41)
+    at Module.m._compile (C:\projects\TraderApp\assets-service\node_modules\ts-node\src\index.ts:1617:30)
+    at Module._extensions..js (node:internal/modules/cjs/loader:1159:10)
+    at Object.require.extensions.<computed> [as .ts] (C:\projects\TraderApp\assets-service\node_modules\ts-node\src\index.ts:1621:12)
+    at Module.load (node:internal/modules/cjs/loader:981:32)
+    at Function.Module._load (node:internal/modules/cjs/loader:822:12)
+    at Module.require (node:internal/modules/cjs/loader:1005:19) [assets-service] development 2023-12-11 16:00:26
+error: uncaughtException: ⨯ Unable to compile TypeScript:
+[96msrc/controllers/CoinController.ts[0m:[93m11[0m:[93m62[0m - [91merror[0m[90m TS2304: [0mCannot find name 'PAGINATION'.
+
+[7m11[0m   const page: number = parseInt(req.query.page as string) || PAGINATION.PAGE;
+[7m  [0m [91m                                                             ~~~~~~~~~~[0m
+[96msrc/controllers/CoinController.ts[0m:[93m12[0m:[93m74[0m - [91merror[0m[90m TS2304: [0mCannot find name 'PAGINATION'.
+
+[7m12[0m   let rowsPerPage: number = parseInt(req.query.rowsPerPage as string) || PAGINATION.LIMIT;
+[7m  [0m [91m                                                                         ~~~~~~~~~~[0m
+
+TSError: ⨯ Unable to compile TypeScript:
+[96msrc/controllers/CoinController.ts[0m:[93m11[0m:[93m62[0m - [91merror[0m[90m TS2304: [0mCannot find name 'PAGINATION'.
+
+[7m11[0m   const page: number = parseInt(req.query.page as string) || PAGINATION.PAGE;
+[7m  [0m [91m                                                             ~~~~~~~~~~[0m
+[96msrc/controllers/CoinController.ts[0m:[93m12[0m:[93m74[0m - [91merror[0m[90m TS2304: [0mCannot find name 'PAGINATION'.
+
+[7m12[0m   let rowsPerPage: number = parseInt(req.query.rowsPerPage as string) || PAGINATION.LIMIT;
+[7m  [0m [91m                                                                         ~~~~~~~~~~[0m
+
+    at createTSError (C:\projects\TraderApp\assets-service\node_modules\ts-node\src\index.ts:859:12)
+    at reportTSError (C:\projects\TraderApp\assets-service\node_modules\ts-node\src\index.ts:863:19)
+    at getOutput (C:\projects\TraderApp\assets-service\node_modules\ts-node\src\index.ts:1077:36)
+    at Object.compile (C:\projects\TraderApp\assets-service\node_modules\ts-node\src\index.ts:1433:41)
+    at Module.m._compile (C:\projects\TraderApp\assets-service\node_modules\ts-node\src\index.ts:1617:30)
+    at Module._extensions..js (node:internal/modules/cjs/loader:1159:10)
+    at Object.require.extensions.<computed> [as .ts] (C:\projects\TraderApp\assets-service\node_modules\ts-node\src\index.ts:1621:12)
+    at Module.load (node:internal/modules/cjs/loader:981:32)
+    at Function.Module._load (node:internal/modules/cjs/loader:822:12)
+    at Module.require (node:internal/modules/cjs/loader:1005:19) [assets-service] development 2023-12-11T15:00:26.685Z
+error: uncaughtException: ⨯ Unable to compile TypeScript:
+[96msrc/controllers/CoinController.ts[0m:[93m11[0m:[93m62[0m - [91merror[0m[90m TS2304: [0mCannot find name 'PAGINATION'.
+
+[7m11[0m   const page: number = parseInt(req.query.page as string) || PAGINATION.PAGE;
+[7m  [0m [91m                                                             ~~~~~~~~~~[0m
+[96msrc/controllers/CoinController.ts[0m:[93m12[0m:[93m74[0m - [91merror[0m[90m TS2304: [0mCannot find name 'PAGINATION'.
+
+[7m12[0m   let rowsPerPage: number = parseInt(req.query.rowsPerPage as string) || PAGINATION.LIMIT;
+[7m  [0m [91m                                                                         ~~~~~~~~~~[0m
+
+TSError: ⨯ Unable to compile TypeScript:
+[96msrc/controllers/CoinController.ts[0m:[93m11[0m:[93m62[0m - [91merror[0m[90m TS2304: [0mCannot find name 'PAGINATION'.
+
+[7m11[0m   const page: number = parseInt(req.query.page as string) || PAGINATION.PAGE;
+[7m  [0m [91m                                                             ~~~~~~~~~~[0m
+[96msrc/controllers/CoinController.ts[0m:[93m12[0m:[93m74[0m - [91merror[0m[90m TS2304: [0mCannot find name 'PAGINATION'.
+
+[7m12[0m   let rowsPerPage: number = parseInt(req.query.rowsPerPage as string) || PAGINATION.LIMIT;
+[7m  [0m [91m                                                                         ~~~~~~~~~~[0m
+
+    at createTSError (C:\projects\TraderApp\assets-service\node_modules\ts-node\src\index.ts:859:12)
+    at reportTSError (C:\projects\TraderApp\assets-service\node_modules\ts-node\src\index.ts:863:19)
+    at getOutput (C:\projects\TraderApp\assets-service\node_modules\ts-node\src\index.ts:1077:36)
+    at Object.compile (C:\projects\TraderApp\assets-service\node_modules\ts-node\src\index.ts:1433:41)
+    at Module.m._compile (C:\projects\TraderApp\assets-service\node_modules\ts-node\src\index.ts:1617:30)
+    at Module._extensions..js (node:internal/modules/cjs/loader:1159:10)
+    at Object.require.extensions.<computed> [as .ts] (C:\projects\TraderApp\assets-service\node_modules\ts-node\src\index.ts:1621:12)
+    at Module.load (node:internal/modules/cjs/loader:981:32)
+    at Function.Module._load (node:internal/modules/cjs/loader:822:12)
+    at Module.require (node:internal/modules/cjs/loader:1005:19) [assets-service] development 2023-12-11T15:00:36.409Z
+[31merror[39m: uncaughtException: ⨯ Unable to compile TypeScript:
+[96msrc/controllers/CoinController.ts[0m:[93m11[0m:[93m62[0m - [91merror[0m[90m TS2304: [0mCannot find name 'PAGINATION'.
+
+[7m11[0m   const page: number = parseInt(req.query.page as string) || PAGINATION.PAGE;
+[7m  [0m [91m                                                             ~~~~~~~~~~[0m
+[96msrc/controllers/CoinController.ts[0m:[93m12[0m:[93m74[0m - [91merror[0m[90m TS2304: [0mCannot find name 'PAGINATION'.
+
+[7m12[0m   let rowsPerPage: number = parseInt(req.query.rowsPerPage as string) || PAGINATION.LIMIT;
+[7m  [0m [91m                                                                         ~~~~~~~~~~[0m
+
+TSError: ⨯ Unable to compile TypeScript:
+[96msrc/controllers/CoinController.ts[0m:[93m11[0m:[93m62[0m - [91merror[0m[90m TS2304: [0mCannot find name 'PAGINATION'.
+
+[7m11[0m   const page: number = parseInt(req.query.page as string) || PAGINATION.PAGE;
+[7m  [0m [91m                                                             ~~~~~~~~~~[0m
+[96msrc/controllers/CoinController.ts[0m:[93m12[0m:[93m74[0m - [91merror[0m[90m TS2304: [0mCannot find name 'PAGINATION'.
+
+[7m12[0m   let rowsPerPage: number = parseInt(req.query.rowsPerPage as string) || PAGINATION.LIMIT;
+[7m  [0m [91m                                                                         ~~~~~~~~~~[0m
+
+    at createTSError (C:\projects\TraderApp\assets-service\node_modules\ts-node\src\index.ts:859:12)
+    at reportTSError (C:\projects\TraderApp\assets-service\node_modules\ts-node\src\index.ts:863:19)
+    at getOutput (C:\projects\TraderApp\assets-service\node_modules\ts-node\src\index.ts:1077:36)
+    at Object.compile (C:\projects\TraderApp\assets-service\node_modules\ts-node\src\index.ts:1433:41)
+    at Module.m._compile (C:\projects\TraderApp\assets-service\node_modules\ts-node\src\index.ts:1617:30)
+    at Module._extensions..js (node:internal/modules/cjs/loader:1159:10)
+    at Object.require.extensions.<computed> [as .ts] (C:\projects\TraderApp\assets-service\node_modules\ts-node\src\index.ts:1621:12)
+    at Module.load (node:internal/modules/cjs/loader:981:32)
+    at Function.Module._load (node:internal/modules/cjs/loader:822:12)
+    at Module.require (node:internal/modules/cjs/loader:1005:19) [assets-service] development 2023-12-11 16:00:36
+[31merror[39m: uncaughtException: ⨯ Unable to compile TypeScript:
+[96msrc/controllers/CoinController.ts[0m:[93m5[0m:[93m10[0m - [91merror[0m[90m TS2724: [0m'"../config/constants"' has no exported member named 'PAGINATION'. Did you mean 'Pagination'?
+
+[7m5[0m import { PAGINATION } from "../config/constants";
+[7m [0m [91m         ~~~~~~~~~~[0m
+
+  [96msrc/config/constants.ts[0m:[93m7[0m:[93m14[0m
+    [7m7[0m export const Pagination: Record<string, number> = Object.freeze({
+    [7m [0m [96m             ~~~~~~~~~~[0m
+    'Pagination' is declared here.
+
+TSError: ⨯ Unable to compile TypeScript:
+[96msrc/controllers/CoinController.ts[0m:[93m5[0m:[93m10[0m - [91merror[0m[90m TS2724: [0m'"../config/constants"' has no exported member named 'PAGINATION'. Did you mean 'Pagination'?
+
+[7m5[0m import { PAGINATION } from "../config/constants";
+[7m [0m [91m         ~~~~~~~~~~[0m
+
+  [96msrc/config/constants.ts[0m:[93m7[0m:[93m14[0m
+    [7m7[0m export const Pagination: Record<string, number> = Object.freeze({
+    [7m [0m [96m             ~~~~~~~~~~[0m
+    'Pagination' is declared here.
+
+    at createTSError (C:\projects\TraderApp\assets-service\node_modules\ts-node\src\index.ts:859:12)
+    at reportTSError (C:\projects\TraderApp\assets-service\node_modules\ts-node\src\index.ts:863:19)
+    at getOutput (C:\projects\TraderApp\assets-service\node_modules\ts-node\src\index.ts:1077:36)
+    at Object.compile (C:\projects\TraderApp\assets-service\node_modules\ts-node\src\index.ts:1433:41)
+    at Module.m._compile (C:\projects\TraderApp\assets-service\node_modules\ts-node\src\index.ts:1617:30)
+    at Module._extensions..js (node:internal/modules/cjs/loader:1159:10)
+    at Object.require.extensions.<computed> [as .ts] (C:\projects\TraderApp\assets-service\node_modules\ts-node\src\index.ts:1621:12)
+    at Module.load (node:internal/modules/cjs/loader:981:32)
+    at Function.Module._load (node:internal/modules/cjs/loader:822:12)
+    at Module.require (node:internal/modules/cjs/loader:1005:19) [assets-service] development 2023-12-11 16:01:32
+error: uncaughtException: ⨯ Unable to compile TypeScript:
+[96msrc/controllers/CoinController.ts[0m:[93m5[0m:[93m10[0m - [91merror[0m[90m TS2724: [0m'"../config/constants"' has no exported member named 'PAGINATION'. Did you mean 'Pagination'?
+
+[7m5[0m import { PAGINATION } from "../config/constants";
+[7m [0m [91m         ~~~~~~~~~~[0m
+
+  [96msrc/config/constants.ts[0m:[93m7[0m:[93m14[0m
+    [7m7[0m export const Pagination: Record<string, number> = Object.freeze({
+    [7m [0m [96m             ~~~~~~~~~~[0m
+    'Pagination' is declared here.
+
+TSError: ⨯ Unable to compile TypeScript:
+[96msrc/controllers/CoinController.ts[0m:[93m5[0m:[93m10[0m - [91merror[0m[90m TS2724: [0m'"../config/constants"' has no exported member named 'PAGINATION'. Did you mean 'Pagination'?
+
+[7m5[0m import { PAGINATION } from "../config/constants";
+[7m [0m [91m         ~~~~~~~~~~[0m
+
+  [96msrc/config/constants.ts[0m:[93m7[0m:[93m14[0m
+    [7m7[0m export const Pagination: Record<string, number> = Object.freeze({
+    [7m [0m [96m             ~~~~~~~~~~[0m
+    'Pagination' is declared here.
+
+    at createTSError (C:\projects\TraderApp\assets-service\node_modules\ts-node\src\index.ts:859:12)
+    at reportTSError (C:\projects\TraderApp\assets-service\node_modules\ts-node\src\index.ts:863:19)
+    at getOutput (C:\projects\TraderApp\assets-service\node_modules\ts-node\src\index.ts:1077:36)
+    at Object.compile (C:\projects\TraderApp\assets-service\node_modules\ts-node\src\index.ts:1433:41)
+    at Module.m._compile (C:\projects\TraderApp\assets-service\node_modules\ts-node\src\index.ts:1617:30)
+    at Module._extensions..js (node:internal/modules/cjs/loader:1159:10)
+    at Object.require.extensions.<computed> [as .ts] (C:\projects\TraderApp\assets-service\node_modules\ts-node\src\index.ts:1621:12)
+    at Module.load (node:internal/modules/cjs/loader:981:32)
+    at Function.Module._load (node:internal/modules/cjs/loader:822:12)
+    at Module.require (node:internal/modules/cjs/loader:1005:19) [assets-service] development 2023-12-11T15:01:32.460Z

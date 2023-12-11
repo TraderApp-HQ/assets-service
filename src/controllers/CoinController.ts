@@ -2,14 +2,15 @@ import { Request, Response, NextFunction } from "express";
 import { prismaClient } from "../config/database";
 import { IPagedResultData } from "../helpers/interfaces/pageResult";
 import { apiResponseHandler } from "@traderapp/shared-resources";
+import { Pagination } from "../config/constants";
 
 //	A function to get all coins
 export async function coinsHandler(req: Request, res: Response, next: NextFunction) {
 	try {
 		const db = await prismaClient()
 
-		const page: number = parseInt(req.query.page as string) || 1;
-		let rowsPerPage: number = parseInt(req.query.rowsPerPage as string) || 10;
+		const page: number = parseInt(req.query.page as string) || Pagination.PAGE;
+		let rowsPerPage: number = parseInt(req.query.rowsPerPage as string) || Pagination.LIMIT;
 		rowsPerPage = rowsPerPage > 100 ? 100 : rowsPerPage;
 
 		const order = req.query.orderBy as string || 'asc';
@@ -27,7 +28,7 @@ export async function coinsHandler(req: Request, res: Response, next: NextFuncti
 			[variable]: order
 		}
 
-		const whereCalause = { isTradingActive: true, isCoinActive: true } ;
+		const whereClause = { isTradingActive: true, isCoinActive: true } ;
 		const coinsArr: any = await db.coin.findMany({
 			take: rowsPerPage,
 			skip: offset,
@@ -35,7 +36,7 @@ export async function coinsHandler(req: Request, res: Response, next: NextFuncti
 				orderby
 			],
 			where: {
-				...whereCalause,
+				...whereClause,
 				name: {
 					contains: term,
 					mode: 'insensitive',
@@ -59,7 +60,7 @@ export async function coinsHandler(req: Request, res: Response, next: NextFuncti
 
 		const count = await db.coin.count({
 			where:{
-				...whereCalause,
+				...whereClause,
 				name: {
 					contains: term,
 					mode: 'insensitive',

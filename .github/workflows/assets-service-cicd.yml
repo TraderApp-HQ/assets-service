@@ -63,7 +63,7 @@ jobs:
 
 
       - name: Build Docker image
-        run: docker build -t assetservice-staging:$GITHUB_SHA .
+        run: docker build -t assetservice-dev:$GITHUB_SHA .
 
       - name: Tag Docker image with "latest"
         run: |

@@ -18,11 +18,6 @@ export async function coinsHandler(req: Request, res: Response, next: NextFuncti
 		const offset = page <= 0 ? 0 : (page - 1) * rowsPerPage;
 		const term = req.query.term as string || ''
 
-		if(term !=='' && term.length < 4)
-		{
-			res.status(200).json(apiResponseHandler({ object: { } }));
-		}
-
 		const variable = sort
 		const orderby = {
 			[variable]: order

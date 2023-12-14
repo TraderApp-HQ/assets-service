@@ -78,7 +78,7 @@ jobs:
 
       - name: Update ECS service
         run: |
-            aws ecs update-service --cluster traderapp_staging --service deploy_assets_service_dev --force-new-deployment
+            aws ecs update-service --cluster traderapp_dev --service deploy_assets_service_dev --force-new-deployment
       # - name: Build Docker Image, tag and push image to ECR
       #   id: builder_pusher
       #   env: # here we r creating env vars n assigning values to them.

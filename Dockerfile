@@ -10,6 +10,8 @@ COPY . .
 
 RUN npm run build
 
+RUN npm update
+
 EXPOSE 8080
 
 CMD ["npm", "start"]

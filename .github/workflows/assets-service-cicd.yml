@@ -60,38 +60,58 @@ jobs:
         id: ecr-login-id #this is an id for this step. So u can use the id to ref d step later in d workflow.
         uses: aws-actions/amazon-ecr-login@v1
 
-      - name: Build Docker Image, tag and push image to ECR
-        id: builder_pusher
-        env: # here we r creating env vars n assigning values to them.
-          ECR_REGISTRY: ${{ steps.ecr-login-id.outputs.registry }}
-          IMAGE_TAG: ${{github.run_id}}
-          ECR_REPOSITORY: ${{vars.ECR_REPOSITORY}}
+
+
+      - name: Build Docker image
+        run: docker build -t assetservice-dev:$GITHUB_SHA .
+
+      - name: Tag Docker image with "latest"
         run: |
-          docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
-          docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
-          echo "::set-output name=built_image::$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG"
-
-      #end of CI
-
-      #start CD: download the task definition.json template & create a new task definition.
-      - name: Create ECS Task Definition for new Release
+           DOCKER_TAG=${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com/assets-service-dev:latest
+           docker tag assetservice-dev:$GITHUB_SHA $DOCKER_TAG
+           docker tag assetservice-dev:$GITHUB_SHA ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com/assets-service-dev:$GITHUB_SHA
+        
+      - name: Push Docker image to ECR
         run: |
-          aws ecs describe-task-definition --task-definition ${{ vars.ASSETS_SERVICE_TASK_DEF_ARN }} \
-          --query taskDefinition > task-definition.json
+            docker push ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com/assets-service-dev:latest
+            docker push ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com/assets-service-dev:$GITHUB_SHA
 
-      - name: Put the newly built image into the new ECS task definition
-        id: task-def
-        uses: aws-actions/amazon-ecs-render-task-definition@v1
-        with:
-          task-definition: task-definition.json
-          container-name: ${{ vars.ASSETS_SERVICE_CONTAINER_NAME }}
-          image: ${{ steps.builder_pusher.outputs.built_image }}
+      - name: Update ECS service
+        run: |
+            aws ecs update-service --cluster traderapp_dev --service asset-service-dev --force-new-deployment
+      # - name: Build Docker Image, tag and push image to ECR
+      #   id: builder_pusher
+      #   env: # here we r creating env vars n assigning values to them.
+      #     ECR_REGISTRY: ${{ steps.ecr-login-id.outputs.registry }}
+      #     IMAGE_TAG: ${{github.run_id}}
+      #     ECR_REPOSITORY: ${{vars.ECR_REPOSITORY}}
+      #   run: |
+      #     docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
+      #     docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
+      #     echo "::set-output name=built_image::$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG"
 
-      - name: Deploy the ECS task definition's Service as new Release
-        uses: aws-actions/amazon-ecs-deploy-task-definition@v1
-        with:
-          task-definition: ${{ steps.task-def.outputs.task-definition }}
-          service: ${{ vars.ECS_SERVICE }}
-          cluster: ${{ vars.ECS_CLUSTER }}
-          wait-for-service-stability: true
+
+      # #end of CI
+
+      # #start CD: download the task definition.json template & create a new task definition.
+      # - name: Create ECS Task Definition for new Release
+      #   run: |
+      #     aws ecs describe-task-definition --task-definition ${{ vars.ASSETS_SERVICE_TASK_DEF_ARN }} \
+      #     --query taskDefinition > task-definition.json
+
+      # - name: Put the newly built image into the new ECS task definition
+      #   id: task-def
+      #   uses: aws-actions/amazon-ecs-render-task-definition@v1
+      #   with:
+      #     task-definition: task-definition.json
+      #     container-name: ${{ vars.ASSETS_SERVICE_CONTAINER_NAME }}
+      #     image: ${{ steps.builder_pusher.outputs.built_image }}
+
+      # - name: Deploy the ECS task definition's Service as new Release
+      #   uses: aws-actions/amazon-ecs-deploy-task-definition@v1
+      #   with:
+      #     task-definition: ${{ steps.task-def.outputs.task-definition }}
+      #     service: ${{ vars.ECS_SERVICE }}
+      #     cluster: ${{ vars.ECS_CLUSTER }}
+      #     wait-for-service-stability: true
 #end of CD

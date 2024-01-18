@@ -3,7 +3,7 @@ name: asset-service-cicd-pipeline
 on:
   push:
      branches:
-       - staging
+       - stagging
   workflow_dispatch: 
 
 jobs:

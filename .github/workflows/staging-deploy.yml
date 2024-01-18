@@ -67,7 +67,7 @@ jobs:
         - name: Tag Docker image with "latest"
           run: |
            DOCKER_TAG=${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com/assets-service-staging:latest
-           docker tag assets-service-stagingg:$GITHUB_SHA $DOCKER_TAG
+           docker tag assets-service-staging:$GITHUB_SHA $DOCKER_TAG
            docker tag assets-service-staging:$GITHUB_SHA ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com/assets-service-staging:$GITHUB_SHA
         
         - name: Push Docker image to ECR

@@ -77,4 +77,4 @@ jobs:
 
         - name: Update ECS service
           run: |
-            aws ecs update-service --cluster traderapp-staging --service deploy_assets_service_staging --force-new-deployment 
+            aws ecs update-service --cluster traderapp_staging --service deploy_assets_service_staging --force-new-deployment 

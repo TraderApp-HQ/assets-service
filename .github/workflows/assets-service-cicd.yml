@@ -12,11 +12,7 @@ jobs:
   build: # this is the first job - to build the application first with npm
     runs-on: ubuntu-latest
     environment:
-<<<<<<< HEAD
-      name: staging
-=======
-      name: ${{ github.event_name == 'pull_request' && 'dev' || github.ref_name }}
->>>>>>> stagging
+      name: ${{ github.event_name == 'pull_request' && 'staging' || github.ref_name }}
 
     steps:
       - name: Checkout code from branch # 1st step in this build JOB.
@@ -44,11 +40,7 @@ jobs:
   docker_build_then_push_to_ecr_and_ecs:
     runs-on: ubuntu-latest
     environment:
-<<<<<<< HEAD
-      name: staging
-=======
       name: ${{ github.event_name == 'pull_request' && 'dev' || github.ref_name }}
->>>>>>> stagging
 
     steps:
       - name: Check out code from branch again to build into Docker image

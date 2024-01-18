@@ -67,8 +67,8 @@ jobs:
         - name: Tag Docker image with "latest"
           run: |
            DOCKER_TAG=${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com/assets-service-staging:latest
-           docker tag userservice-staging:$GITHUB_SHA $DOCKER_TAG
-           docker tag userservice-staging:$GITHUB_SHA ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com/assets-service-staging:$GITHUB_SHA
+           docker tag assets-service-staging:$GITHUB_SHA $DOCKER_TAG
+           docker tag assets-service-staging:$GITHUB_SHA ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com/assets-service-staging:$GITHUB_SHA
         
         - name: Push Docker image to ECR
           run: |
@@ -77,4 +77,5 @@ jobs:
 
         - name: Update ECS service
           run: |
-            aws ecs update-service --cluster traderapp-staging --service deploy_assets_service_staging --force-new-deployment 
+            aws ecs update-service --cluster traderapp_staging --service deploy_assets_service_staging --force-new-deployment 
+

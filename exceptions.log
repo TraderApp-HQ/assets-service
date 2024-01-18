@@ -1,0 +1,424 @@
+[31merror[39m: uncaughtException: ⨯ Unable to compile TypeScript:
+[96msrc/config/database.ts[0m:[93m1[0m:[93m10[0m - [91merror[0m[90m TS2305: [0mModule '"@prisma/client"' has no exported member 'PrismaClient'.
+
+[7m1[0m import { PrismaClient } from "@prisma/client";
+[7m [0m [91m         ~~~~~~~~~~~~[0m
+
+TSError: ⨯ Unable to compile TypeScript:
+[96msrc/config/database.ts[0m:[93m1[0m:[93m10[0m - [91merror[0m[90m TS2305: [0mModule '"@prisma/client"' has no exported member 'PrismaClient'.
+
+[7m1[0m import { PrismaClient } from "@prisma/client";
+[7m [0m [91m         ~~~~~~~~~~~~[0m
+
+    at createTSError (/Users/i/Documents/TraderApp codes/assets-service/node_modules/ts-node/src/index.ts:859:12)
+    at reportTSError (/Users/i/Documents/TraderApp codes/assets-service/node_modules/ts-node/src/index.ts:863:19)
+    at getOutput (/Users/i/Documents/TraderApp codes/assets-service/node_modules/ts-node/src/index.ts:1077:36)
+    at Object.compile (/Users/i/Documents/TraderApp codes/assets-service/node_modules/ts-node/src/index.ts:1433:41)
+    at Module.m._compile (/Users/i/Documents/TraderApp codes/assets-service/node_modules/ts-node/src/index.ts:1617:30)
+    at Module._extensions..js (node:internal/modules/cjs/loader:1310:10)
+    at Object.require.extensions.<computed> [as .ts] (/Users/i/Documents/TraderApp codes/assets-service/node_modules/ts-node/src/index.ts:1621:12)
+    at Module.load (node:internal/modules/cjs/loader:1119:32)
+    at Function.Module._load (node:internal/modules/cjs/loader:960:12)
+    at Module.require (node:internal/modules/cjs/loader:1143:19) [assets-service] development 2023-12-22 09:57:29
+error: uncaughtException: ⨯ Unable to compile TypeScript:
+[96msrc/config/database.ts[0m:[93m1[0m:[93m10[0m - [91merror[0m[90m TS2305: [0mModule '"@prisma/client"' has no exported member 'PrismaClient'.
+
+[7m1[0m import { PrismaClient } from "@prisma/client";
+[7m [0m [91m         ~~~~~~~~~~~~[0m
+
+TSError: ⨯ Unable to compile TypeScript:
+[96msrc/config/database.ts[0m:[93m1[0m:[93m10[0m - [91merror[0m[90m TS2305: [0mModule '"@prisma/client"' has no exported member 'PrismaClient'.
+
+[7m1[0m import { PrismaClient } from "@prisma/client";
+[7m [0m [91m         ~~~~~~~~~~~~[0m
+
+    at createTSError (/Users/i/Documents/TraderApp codes/assets-service/node_modules/ts-node/src/index.ts:859:12)
+    at reportTSError (/Users/i/Documents/TraderApp codes/assets-service/node_modules/ts-node/src/index.ts:863:19)
+    at getOutput (/Users/i/Documents/TraderApp codes/assets-service/node_modules/ts-node/src/index.ts:1077:36)
+    at Object.compile (/Users/i/Documents/TraderApp codes/assets-service/node_modules/ts-node/src/index.ts:1433:41)
+    at Module.m._compile (/Users/i/Documents/TraderApp codes/assets-service/node_modules/ts-node/src/index.ts:1617:30)
+    at Module._extensions..js (node:internal/modules/cjs/loader:1310:10)
+    at Object.require.extensions.<computed> [as .ts] (/Users/i/Documents/TraderApp codes/assets-service/node_modules/ts-node/src/index.ts:1621:12)
+    at Module.load (node:internal/modules/cjs/loader:1119:32)
+    at Function.Module._load (node:internal/modules/cjs/loader:960:12)
+    at Module.require (node:internal/modules/cjs/loader:1143:19) [assets-service] development 2023-12-22T08:57:29.642Z
+[31merror[39m: uncaughtException: ⨯ Unable to compile TypeScript:
+[96msrc/config/database.ts[0m:[93m1[0m:[93m10[0m - [91merror[0m[90m TS2305: [0mModule '"@prisma/client"' has no exported member 'PrismaClient'.
+
+[7m1[0m import { PrismaClient } from "@prisma/client";
+[7m [0m [91m         ~~~~~~~~~~~~[0m
+
+TSError: ⨯ Unable to compile TypeScript:
+[96msrc/config/database.ts[0m:[93m1[0m:[93m10[0m - [91merror[0m[90m TS2305: [0mModule '"@prisma/client"' has no exported member 'PrismaClient'.
+
+[7m1[0m import { PrismaClient } from "@prisma/client";
+[7m [0m [91m         ~~~~~~~~~~~~[0m
+
+    at createTSError (/Users/i/Documents/TraderApp codes/assets-service/node_modules/ts-node/src/index.ts:859:12)
+    at reportTSError (/Users/i/Documents/TraderApp codes/assets-service/node_modules/ts-node/src/index.ts:863:19)
+    at getOutput (/Users/i/Documents/TraderApp codes/assets-service/node_modules/ts-node/src/index.ts:1077:36)
+    at Object.compile (/Users/i/Documents/TraderApp codes/assets-service/node_modules/ts-node/src/index.ts:1433:41)
+    at Module.m._compile (/Users/i/Documents/TraderApp codes/assets-service/node_modules/ts-node/src/index.ts:1617:30)
+    at Module._extensions..js (node:internal/modules/cjs/loader:1310:10)
+    at Object.require.extensions.<computed> [as .ts] (/Users/i/Documents/TraderApp codes/assets-service/node_modules/ts-node/src/index.ts:1621:12)
+    at Module.load (node:internal/modules/cjs/loader:1119:32)
+    at Function.Module._load (node:internal/modules/cjs/loader:960:12)
+    at Module.require (node:internal/modules/cjs/loader:1143:19) [assets-service] development 2024-01-01 14:39:02
+error: uncaughtException: ⨯ Unable to compile TypeScript:
+[96msrc/config/database.ts[0m:[93m1[0m:[93m10[0m - [91merror[0m[90m TS2305: [0mModule '"@prisma/client"' has no exported member 'PrismaClient'.
+
+[7m1[0m import { PrismaClient } from "@prisma/client";
+[7m [0m [91m         ~~~~~~~~~~~~[0m
+
+TSError: ⨯ Unable to compile TypeScript:
+[96msrc/config/database.ts[0m:[93m1[0m:[93m10[0m - [91merror[0m[90m TS2305: [0mModule '"@prisma/client"' has no exported member 'PrismaClient'.
+
+[7m1[0m import { PrismaClient } from "@prisma/client";
+[7m [0m [91m         ~~~~~~~~~~~~[0m
+
+    at createTSError (/Users/i/Documents/TraderApp codes/assets-service/node_modules/ts-node/src/index.ts:859:12)
+    at reportTSError (/Users/i/Documents/TraderApp codes/assets-service/node_modules/ts-node/src/index.ts:863:19)
+    at getOutput (/Users/i/Documents/TraderApp codes/assets-service/node_modules/ts-node/src/index.ts:1077:36)
+    at Object.compile (/Users/i/Documents/TraderApp codes/assets-service/node_modules/ts-node/src/index.ts:1433:41)
+    at Module.m._compile (/Users/i/Documents/TraderApp codes/assets-service/node_modules/ts-node/src/index.ts:1617:30)
+    at Module._extensions..js (node:internal/modules/cjs/loader:1310:10)
+    at Object.require.extensions.<computed> [as .ts] (/Users/i/Documents/TraderApp codes/assets-service/node_modules/ts-node/src/index.ts:1621:12)
+    at Module.load (node:internal/modules/cjs/loader:1119:32)
+    at Function.Module._load (node:internal/modules/cjs/loader:960:12)
+    at Module.require (node:internal/modules/cjs/loader:1143:19) [assets-service] development 2024-01-01T13:39:02.353Z
+[31merror[39m: uncaughtException: ⨯ Unable to compile TypeScript:
+[96msrc/config/database.ts[0m:[93m1[0m:[93m10[0m - [91merror[0m[90m TS2305: [0mModule '"@prisma/client"' has no exported member 'PrismaClient'.
+
+[7m1[0m import { PrismaClient } from "@prisma/client";
+[7m [0m [91m         ~~~~~~~~~~~~[0m
+
+TSError: ⨯ Unable to compile TypeScript:
+[96msrc/config/database.ts[0m:[93m1[0m:[93m10[0m - [91merror[0m[90m TS2305: [0mModule '"@prisma/client"' has no exported member 'PrismaClient'.
+
+[7m1[0m import { PrismaClient } from "@prisma/client";
+[7m [0m [91m         ~~~~~~~~~~~~[0m
+
+    at createTSError (/Users/i/Documents/TraderApp codes/assets-service/node_modules/ts-node/src/index.ts:859:12)
+    at reportTSError (/Users/i/Documents/TraderApp codes/assets-service/node_modules/ts-node/src/index.ts:863:19)
+    at getOutput (/Users/i/Documents/TraderApp codes/assets-service/node_modules/ts-node/src/index.ts:1077:36)
+    at Object.compile (/Users/i/Documents/TraderApp codes/assets-service/node_modules/ts-node/src/index.ts:1433:41)
+    at Module.m._compile (/Users/i/Documents/TraderApp codes/assets-service/node_modules/ts-node/src/index.ts:1617:30)
+    at Module._extensions..js (node:internal/modules/cjs/loader:1310:10)
+    at Object.require.extensions.<computed> [as .ts] (/Users/i/Documents/TraderApp codes/assets-service/node_modules/ts-node/src/index.ts:1621:12)
+    at Module.load (node:internal/modules/cjs/loader:1119:32)
+    at Function.Module._load (node:internal/modules/cjs/loader:960:12)
+    at Module.require (node:internal/modules/cjs/loader:1143:19) [unkown-service] development 2024-01-01 14:41:09
+error: uncaughtException: ⨯ Unable to compile TypeScript:
+[96msrc/config/database.ts[0m:[93m1[0m:[93m10[0m - [91merror[0m[90m TS2305: [0mModule '"@prisma/client"' has no exported member 'PrismaClient'.
+
+[7m1[0m import { PrismaClient } from "@prisma/client";
+[7m [0m [91m         ~~~~~~~~~~~~[0m
+
+TSError: ⨯ Unable to compile TypeScript:
+[96msrc/config/database.ts[0m:[93m1[0m:[93m10[0m - [91merror[0m[90m TS2305: [0mModule '"@prisma/client"' has no exported member 'PrismaClient'.
+
+[7m1[0m import { PrismaClient } from "@prisma/client";
+[7m [0m [91m         ~~~~~~~~~~~~[0m
+
+    at createTSError (/Users/i/Documents/TraderApp codes/assets-service/node_modules/ts-node/src/index.ts:859:12)
+    at reportTSError (/Users/i/Documents/TraderApp codes/assets-service/node_modules/ts-node/src/index.ts:863:19)
+    at getOutput (/Users/i/Documents/TraderApp codes/assets-service/node_modules/ts-node/src/index.ts:1077:36)
+    at Object.compile (/Users/i/Documents/TraderApp codes/assets-service/node_modules/ts-node/src/index.ts:1433:41)
+    at Module.m._compile (/Users/i/Documents/TraderApp codes/assets-service/node_modules/ts-node/src/index.ts:1617:30)
+    at Module._extensions..js (node:internal/modules/cjs/loader:1310:10)
+    at Object.require.extensions.<computed> [as .ts] (/Users/i/Documents/TraderApp codes/assets-service/node_modules/ts-node/src/index.ts:1621:12)
+    at Module.load (node:internal/modules/cjs/loader:1119:32)
+    at Function.Module._load (node:internal/modules/cjs/loader:960:12)
+    at Module.require (node:internal/modules/cjs/loader:1143:19) [unkown-service] development 2024-01-01T13:41:09.644Z
+[31merror[39m: uncaughtException: ⨯ Unable to compile TypeScript:
+[96msrc/config/database.ts[0m:[93m1[0m:[93m10[0m - [91merror[0m[90m TS2305: [0mModule '"@prisma/client"' has no exported member 'PrismaClient'.
+
+[7m1[0m import { PrismaClient } from "@prisma/client";
+[7m [0m [91m         ~~~~~~~~~~~~[0m
+
+TSError: ⨯ Unable to compile TypeScript:
+[96msrc/config/database.ts[0m:[93m1[0m:[93m10[0m - [91merror[0m[90m TS2305: [0mModule '"@prisma/client"' has no exported member 'PrismaClient'.
+
+[7m1[0m import { PrismaClient } from "@prisma/client";
+[7m [0m [91m         ~~~~~~~~~~~~[0m
+
+    at createTSError (/Users/i/Documents/TraderApp codes/assets-service/node_modules/ts-node/src/index.ts:859:12)
+    at reportTSError (/Users/i/Documents/TraderApp codes/assets-service/node_modules/ts-node/src/index.ts:863:19)
+    at getOutput (/Users/i/Documents/TraderApp codes/assets-service/node_modules/ts-node/src/index.ts:1077:36)
+    at Object.compile (/Users/i/Documents/TraderApp codes/assets-service/node_modules/ts-node/src/index.ts:1433:41)
+    at Module.m._compile (/Users/i/Documents/TraderApp codes/assets-service/node_modules/ts-node/src/index.ts:1617:30)
+    at Module._extensions..js (node:internal/modules/cjs/loader:1310:10)
+    at Object.require.extensions.<computed> [as .ts] (/Users/i/Documents/TraderApp codes/assets-service/node_modules/ts-node/src/index.ts:1621:12)
+    at Module.load (node:internal/modules/cjs/loader:1119:32)
+    at Function.Module._load (node:internal/modules/cjs/loader:960:12)
+    at Module.require (node:internal/modules/cjs/loader:1143:19) [unkown-service] development 2024-01-01 14:42:04
+error: uncaughtException: ⨯ Unable to compile TypeScript:
+[96msrc/config/database.ts[0m:[93m1[0m:[93m10[0m - [91merror[0m[90m TS2305: [0mModule '"@prisma/client"' has no exported member 'PrismaClient'.
+
+[7m1[0m import { PrismaClient } from "@prisma/client";
+[7m [0m [91m         ~~~~~~~~~~~~[0m
+
+TSError: ⨯ Unable to compile TypeScript:
+[96msrc/config/database.ts[0m:[93m1[0m:[93m10[0m - [91merror[0m[90m TS2305: [0mModule '"@prisma/client"' has no exported member 'PrismaClient'.
+
+[7m1[0m import { PrismaClient } from "@prisma/client";
+[7m [0m [91m         ~~~~~~~~~~~~[0m
+
+    at createTSError (/Users/i/Documents/TraderApp codes/assets-service/node_modules/ts-node/src/index.ts:859:12)
+    at reportTSError (/Users/i/Documents/TraderApp codes/assets-service/node_modules/ts-node/src/index.ts:863:19)
+    at getOutput (/Users/i/Documents/TraderApp codes/assets-service/node_modules/ts-node/src/index.ts:1077:36)
+    at Object.compile (/Users/i/Documents/TraderApp codes/assets-service/node_modules/ts-node/src/index.ts:1433:41)
+    at Module.m._compile (/Users/i/Documents/TraderApp codes/assets-service/node_modules/ts-node/src/index.ts:1617:30)
+    at Module._extensions..js (node:internal/modules/cjs/loader:1310:10)
+    at Object.require.extensions.<computed> [as .ts] (/Users/i/Documents/TraderApp codes/assets-service/node_modules/ts-node/src/index.ts:1621:12)
+    at Module.load (node:internal/modules/cjs/loader:1119:32)
+    at Function.Module._load (node:internal/modules/cjs/loader:960:12)
+    at Module.require (node:internal/modules/cjs/loader:1143:19) [unkown-service] development 2024-01-01T13:42:04.357Z
+[31merror[39m: uncaughtException: ⨯ Unable to compile TypeScript:
+[96msrc/config/database.ts[0m:[93m1[0m:[93m10[0m - [91merror[0m[90m TS2305: [0mModule '"@prisma/client"' has no exported member 'PrismaClient'.
+
+[7m1[0m import { PrismaClient } from "@prisma/client";
+[7m [0m [91m         ~~~~~~~~~~~~[0m
+
+TSError: ⨯ Unable to compile TypeScript:
+[96msrc/config/database.ts[0m:[93m1[0m:[93m10[0m - [91merror[0m[90m TS2305: [0mModule '"@prisma/client"' has no exported member 'PrismaClient'.
+
+[7m1[0m import { PrismaClient } from "@prisma/client";
+[7m [0m [91m         ~~~~~~~~~~~~[0m
+
+    at createTSError (/Users/i/Documents/TraderApp codes/assets-service/node_modules/ts-node/src/index.ts:859:12)
+    at reportTSError (/Users/i/Documents/TraderApp codes/assets-service/node_modules/ts-node/src/index.ts:863:19)
+    at getOutput (/Users/i/Documents/TraderApp codes/assets-service/node_modules/ts-node/src/index.ts:1077:36)
+    at Object.compile (/Users/i/Documents/TraderApp codes/assets-service/node_modules/ts-node/src/index.ts:1433:41)
+    at Module.m._compile (/Users/i/Documents/TraderApp codes/assets-service/node_modules/ts-node/src/index.ts:1617:30)
+    at Module._extensions..js (node:internal/modules/cjs/loader:1310:10)
+    at Object.require.extensions.<computed> [as .ts] (/Users/i/Documents/TraderApp codes/assets-service/node_modules/ts-node/src/index.ts:1621:12)
+    at Module.load (node:internal/modules/cjs/loader:1119:32)
+    at Function.Module._load (node:internal/modules/cjs/loader:960:12)
+    at Module.require (node:internal/modules/cjs/loader:1143:19) [unkown-service] development 2024-01-01 14:45:54
+error: uncaughtException: ⨯ Unable to compile TypeScript:
+[96msrc/config/database.ts[0m:[93m1[0m:[93m10[0m - [91merror[0m[90m TS2305: [0mModule '"@prisma/client"' has no exported member 'PrismaClient'.
+
+[7m1[0m import { PrismaClient } from "@prisma/client";
+[7m [0m [91m         ~~~~~~~~~~~~[0m
+
+TSError: ⨯ Unable to compile TypeScript:
+[96msrc/config/database.ts[0m:[93m1[0m:[93m10[0m - [91merror[0m[90m TS2305: [0mModule '"@prisma/client"' has no exported member 'PrismaClient'.
+
+[7m1[0m import { PrismaClient } from "@prisma/client";
+[7m [0m [91m         ~~~~~~~~~~~~[0m
+
+    at createTSError (/Users/i/Documents/TraderApp codes/assets-service/node_modules/ts-node/src/index.ts:859:12)
+    at reportTSError (/Users/i/Documents/TraderApp codes/assets-service/node_modules/ts-node/src/index.ts:863:19)
+    at getOutput (/Users/i/Documents/TraderApp codes/assets-service/node_modules/ts-node/src/index.ts:1077:36)
+    at Object.compile (/Users/i/Documents/TraderApp codes/assets-service/node_modules/ts-node/src/index.ts:1433:41)
+    at Module.m._compile (/Users/i/Documents/TraderApp codes/assets-service/node_modules/ts-node/src/index.ts:1617:30)
+    at Module._extensions..js (node:internal/modules/cjs/loader:1310:10)
+    at Object.require.extensions.<computed> [as .ts] (/Users/i/Documents/TraderApp codes/assets-service/node_modules/ts-node/src/index.ts:1621:12)
+    at Module.load (node:internal/modules/cjs/loader:1119:32)
+    at Function.Module._load (node:internal/modules/cjs/loader:960:12)
+    at Module.require (node:internal/modules/cjs/loader:1143:19) [unkown-service] development 2024-01-01T13:45:54.870Z
+[31merror[39m: uncaughtException: ⨯ Unable to compile TypeScript:
+[96msrc/config/database.ts[0m:[93m1[0m:[93m10[0m - [91merror[0m[90m TS2305: [0mModule '"@prisma/client"' has no exported member 'PrismaClient'.
+
+[7m1[0m import { PrismaClient } from "@prisma/client";
+[7m [0m [91m         ~~~~~~~~~~~~[0m
+
+TSError: ⨯ Unable to compile TypeScript:
+[96msrc/config/database.ts[0m:[93m1[0m:[93m10[0m - [91merror[0m[90m TS2305: [0mModule '"@prisma/client"' has no exported member 'PrismaClient'.
+
+[7m1[0m import { PrismaClient } from "@prisma/client";
+[7m [0m [91m         ~~~~~~~~~~~~[0m
+
+    at createTSError (/Users/i/Documents/TraderApp codes/assets-service/node_modules/ts-node/src/index.ts:859:12)
+    at reportTSError (/Users/i/Documents/TraderApp codes/assets-service/node_modules/ts-node/src/index.ts:863:19)
+    at getOutput (/Users/i/Documents/TraderApp codes/assets-service/node_modules/ts-node/src/index.ts:1077:36)
+    at Object.compile (/Users/i/Documents/TraderApp codes/assets-service/node_modules/ts-node/src/index.ts:1433:41)
+    at Module.m._compile (/Users/i/Documents/TraderApp codes/assets-service/node_modules/ts-node/src/index.ts:1617:30)
+    at Module._extensions..js (node:internal/modules/cjs/loader:1310:10)
+    at Object.require.extensions.<computed> [as .ts] (/Users/i/Documents/TraderApp codes/assets-service/node_modules/ts-node/src/index.ts:1621:12)
+    at Module.load (node:internal/modules/cjs/loader:1119:32)
+    at Function.Module._load (node:internal/modules/cjs/loader:960:12)
+    at Module.require (node:internal/modules/cjs/loader:1143:19) [unkown-service] development 2024-01-01 14:48:37
+error: uncaughtException: ⨯ Unable to compile TypeScript:
+[96msrc/config/database.ts[0m:[93m1[0m:[93m10[0m - [91merror[0m[90m TS2305: [0mModule '"@prisma/client"' has no exported member 'PrismaClient'.
+
+[7m1[0m import { PrismaClient } from "@prisma/client";
+[7m [0m [91m         ~~~~~~~~~~~~[0m
+
+TSError: ⨯ Unable to compile TypeScript:
+[96msrc/config/database.ts[0m:[93m1[0m:[93m10[0m - [91merror[0m[90m TS2305: [0mModule '"@prisma/client"' has no exported member 'PrismaClient'.
+
+[7m1[0m import { PrismaClient } from "@prisma/client";
+[7m [0m [91m         ~~~~~~~~~~~~[0m
+
+    at createTSError (/Users/i/Documents/TraderApp codes/assets-service/node_modules/ts-node/src/index.ts:859:12)
+    at reportTSError (/Users/i/Documents/TraderApp codes/assets-service/node_modules/ts-node/src/index.ts:863:19)
+    at getOutput (/Users/i/Documents/TraderApp codes/assets-service/node_modules/ts-node/src/index.ts:1077:36)
+    at Object.compile (/Users/i/Documents/TraderApp codes/assets-service/node_modules/ts-node/src/index.ts:1433:41)
+    at Module.m._compile (/Users/i/Documents/TraderApp codes/assets-service/node_modules/ts-node/src/index.ts:1617:30)
+    at Module._extensions..js (node:internal/modules/cjs/loader:1310:10)
+    at Object.require.extensions.<computed> [as .ts] (/Users/i/Documents/TraderApp codes/assets-service/node_modules/ts-node/src/index.ts:1621:12)
+    at Module.load (node:internal/modules/cjs/loader:1119:32)
+    at Function.Module._load (node:internal/modules/cjs/loader:960:12)
+    at Module.require (node:internal/modules/cjs/loader:1143:19) [unkown-service] development 2024-01-01T13:48:37.830Z
+[31merror[39m: uncaughtException: ⨯ Unable to compile TypeScript:
+[96msrc/config/database.ts[0m:[93m1[0m:[93m10[0m - [91merror[0m[90m TS2305: [0mModule '"@prisma/client"' has no exported member 'PrismaClient'.
+
+[7m1[0m import { PrismaClient } from "@prisma/client";
+[7m [0m [91m         ~~~~~~~~~~~~[0m
+
+TSError: ⨯ Unable to compile TypeScript:
+[96msrc/config/database.ts[0m:[93m1[0m:[93m10[0m - [91merror[0m[90m TS2305: [0mModule '"@prisma/client"' has no exported member 'PrismaClient'.
+
+[7m1[0m import { PrismaClient } from "@prisma/client";
+[7m [0m [91m         ~~~~~~~~~~~~[0m
+
+    at createTSError (/Users/i/Documents/TraderApp codes/assets-service/node_modules/ts-node/src/index.ts:859:12)
+    at reportTSError (/Users/i/Documents/TraderApp codes/assets-service/node_modules/ts-node/src/index.ts:863:19)
+    at getOutput (/Users/i/Documents/TraderApp codes/assets-service/node_modules/ts-node/src/index.ts:1077:36)
+    at Object.compile (/Users/i/Documents/TraderApp codes/assets-service/node_modules/ts-node/src/index.ts:1433:41)
+    at Module.m._compile (/Users/i/Documents/TraderApp codes/assets-service/node_modules/ts-node/src/index.ts:1617:30)
+    at Module._extensions..js (node:internal/modules/cjs/loader:1310:10)
+    at Object.require.extensions.<computed> [as .ts] (/Users/i/Documents/TraderApp codes/assets-service/node_modules/ts-node/src/index.ts:1621:12)
+    at Module.load (node:internal/modules/cjs/loader:1119:32)
+    at Function.Module._load (node:internal/modules/cjs/loader:960:12)
+    at Module.require (node:internal/modules/cjs/loader:1143:19) [unkown-service] development 2024-01-01 14:48:43
+error: uncaughtException: ⨯ Unable to compile TypeScript:
+[96msrc/config/database.ts[0m:[93m1[0m:[93m10[0m - [91merror[0m[90m TS2305: [0mModule '"@prisma/client"' has no exported member 'PrismaClient'.
+
+[7m1[0m import { PrismaClient } from "@prisma/client";
+[7m [0m [91m         ~~~~~~~~~~~~[0m
+
+TSError: ⨯ Unable to compile TypeScript:
+[96msrc/config/database.ts[0m:[93m1[0m:[93m10[0m - [91merror[0m[90m TS2305: [0mModule '"@prisma/client"' has no exported member 'PrismaClient'.
+
+[7m1[0m import { PrismaClient } from "@prisma/client";
+[7m [0m [91m         ~~~~~~~~~~~~[0m
+
+    at createTSError (/Users/i/Documents/TraderApp codes/assets-service/node_modules/ts-node/src/index.ts:859:12)
+    at reportTSError (/Users/i/Documents/TraderApp codes/assets-service/node_modules/ts-node/src/index.ts:863:19)
+    at getOutput (/Users/i/Documents/TraderApp codes/assets-service/node_modules/ts-node/src/index.ts:1077:36)
+    at Object.compile (/Users/i/Documents/TraderApp codes/assets-service/node_modules/ts-node/src/index.ts:1433:41)
+    at Module.m._compile (/Users/i/Documents/TraderApp codes/assets-service/node_modules/ts-node/src/index.ts:1617:30)
+    at Module._extensions..js (node:internal/modules/cjs/loader:1310:10)
+    at Object.require.extensions.<computed> [as .ts] (/Users/i/Documents/TraderApp codes/assets-service/node_modules/ts-node/src/index.ts:1621:12)
+    at Module.load (node:internal/modules/cjs/loader:1119:32)
+    at Function.Module._load (node:internal/modules/cjs/loader:960:12)
+    at Module.require (node:internal/modules/cjs/loader:1143:19) [unkown-service] development 2024-01-01T13:48:43.323Z
+[31merror[39m: uncaughtException: Could not load credentials from any providers
+CredentialsProviderError: Could not load credentials from any providers
+    at /Users/i/Documents/TraderApp codes/assets-service/node_modules/@aws-sdk/credential-provider-node/dist-cjs/defaultProvider.js:13:11
+    at /Users/i/Documents/TraderApp codes/assets-service/node_modules/@smithy/property-provider/dist-cjs/chain.js:12:39
+    at processTicksAndRejections (node:internal/process/task_queues:95:5) [unkown-service] development 2024-01-01 14:57:05
+error: uncaughtException: Could not load credentials from any providers
+CredentialsProviderError: Could not load credentials from any providers
+    at /Users/i/Documents/TraderApp codes/assets-service/node_modules/@aws-sdk/credential-provider-node/dist-cjs/defaultProvider.js:13:11
+    at /Users/i/Documents/TraderApp codes/assets-service/node_modules/@smithy/property-provider/dist-cjs/chain.js:12:39
+    at processTicksAndRejections (node:internal/process/task_queues:95:5) [unkown-service] development 2024-01-01T13:57:05.156Z
+[31merror[39m: uncaughtException: Could not load credentials from any providers
+CredentialsProviderError: Could not load credentials from any providers
+    at /Users/i/Documents/TraderApp codes/assets-service/node_modules/@aws-sdk/credential-provider-node/dist-cjs/defaultProvider.js:13:11
+    at /Users/i/Documents/TraderApp codes/assets-service/node_modules/@smithy/property-provider/dist-cjs/chain.js:12:39
+    at processTicksAndRejections (node:internal/process/task_queues:95:5) [unkown-service] development 2024-01-01 14:57:33
+error: uncaughtException: Could not load credentials from any providers
+CredentialsProviderError: Could not load credentials from any providers
+    at /Users/i/Documents/TraderApp codes/assets-service/node_modules/@aws-sdk/credential-provider-node/dist-cjs/defaultProvider.js:13:11
+    at /Users/i/Documents/TraderApp codes/assets-service/node_modules/@smithy/property-provider/dist-cjs/chain.js:12:39
+    at processTicksAndRejections (node:internal/process/task_queues:95:5) [unkown-service] development 2024-01-01T13:57:33.550Z
+[31merror[39m: uncaughtException: The string to be decoded is not correctly encoded.
+InvalidCharacterError: The string to be decoded is not correctly encoded.
+    at new DOMException (node:internal/per_context/domexception:53:5)
+    at __node_internal_ (node:internal/util:520:10)
+    at atob (node:buffer:1360:11)
+    at new zt (/Users/i/Documents/TraderApp codes/assets-service/node_modules/@prisma/client/runtime/library.js:115:9135)
+    at Fl (/Users/i/Documents/TraderApp codes/assets-service/node_modules/@prisma/client/runtime/library.js:117:2032)
+    at new t (/Users/i/Documents/TraderApp codes/assets-service/node_modules/@prisma/client/runtime/library.js:130:4621)
+    at /Users/i/Documents/TraderApp codes/assets-service/src/config/database.ts:11:7
+    at Generator.next (<anonymous>)
+    at /Users/i/Documents/TraderApp codes/assets-service/src/config/database.ts:8:71
+    at new Promise (<anonymous>) [assets-service] development 2024-01-01 14:57:56
+error: uncaughtException: The string to be decoded is not correctly encoded.
+InvalidCharacterError: The string to be decoded is not correctly encoded.
+    at new DOMException (node:internal/per_context/domexception:53:5)
+    at __node_internal_ (node:internal/util:520:10)
+    at atob (node:buffer:1360:11)
+    at new zt (/Users/i/Documents/TraderApp codes/assets-service/node_modules/@prisma/client/runtime/library.js:115:9135)
+    at Fl (/Users/i/Documents/TraderApp codes/assets-service/node_modules/@prisma/client/runtime/library.js:117:2032)
+    at new t (/Users/i/Documents/TraderApp codes/assets-service/node_modules/@prisma/client/runtime/library.js:130:4621)
+    at /Users/i/Documents/TraderApp codes/assets-service/src/config/database.ts:11:7
+    at Generator.next (<anonymous>)
+    at /Users/i/Documents/TraderApp codes/assets-service/src/config/database.ts:8:71
+    at new Promise (<anonymous>) [assets-service] development 2024-01-01T13:57:56.112Z
+[31merror[39m: uncaughtException: The string to be decoded is not correctly encoded.
+InvalidCharacterError: The string to be decoded is not correctly encoded.
+    at new DOMException (node:internal/per_context/domexception:53:5)
+    at __node_internal_ (node:internal/util:520:10)
+    at atob (node:buffer:1360:11)
+    at new zt (/Users/i/Documents/TraderApp codes/assets-service/node_modules/@prisma/client/runtime/library.js:115:9135)
+    at Fl (/Users/i/Documents/TraderApp codes/assets-service/node_modules/@prisma/client/runtime/library.js:117:2032)
+    at new t (/Users/i/Documents/TraderApp codes/assets-service/node_modules/@prisma/client/runtime/library.js:130:4621)
+    at /Users/i/Documents/TraderApp codes/assets-service/src/config/database.ts:11:7
+    at Generator.next (<anonymous>)
+    at /Users/i/Documents/TraderApp codes/assets-service/src/config/database.ts:8:71
+    at new Promise (<anonymous>) [assets-service] staging 2024-01-01 14:59:10
+error: uncaughtException: The string to be decoded is not correctly encoded.
+InvalidCharacterError: The string to be decoded is not correctly encoded.
+    at new DOMException (node:internal/per_context/domexception:53:5)
+    at __node_internal_ (node:internal/util:520:10)
+    at atob (node:buffer:1360:11)
+    at new zt (/Users/i/Documents/TraderApp codes/assets-service/node_modules/@prisma/client/runtime/library.js:115:9135)
+    at Fl (/Users/i/Documents/TraderApp codes/assets-service/node_modules/@prisma/client/runtime/library.js:117:2032)
+    at new t (/Users/i/Documents/TraderApp codes/assets-service/node_modules/@prisma/client/runtime/library.js:130:4621)
+    at /Users/i/Documents/TraderApp codes/assets-service/src/config/database.ts:11:7
+    at Generator.next (<anonymous>)
+    at /Users/i/Documents/TraderApp codes/assets-service/src/config/database.ts:8:71
+    at new Promise (<anonymous>) [assets-service] staging 2024-01-01T13:59:10.497Z
+[31merror[39m: uncaughtException: The string to be decoded is not correctly encoded.
+InvalidCharacterError: The string to be decoded is not correctly encoded.
+    at new DOMException (node:internal/per_context/domexception:53:5)
+    at __node_internal_ (node:internal/util:520:10)
+    at atob (node:buffer:1360:11)
+    at new zt (/Users/i/Documents/TraderApp codes/assets-service/node_modules/@prisma/client/runtime/library.js:115:9135)
+    at Fl (/Users/i/Documents/TraderApp codes/assets-service/node_modules/@prisma/client/runtime/library.js:117:2032)
+    at new t (/Users/i/Documents/TraderApp codes/assets-service/node_modules/@prisma/client/runtime/library.js:130:4621)
+    at /Users/i/Documents/TraderApp codes/assets-service/src/config/database.ts:11:7
+    at Generator.next (<anonymous>)
+    at /Users/i/Documents/TraderApp codes/assets-service/src/config/database.ts:8:71
+    at new Promise (<anonymous>) [assets-service] development 2024-01-01 15:07:16
+error: uncaughtException: The string to be decoded is not correctly encoded.
+InvalidCharacterError: The string to be decoded is not correctly encoded.
+    at new DOMException (node:internal/per_context/domexception:53:5)
+    at __node_internal_ (node:internal/util:520:10)
+    at atob (node:buffer:1360:11)
+    at new zt (/Users/i/Documents/TraderApp codes/assets-service/node_modules/@prisma/client/runtime/library.js:115:9135)
+    at Fl (/Users/i/Documents/TraderApp codes/assets-service/node_modules/@prisma/client/runtime/library.js:117:2032)
+    at new t (/Users/i/Documents/TraderApp codes/assets-service/node_modules/@prisma/client/runtime/library.js:130:4621)
+    at /Users/i/Documents/TraderApp codes/assets-service/src/config/database.ts:11:7
+    at Generator.next (<anonymous>)
+    at /Users/i/Documents/TraderApp codes/assets-service/src/config/database.ts:8:71
+    at new Promise (<anonymous>) [assets-service] development 2024-01-01T14:07:16.119Z
+[31merror[39m: uncaughtException: The string to be decoded is not correctly encoded.
+InvalidCharacterError: The string to be decoded is not correctly encoded.
+    at new DOMException (node:internal/per_context/domexception:53:5)
+    at __node_internal_ (node:internal/util:520:10)
+    at atob (node:buffer:1360:11)
+    at new zt (/Users/i/Documents/TraderApp codes/assets-service/node_modules/@prisma/client/runtime/library.js:115:9135)
+    at Fl (/Users/i/Documents/TraderApp codes/assets-service/node_modules/@prisma/client/runtime/library.js:117:2032)
+    at new t (/Users/i/Documents/TraderApp codes/assets-service/node_modules/@prisma/client/runtime/library.js:130:4621)
+    at /Users/i/Documents/TraderApp codes/assets-service/src/config/database.ts:11:7
+    at Generator.next (<anonymous>)
+    at /Users/i/Documents/TraderApp codes/assets-service/src/config/database.ts:8:71
+    at new Promise (<anonymous>) [assets-service] development 2024-01-01 21:48:46
+error: uncaughtException: The string to be decoded is not correctly encoded.
+InvalidCharacterError: The string to be decoded is not correctly encoded.
+    at new DOMException (node:internal/per_context/domexception:53:5)
+    at __node_internal_ (node:internal/util:520:10)
+    at atob (node:buffer:1360:11)
+    at new zt (/Users/i/Documents/TraderApp codes/assets-service/node_modules/@prisma/client/runtime/library.js:115:9135)
+    at Fl (/Users/i/Documents/TraderApp codes/assets-service/node_modules/@prisma/client/runtime/library.js:117:2032)
+    at new t (/Users/i/Documents/TraderApp codes/assets-service/node_modules/@prisma/client/runtime/library.js:130:4621)
+    at /Users/i/Documents/TraderApp codes/assets-service/src/config/database.ts:11:7
+    at Generator.next (<anonymous>)
+    at /Users/i/Documents/TraderApp codes/assets-service/src/config/database.ts:8:71
+    at new Promise (<anonymous>) [assets-service] development 2024-01-01T20:48:46.366Z

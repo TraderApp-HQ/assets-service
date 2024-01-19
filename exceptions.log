@@ -422,3 +422,171 @@ InvalidCharacterError: The string to be decoded is not correctly encoded.
     at Generator.next (<anonymous>)
     at /Users/i/Documents/TraderApp codes/assets-service/src/config/database.ts:8:71
     at new Promise (<anonymous>) [assets-service] development 2024-01-01T20:48:46.366Z
+[31merror[39m: uncaughtException: ⨯ Unable to compile TypeScript:
+[96msrc/controllers/ExchangeController.ts[0m:[93m71[0m:[93m4[0m - [91merror[0m[90m TS2783: [0m'id' is specified more than once, so this usage will be overwritten.
+
+[7m71[0m    id: exchange.id,
+[7m  [0m [91m   ~~~~~~~~~~~~~~~[0m
+
+  [96msrc/controllers/ExchangeController.ts[0m:[93m72[0m:[93m4[0m
+    [7m72[0m    ...exchange,
+    [7m  [0m [96m   ~~~~~~~~~~~[0m
+    This spread always overwrites this property.
+[96msrc/controllers/ExchangeController.ts[0m:[93m76[0m:[93m53[0m - [91merror[0m[90m TS2304: [0mCannot find name 'parsedExchange'.
+
+[7m76[0m   res.status(200).json(apiResponseHandler({ object: parsedExchange }));
+[7m  [0m [91m                                                    ~~~~~~~~~~~~~~[0m
+
+TSError: ⨯ Unable to compile TypeScript:
+[96msrc/controllers/ExchangeController.ts[0m:[93m71[0m:[93m4[0m - [91merror[0m[90m TS2783: [0m'id' is specified more than once, so this usage will be overwritten.
+
+[7m71[0m    id: exchange.id,
+[7m  [0m [91m   ~~~~~~~~~~~~~~~[0m
+
+  [96msrc/controllers/ExchangeController.ts[0m:[93m72[0m:[93m4[0m
+    [7m72[0m    ...exchange,
+    [7m  [0m [96m   ~~~~~~~~~~~[0m
+    This spread always overwrites this property.
+[96msrc/controllers/ExchangeController.ts[0m:[93m76[0m:[93m53[0m - [91merror[0m[90m TS2304: [0mCannot find name 'parsedExchange'.
+
+[7m76[0m   res.status(200).json(apiResponseHandler({ object: parsedExchange }));
+[7m  [0m [91m                                                    ~~~~~~~~~~~~~~[0m
+
+    at createTSError (C:\Users\ChineseChikki\Documents\GitHub\App-Trader\assets-service\node_modules\ts-node\src\index.ts:859:12)
+    at reportTSError (C:\Users\ChineseChikki\Documents\GitHub\App-Trader\assets-service\node_modules\ts-node\src\index.ts:863:19)
+    at getOutput (C:\Users\ChineseChikki\Documents\GitHub\App-Trader\assets-service\node_modules\ts-node\src\index.ts:1077:36)
+    at Object.compile (C:\Users\ChineseChikki\Documents\GitHub\App-Trader\assets-service\node_modules\ts-node\src\index.ts:1433:41)
+    at Module.m._compile (C:\Users\ChineseChikki\Documents\GitHub\App-Trader\assets-service\node_modules\ts-node\src\index.ts:1617:30)
+    at Module._extensions..js (node:internal/modules/cjs/loader:1159:10)
+    at Object.require.extensions.<computed> [as .ts] (C:\Users\ChineseChikki\Documents\GitHub\App-Trader\assets-service\node_modules\ts-node\src\index.ts:1621:12)
+    at Module.load (node:internal/modules/cjs/loader:981:32)
+    at Function.Module._load (node:internal/modules/cjs/loader:822:12)
+    at Module.require (node:internal/modules/cjs/loader:1005:19) [assets-service] development 2024-01-19 17:03:58
+error: uncaughtException: ⨯ Unable to compile TypeScript:
+[96msrc/controllers/ExchangeController.ts[0m:[93m71[0m:[93m4[0m - [91merror[0m[90m TS2783: [0m'id' is specified more than once, so this usage will be overwritten.
+
+[7m71[0m    id: exchange.id,
+[7m  [0m [91m   ~~~~~~~~~~~~~~~[0m
+
+  [96msrc/controllers/ExchangeController.ts[0m:[93m72[0m:[93m4[0m
+    [7m72[0m    ...exchange,
+    [7m  [0m [96m   ~~~~~~~~~~~[0m
+    This spread always overwrites this property.
+[96msrc/controllers/ExchangeController.ts[0m:[93m76[0m:[93m53[0m - [91merror[0m[90m TS2304: [0mCannot find name 'parsedExchange'.
+
+[7m76[0m   res.status(200).json(apiResponseHandler({ object: parsedExchange }));
+[7m  [0m [91m                                                    ~~~~~~~~~~~~~~[0m
+
+TSError: ⨯ Unable to compile TypeScript:
+[96msrc/controllers/ExchangeController.ts[0m:[93m71[0m:[93m4[0m - [91merror[0m[90m TS2783: [0m'id' is specified more than once, so this usage will be overwritten.
+
+[7m71[0m    id: exchange.id,
+[7m  [0m [91m   ~~~~~~~~~~~~~~~[0m
+
+  [96msrc/controllers/ExchangeController.ts[0m:[93m72[0m:[93m4[0m
+    [7m72[0m    ...exchange,
+    [7m  [0m [96m   ~~~~~~~~~~~[0m
+    This spread always overwrites this property.
+[96msrc/controllers/ExchangeController.ts[0m:[93m76[0m:[93m53[0m - [91merror[0m[90m TS2304: [0mCannot find name 'parsedExchange'.
+
+[7m76[0m   res.status(200).json(apiResponseHandler({ object: parsedExchange }));
+[7m  [0m [91m                                                    ~~~~~~~~~~~~~~[0m
+
+    at createTSError (C:\Users\ChineseChikki\Documents\GitHub\App-Trader\assets-service\node_modules\ts-node\src\index.ts:859:12)
+    at reportTSError (C:\Users\ChineseChikki\Documents\GitHub\App-Trader\assets-service\node_modules\ts-node\src\index.ts:863:19)
+    at getOutput (C:\Users\ChineseChikki\Documents\GitHub\App-Trader\assets-service\node_modules\ts-node\src\index.ts:1077:36)
+    at Object.compile (C:\Users\ChineseChikki\Documents\GitHub\App-Trader\assets-service\node_modules\ts-node\src\index.ts:1433:41)
+    at Module.m._compile (C:\Users\ChineseChikki\Documents\GitHub\App-Trader\assets-service\node_modules\ts-node\src\index.ts:1617:30)
+    at Module._extensions..js (node:internal/modules/cjs/loader:1159:10)
+    at Object.require.extensions.<computed> [as .ts] (C:\Users\ChineseChikki\Documents\GitHub\App-Trader\assets-service\node_modules\ts-node\src\index.ts:1621:12)
+    at Module.load (node:internal/modules/cjs/loader:981:32)
+    at Function.Module._load (node:internal/modules/cjs/loader:822:12)
+    at Module.require (node:internal/modules/cjs/loader:1005:19) [assets-service] development 2024-01-19T16:03:58.642Z
+[31merror[39m: uncaughtException: ⨯ Unable to compile TypeScript:
+[96msrc/routes/ExchangeRoutes.ts[0m:[93m2[0m:[93m10[0m - [91merror[0m[90m TS2305: [0mModule '"../controllers/ExchangeController"' has no exported member 'exchangesHandler'.
+
+[7m2[0m import { exchangesHandler, getExchangeByIdHandler } from "../controllers/ExchangeController";
+[7m [0m [91m         ~~~~~~~~~~~~~~~~[0m
+
+TSError: ⨯ Unable to compile TypeScript:
+[96msrc/routes/ExchangeRoutes.ts[0m:[93m2[0m:[93m10[0m - [91merror[0m[90m TS2305: [0mModule '"../controllers/ExchangeController"' has no exported member 'exchangesHandler'.
+
+[7m2[0m import { exchangesHandler, getExchangeByIdHandler } from "../controllers/ExchangeController";
+[7m [0m [91m         ~~~~~~~~~~~~~~~~[0m
+
+    at createTSError (C:\Users\ChineseChikki\Documents\GitHub\App-Trader\assets-service\node_modules\ts-node\src\index.ts:859:12)
+    at reportTSError (C:\Users\ChineseChikki\Documents\GitHub\App-Trader\assets-service\node_modules\ts-node\src\index.ts:863:19)
+    at getOutput (C:\Users\ChineseChikki\Documents\GitHub\App-Trader\assets-service\node_modules\ts-node\src\index.ts:1077:36)
+    at Object.compile (C:\Users\ChineseChikki\Documents\GitHub\App-Trader\assets-service\node_modules\ts-node\src\index.ts:1433:41)
+    at Module.m._compile (C:\Users\ChineseChikki\Documents\GitHub\App-Trader\assets-service\node_modules\ts-node\src\index.ts:1617:30)
+    at Module._extensions..js (node:internal/modules/cjs/loader:1159:10)
+    at Object.require.extensions.<computed> [as .ts] (C:\Users\ChineseChikki\Documents\GitHub\App-Trader\assets-service\node_modules\ts-node\src\index.ts:1621:12)
+    at Module.load (node:internal/modules/cjs/loader:981:32)
+    at Function.Module._load (node:internal/modules/cjs/loader:822:12)
+    at Module.require (node:internal/modules/cjs/loader:1005:19) [assets-service] development 2024-01-19 17:14:43
+error: uncaughtException: ⨯ Unable to compile TypeScript:
+[96msrc/routes/ExchangeRoutes.ts[0m:[93m2[0m:[93m10[0m - [91merror[0m[90m TS2305: [0mModule '"../controllers/ExchangeController"' has no exported member 'exchangesHandler'.
+
+[7m2[0m import { exchangesHandler, getExchangeByIdHandler } from "../controllers/ExchangeController";
+[7m [0m [91m         ~~~~~~~~~~~~~~~~[0m
+
+TSError: ⨯ Unable to compile TypeScript:
+[96msrc/routes/ExchangeRoutes.ts[0m:[93m2[0m:[93m10[0m - [91merror[0m[90m TS2305: [0mModule '"../controllers/ExchangeController"' has no exported member 'exchangesHandler'.
+
+[7m2[0m import { exchangesHandler, getExchangeByIdHandler } from "../controllers/ExchangeController";
+[7m [0m [91m         ~~~~~~~~~~~~~~~~[0m
+
+    at createTSError (C:\Users\ChineseChikki\Documents\GitHub\App-Trader\assets-service\node_modules\ts-node\src\index.ts:859:12)
+    at reportTSError (C:\Users\ChineseChikki\Documents\GitHub\App-Trader\assets-service\node_modules\ts-node\src\index.ts:863:19)
+    at getOutput (C:\Users\ChineseChikki\Documents\GitHub\App-Trader\assets-service\node_modules\ts-node\src\index.ts:1077:36)
+    at Object.compile (C:\Users\ChineseChikki\Documents\GitHub\App-Trader\assets-service\node_modules\ts-node\src\index.ts:1433:41)
+    at Module.m._compile (C:\Users\ChineseChikki\Documents\GitHub\App-Trader\assets-service\node_modules\ts-node\src\index.ts:1617:30)
+    at Module._extensions..js (node:internal/modules/cjs/loader:1159:10)
+    at Object.require.extensions.<computed> [as .ts] (C:\Users\ChineseChikki\Documents\GitHub\App-Trader\assets-service\node_modules\ts-node\src\index.ts:1621:12)
+    at Module.load (node:internal/modules/cjs/loader:981:32)
+    at Function.Module._load (node:internal/modules/cjs/loader:822:12)
+    at Module.require (node:internal/modules/cjs/loader:1005:19) [assets-service] development 2024-01-19T16:14:43.438Z
+error: uncaughtException: ⨯ Unable to compile TypeScript:
+[96msrc/controllers/ExchangeController.ts[0m:[93m4[0m:[93m10[0m - [91merror[0m[90m TS2724: [0m'"../helpers/interfaces/pageResult"' has no exported member named 'IExchangeResultData'. Did you mean 'IPagedResultData'?
+
+[7m4[0m import { IExchangeResultData } from "../helpers/interfaces/pageResult";
+[7m [0m [91m         ~~~~~~~~~~~~~~~~~~~[0m
+
+TSError: ⨯ Unable to compile TypeScript:
+[96msrc/controllers/ExchangeController.ts[0m:[93m4[0m:[93m10[0m - [91merror[0m[90m TS2724: [0m'"../helpers/interfaces/pageResult"' has no exported member named 'IExchangeResultData'. Did you mean 'IPagedResultData'?
+
+[7m4[0m import { IExchangeResultData } from "../helpers/interfaces/pageResult";
+[7m [0m [91m         ~~~~~~~~~~~~~~~~~~~[0m
+
+    at createTSError (C:\Users\ChineseChikki\Documents\GitHub\App-Trader\assets-service\node_modules\ts-node\src\index.ts:859:12)
+    at reportTSError (C:\Users\ChineseChikki\Documents\GitHub\App-Trader\assets-service\node_modules\ts-node\src\index.ts:863:19)
+    at getOutput (C:\Users\ChineseChikki\Documents\GitHub\App-Trader\assets-service\node_modules\ts-node\src\index.ts:1077:36)
+    at Object.compile (C:\Users\ChineseChikki\Documents\GitHub\App-Trader\assets-service\node_modules\ts-node\src\index.ts:1433:41)
+    at Module.m._compile (C:\Users\ChineseChikki\Documents\GitHub\App-Trader\assets-service\node_modules\ts-node\src\index.ts:1617:30)
+    at Module._extensions..js (node:internal/modules/cjs/loader:1159:10)
+    at Object.require.extensions.<computed> [as .ts] (C:\Users\ChineseChikki\Documents\GitHub\App-Trader\assets-service\node_modules\ts-node\src\index.ts:1621:12)
+    at Module.load (node:internal/modules/cjs/loader:981:32)
+    at Function.Module._load (node:internal/modules/cjs/loader:822:12)
+    at Module.require (node:internal/modules/cjs/loader:1005:19) [assets-service] development 2024-01-19T16:23:00.973Z
+[31merror[39m: uncaughtException: ⨯ Unable to compile TypeScript:
+[96msrc/controllers/ExchangeController.ts[0m:[93m4[0m:[93m10[0m - [91merror[0m[90m TS2724: [0m'"../helpers/interfaces/pageResult"' has no exported member named 'IExchangeResultData'. Did you mean 'IPagedResultData'?
+
+[7m4[0m import { IExchangeResultData } from "../helpers/interfaces/pageResult";
+[7m [0m [91m         ~~~~~~~~~~~~~~~~~~~[0m
+
+TSError: ⨯ Unable to compile TypeScript:
+[96msrc/controllers/ExchangeController.ts[0m:[93m4[0m:[93m10[0m - [91merror[0m[90m TS2724: [0m'"../helpers/interfaces/pageResult"' has no exported member named 'IExchangeResultData'. Did you mean 'IPagedResultData'?
+
+[7m4[0m import { IExchangeResultData } from "../helpers/interfaces/pageResult";
+[7m [0m [91m         ~~~~~~~~~~~~~~~~~~~[0m
+
+    at createTSError (C:\Users\ChineseChikki\Documents\GitHub\App-Trader\assets-service\node_modules\ts-node\src\index.ts:859:12)
+    at reportTSError (C:\Users\ChineseChikki\Documents\GitHub\App-Trader\assets-service\node_modules\ts-node\src\index.ts:863:19)
+    at getOutput (C:\Users\ChineseChikki\Documents\GitHub\App-Trader\assets-service\node_modules\ts-node\src\index.ts:1077:36)
+    at Object.compile (C:\Users\ChineseChikki\Documents\GitHub\App-Trader\assets-service\node_modules\ts-node\src\index.ts:1433:41)
+    at Module.m._compile (C:\Users\ChineseChikki\Documents\GitHub\App-Trader\assets-service\node_modules\ts-node\src\index.ts:1617:30)
+    at Module._extensions..js (node:internal/modules/cjs/loader:1159:10)
+    at Object.require.extensions.<computed> [as .ts] (C:\Users\ChineseChikki\Documents\GitHub\App-Trader\assets-service\node_modules\ts-node\src\index.ts:1621:12)
+    at Module.load (node:internal/modules/cjs/loader:981:32)
+    at Function.Module._load (node:internal/modules/cjs/loader:822:12)
+    at Module.require (node:internal/modules/cjs/loader:1005:19) [assets-service] development 2024-01-19 17:23:00

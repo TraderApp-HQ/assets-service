@@ -1,3 +1,6 @@
+export interface ICoin {
+	name: string;
+}
 export interface IPagedResultData {
 	currentPage: number;
 	itemsCount: number;
@@ -5,7 +8,7 @@ export interface IPagedResultData {
 	rowsPerPage: number;
 	sortBy: string;
 	orderBy: string;
-	coins: [];
+	coins: ICoin[];
 }
 
 export interface IQueryParameter {
@@ -15,11 +18,4 @@ export interface IQueryParameter {
 	model: any;
 }
 
-export interface IExchangeResultData {
-	currentPage: number;
-	itemsCount: number;
-	pageCount: number;
-	rowsPerPage: number;
-	orderBy: string;
-	exchange: [];
-}
+//

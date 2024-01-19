@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { exchangesHandler, getExchangeByIdHandler } from "../controllers/ExchangeController";
+import { getAllExchanges, getExchangeByIdHandler } from "../controllers/ExchangeController";
 import {
 	validateExchangesRequest,
 	validateExchangeRequest,
@@ -7,7 +7,7 @@ import {
 
 const router = Router();
 
-router.get("/", validateExchangesRequest, exchangesHandler);
+router.get("/", validateExchangesRequest, getAllExchanges);
 router.get("/:id", validateExchangeRequest, getExchangeByIdHandler);
 
 export default router;

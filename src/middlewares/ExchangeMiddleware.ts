@@ -1,12 +1,12 @@
 import { Request, Response, NextFunction } from "express";
 import Joi from "joi";
-import { checkUser } from "../utils/tokens";
+import { checkAdmin, checkUser } from "../utils/tokens";
 
 // A function to validate request to get all Exchange
 export async function validateExchangesRequest(req: Request, _res: Response, next: NextFunction) {
 	try {
-		// check accessToken and user role
-		await checkUser(req);
+		// check accessToken and admin role
+		await checkAdmin(req);
 		next();
 	} catch (err: any) {
 		next(err);

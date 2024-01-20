@@ -1,5 +1,14 @@
 export interface ICoin {
+	id: number;
 	name: string;
+	slug: string;
+	symbol: string;
+	description: string;
+	logo: string;
+	urls: string;
+	dateLaunched: Date;
+	isCoinActive: boolean;
+	rank: number;
 }
 export interface IPagedResultData {
 	currentPage: number;
@@ -17,5 +26,3 @@ export interface IQueryParameter {
 	operations: any;
 	model: any;
 }
-
-//

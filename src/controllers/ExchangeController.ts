@@ -21,10 +21,6 @@ export async function getAllExchanges(req: Request, res: Response, next: NextFun
 			orderBy: {
 				name: order as "asc" | "desc",
 			},
-			include: {
-				exchangePairs: true,
-				coinsUnknown: true,
-			},
 		});
 		res.status(200).json(apiResponseHandler({ object: exchanges }));
 	} catch (err) {
@@ -43,10 +39,6 @@ export async function getExchangeByIdHandler(req: Request, res: Response, next: 
 		// Find the exchange by ID
 		const exchange = await db.exchange.findUnique({
 			where: { id: exchangeId },
-			include: {
-				exchangePairs: true,
-				coinsUnknown: true,
-			},
 		});
 
 		// Check if the exchange exists

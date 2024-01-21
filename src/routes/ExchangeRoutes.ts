@@ -1,5 +1,11 @@
 import { Router } from "express";
-import { getAllExchanges, getExchangeByIdHandler } from "../controllers/ExchangeController";
+import {
+	getAllExchanges,
+	getExchangeByIdHandler,
+	getExchangeByAssetName,
+	updateExchangeInfo,
+	currenciesByExchangeHandler,
+} from "../controllers/ExchangeController";
 import {
 	validateExchangesRequest,
 	validateExchangeRequest,
@@ -7,7 +13,11 @@ import {
 
 const router = Router();
 
-router.get("/", validateExchangesRequest, getAllExchanges);
-router.get("/:id", validateExchangeRequest, getExchangeByIdHandler);
+router.get("/", getAllExchanges);
+router.get("/:id", getExchangeByIdHandler);
+router.patch("/:id", updateExchangeInfo);
+router.get(":id/currencies", currenciesByExchangeHandler);
+// router.get('/exchangesByAsset/:assetName', getExchangeByAssetName);
+router.get("/:assetName", getExchangeByAssetName);
 
 export default router;

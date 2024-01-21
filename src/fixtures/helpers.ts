@@ -78,6 +78,6 @@ export async function insertExchangePairs(symbols: { [k: string]: any }, exchang
 
 	if (symbolsMissing.length) {
 		await prisma.coinsUnknown.createMany({ data: symbolsMissing });
-		console.log("unkown coins inserted");
+		console.log("unknown coins inserted");
 	}
 }

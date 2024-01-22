@@ -590,15 +590,3 @@ TSError: ⨯ Unable to compile TypeScript:
     at Module.load (node:internal/modules/cjs/loader:981:32)
     at Function.Module._load (node:internal/modules/cjs/loader:822:12)
     at Module.require (node:internal/modules/cjs/loader:1005:19) [assets-service] development 2024-01-19 17:23:00
-[31merror[39m: uncaughtException: getaddrinfo ENOTFOUND secretsmanager.eu-west-1.amazonaws.com
-Error: getaddrinfo ENOTFOUND secretsmanager.eu-west-1.amazonaws.com
-    at GetAddrInfoReqWrap.onlookup [as oncomplete] (node:dns:71:26) [assets-service] development 2024-01-20 18:53:58
-error: uncaughtException: getaddrinfo ENOTFOUND secretsmanager.eu-west-1.amazonaws.com
-Error: getaddrinfo ENOTFOUND secretsmanager.eu-west-1.amazonaws.com
-    at GetAddrInfoReqWrap.onlookup [as oncomplete] (node:dns:71:26) [assets-service] development 2024-01-20T17:53:58.871Z
-[31merror[39m: uncaughtException: getaddrinfo ENOTFOUND secretsmanager.eu-west-1.amazonaws.com
-Error: getaddrinfo ENOTFOUND secretsmanager.eu-west-1.amazonaws.com
-    at GetAddrInfoReqWrap.onlookup [as oncomplete] (node:dns:71:26) [assets-service] development 2024-01-20 19:17:45
-error: uncaughtException: getaddrinfo ENOTFOUND secretsmanager.eu-west-1.amazonaws.com
-Error: getaddrinfo ENOTFOUND secretsmanager.eu-west-1.amazonaws.com
-    at GetAddrInfoReqWrap.onlookup [as oncomplete] (node:dns:71:26) [assets-service] development 2024-01-20T18:17:45.740Z

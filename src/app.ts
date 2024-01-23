@@ -6,7 +6,7 @@ import cors from "cors";
 import { config } from "dotenv";
 import initDatabase from "./config/database";
 
-import { CoinRoutes } from "./routes";
+import { CoinRoutes, ExchangeRoutes } from "./routes";
 import secretsJson from "./env.json";
 import { ENVIRONMENTS } from "./config/constants";
 
@@ -50,6 +50,7 @@ function startServer() {
 
 	// api routes
 	app.use(`/coins`, CoinRoutes);
+	app.use(`/exchanges`, ExchangeRoutes);
 
 	// health check
 	app.get(`/ping`, (_req, res) => {

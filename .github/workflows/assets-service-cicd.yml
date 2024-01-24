@@ -39,8 +39,8 @@ jobs:
       #   env:
       #     DATABASE_URL: ${{ secrets.DATABASE_URL }}
      
-      - name: Generate prisma client
-        run: npm run codegen
+      # - name: Generate prisma client
+      #   run: npm run codegen
 
       - name: Start #  start the server
         # - this uses the start script in the script file

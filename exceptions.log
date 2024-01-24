@@ -590,3 +590,787 @@ TSError: ⨯ Unable to compile TypeScript:
     at Module.load (node:internal/modules/cjs/loader:981:32)
     at Function.Module._load (node:internal/modules/cjs/loader:822:12)
     at Module.require (node:internal/modules/cjs/loader:1005:19) [assets-service] development 2024-01-19 17:23:00
+[31merror[39m: uncaughtException: The security token included in the request is invalid.
+UnrecognizedClientException: The security token included in the request is invalid.
+    at throwDefaultError (C:\Users\ChineseChikki\Documents\GitHub\App-Trader\assets-service\node_modules\@smithy\smithy-client\dist-cjs\default-error-handler.js:8:22)
+    at C:\Users\ChineseChikki\Documents\GitHub\App-Trader\assets-service\node_modules\@smithy\smithy-client\dist-cjs\default-error-handler.js:18:39
+    at de_GetSecretValueCommandError (C:\Users\ChineseChikki\Documents\GitHub\App-Trader\assets-service\node_modules\@aws-sdk\client-secrets-manager\dist-cjs\protocols\Aws_json1_1.js:562:20)
+    at processTicksAndRejections (node:internal/process/task_queues:96:5)
+    at async C:\Users\ChineseChikki\Documents\GitHub\App-Trader\assets-service\node_modules\@smithy\middleware-serde\dist-cjs\deserializerMiddleware.js:7:24
+    at async C:\Users\ChineseChikki\Documents\GitHub\App-Trader\assets-service\node_modules\@aws-sdk\middleware-signing\dist-cjs\awsAuthMiddleware.js:30:20
+    at async C:\Users\ChineseChikki\Documents\GitHub\App-Trader\assets-service\node_modules\@smithy\middleware-retry\dist-cjs\retryMiddleware.js:31:46
+    at async C:\Users\ChineseChikki\Documents\GitHub\App-Trader\assets-service\node_modules\@aws-sdk\middleware-logger\dist-cjs\loggerMiddleware.js:7:26 [assets-service] development 2024-01-23 16:27:37
+error: uncaughtException: The security token included in the request is invalid.
+UnrecognizedClientException: The security token included in the request is invalid.
+    at throwDefaultError (C:\Users\ChineseChikki\Documents\GitHub\App-Trader\assets-service\node_modules\@smithy\smithy-client\dist-cjs\default-error-handler.js:8:22)
+    at C:\Users\ChineseChikki\Documents\GitHub\App-Trader\assets-service\node_modules\@smithy\smithy-client\dist-cjs\default-error-handler.js:18:39
+    at de_GetSecretValueCommandError (C:\Users\ChineseChikki\Documents\GitHub\App-Trader\assets-service\node_modules\@aws-sdk\client-secrets-manager\dist-cjs\protocols\Aws_json1_1.js:562:20)
+    at processTicksAndRejections (node:internal/process/task_queues:96:5)
+    at async C:\Users\ChineseChikki\Documents\GitHub\App-Trader\assets-service\node_modules\@smithy\middleware-serde\dist-cjs\deserializerMiddleware.js:7:24
+    at async C:\Users\ChineseChikki\Documents\GitHub\App-Trader\assets-service\node_modules\@aws-sdk\middleware-signing\dist-cjs\awsAuthMiddleware.js:30:20
+    at async C:\Users\ChineseChikki\Documents\GitHub\App-Trader\assets-service\node_modules\@smithy\middleware-retry\dist-cjs\retryMiddleware.js:31:46
+    at async C:\Users\ChineseChikki\Documents\GitHub\App-Trader\assets-service\node_modules\@aws-sdk\middleware-logger\dist-cjs\loggerMiddleware.js:7:26 [assets-service] development 2024-01-23T15:27:37.848Z
+[31merror[39m: uncaughtException: The security token included in the request is invalid.
+UnrecognizedClientException: The security token included in the request is invalid.
+    at throwDefaultError (C:\Users\ChineseChikki\Documents\GitHub\App-Trader\assets-service\node_modules\@smithy\smithy-client\dist-cjs\default-error-handler.js:8:22)
+    at C:\Users\ChineseChikki\Documents\GitHub\App-Trader\assets-service\node_modules\@smithy\smithy-client\dist-cjs\default-error-handler.js:18:39
+    at de_GetSecretValueCommandError (C:\Users\ChineseChikki\Documents\GitHub\App-Trader\assets-service\node_modules\@aws-sdk\client-secrets-manager\dist-cjs\protocols\Aws_json1_1.js:562:20)
+    at processTicksAndRejections (node:internal/process/task_queues:96:5)
+    at async C:\Users\ChineseChikki\Documents\GitHub\App-Trader\assets-service\node_modules\@smithy\middleware-serde\dist-cjs\deserializerMiddleware.js:7:24
+    at async C:\Users\ChineseChikki\Documents\GitHub\App-Trader\assets-service\node_modules\@aws-sdk\middleware-signing\dist-cjs\awsAuthMiddleware.js:30:20
+    at async C:\Users\ChineseChikki\Documents\GitHub\App-Trader\assets-service\node_modules\@smithy\middleware-retry\dist-cjs\retryMiddleware.js:31:46
+    at async C:\Users\ChineseChikki\Documents\GitHub\App-Trader\assets-service\node_modules\@aws-sdk\middleware-logger\dist-cjs\loggerMiddleware.js:7:26 [assets-service] development 2024-01-23 16:28:32
+error: uncaughtException: The security token included in the request is invalid.
+UnrecognizedClientException: The security token included in the request is invalid.
+    at throwDefaultError (C:\Users\ChineseChikki\Documents\GitHub\App-Trader\assets-service\node_modules\@smithy\smithy-client\dist-cjs\default-error-handler.js:8:22)
+    at C:\Users\ChineseChikki\Documents\GitHub\App-Trader\assets-service\node_modules\@smithy\smithy-client\dist-cjs\default-error-handler.js:18:39
+    at de_GetSecretValueCommandError (C:\Users\ChineseChikki\Documents\GitHub\App-Trader\assets-service\node_modules\@aws-sdk\client-secrets-manager\dist-cjs\protocols\Aws_json1_1.js:562:20)
+    at processTicksAndRejections (node:internal/process/task_queues:96:5)
+    at async C:\Users\ChineseChikki\Documents\GitHub\App-Trader\assets-service\node_modules\@smithy\middleware-serde\dist-cjs\deserializerMiddleware.js:7:24
+    at async C:\Users\ChineseChikki\Documents\GitHub\App-Trader\assets-service\node_modules\@aws-sdk\middleware-signing\dist-cjs\awsAuthMiddleware.js:30:20
+    at async C:\Users\ChineseChikki\Documents\GitHub\App-Trader\assets-service\node_modules\@smithy\middleware-retry\dist-cjs\retryMiddleware.js:31:46
+    at async C:\Users\ChineseChikki\Documents\GitHub\App-Trader\assets-service\node_modules\@aws-sdk\middleware-logger\dist-cjs\loggerMiddleware.js:7:26 [assets-service] development 2024-01-23T15:28:32.477Z
+[31merror[39m: uncaughtException: The security token included in the request is invalid.
+UnrecognizedClientException: The security token included in the request is invalid.
+    at throwDefaultError (C:\Users\ChineseChikki\Documents\GitHub\App-Trader\assets-service\node_modules\@smithy\smithy-client\dist-cjs\default-error-handler.js:8:22)
+    at C:\Users\ChineseChikki\Documents\GitHub\App-Trader\assets-service\node_modules\@smithy\smithy-client\dist-cjs\default-error-handler.js:18:39
+    at de_GetSecretValueCommandError (C:\Users\ChineseChikki\Documents\GitHub\App-Trader\assets-service\node_modules\@aws-sdk\client-secrets-manager\dist-cjs\protocols\Aws_json1_1.js:562:20)
+    at processTicksAndRejections (node:internal/process/task_queues:96:5)
+    at async C:\Users\ChineseChikki\Documents\GitHub\App-Trader\assets-service\node_modules\@smithy\middleware-serde\dist-cjs\deserializerMiddleware.js:7:24
+    at async C:\Users\ChineseChikki\Documents\GitHub\App-Trader\assets-service\node_modules\@aws-sdk\middleware-signing\dist-cjs\awsAuthMiddleware.js:30:20
+    at async C:\Users\ChineseChikki\Documents\GitHub\App-Trader\assets-service\node_modules\@smithy\middleware-retry\dist-cjs\retryMiddleware.js:31:46
+    at async C:\Users\ChineseChikki\Documents\GitHub\App-Trader\assets-service\node_modules\@aws-sdk\middleware-logger\dist-cjs\loggerMiddleware.js:7:26 [assets-service] development 2024-01-23 16:29:20
+error: uncaughtException: The security token included in the request is invalid.
+UnrecognizedClientException: The security token included in the request is invalid.
+    at throwDefaultError (C:\Users\ChineseChikki\Documents\GitHub\App-Trader\assets-service\node_modules\@smithy\smithy-client\dist-cjs\default-error-handler.js:8:22)
+    at C:\Users\ChineseChikki\Documents\GitHub\App-Trader\assets-service\node_modules\@smithy\smithy-client\dist-cjs\default-error-handler.js:18:39
+    at de_GetSecretValueCommandError (C:\Users\ChineseChikki\Documents\GitHub\App-Trader\assets-service\node_modules\@aws-sdk\client-secrets-manager\dist-cjs\protocols\Aws_json1_1.js:562:20)
+    at processTicksAndRejections (node:internal/process/task_queues:96:5)
+    at async C:\Users\ChineseChikki\Documents\GitHub\App-Trader\assets-service\node_modules\@smithy\middleware-serde\dist-cjs\deserializerMiddleware.js:7:24
+    at async C:\Users\ChineseChikki\Documents\GitHub\App-Trader\assets-service\node_modules\@aws-sdk\middleware-signing\dist-cjs\awsAuthMiddleware.js:30:20
+    at async C:\Users\ChineseChikki\Documents\GitHub\App-Trader\assets-service\node_modules\@smithy\middleware-retry\dist-cjs\retryMiddleware.js:31:46
+    at async C:\Users\ChineseChikki\Documents\GitHub\App-Trader\assets-service\node_modules\@aws-sdk\middleware-logger\dist-cjs\loggerMiddleware.js:7:26 [assets-service] development 2024-01-23T15:29:20.354Z
+[31merror[39m: uncaughtException: The security token included in the request is invalid.
+UnrecognizedClientException: The security token included in the request is invalid.
+    at throwDefaultError (C:\Users\ChineseChikki\Documents\GitHub\App-Trader\assets-service\node_modules\@smithy\smithy-client\dist-cjs\default-error-handler.js:8:22)
+    at C:\Users\ChineseChikki\Documents\GitHub\App-Trader\assets-service\node_modules\@smithy\smithy-client\dist-cjs\default-error-handler.js:18:39
+    at de_GetSecretValueCommandError (C:\Users\ChineseChikki\Documents\GitHub\App-Trader\assets-service\node_modules\@aws-sdk\client-secrets-manager\dist-cjs\protocols\Aws_json1_1.js:562:20)
+    at processTicksAndRejections (node:internal/process/task_queues:96:5)
+    at async C:\Users\ChineseChikki\Documents\GitHub\App-Trader\assets-service\node_modules\@smithy\middleware-serde\dist-cjs\deserializerMiddleware.js:7:24
+    at async C:\Users\ChineseChikki\Documents\GitHub\App-Trader\assets-service\node_modules\@aws-sdk\middleware-signing\dist-cjs\awsAuthMiddleware.js:30:20
+    at async C:\Users\ChineseChikki\Documents\GitHub\App-Trader\assets-service\node_modules\@smithy\middleware-retry\dist-cjs\retryMiddleware.js:31:46
+    at async C:\Users\ChineseChikki\Documents\GitHub\App-Trader\assets-service\node_modules\@aws-sdk\middleware-logger\dist-cjs\loggerMiddleware.js:7:26 [assets-service] development 2024-01-23 16:34:44
+error: uncaughtException: The security token included in the request is invalid.
+UnrecognizedClientException: The security token included in the request is invalid.
+    at throwDefaultError (C:\Users\ChineseChikki\Documents\GitHub\App-Trader\assets-service\node_modules\@smithy\smithy-client\dist-cjs\default-error-handler.js:8:22)
+    at C:\Users\ChineseChikki\Documents\GitHub\App-Trader\assets-service\node_modules\@smithy\smithy-client\dist-cjs\default-error-handler.js:18:39
+    at de_GetSecretValueCommandError (C:\Users\ChineseChikki\Documents\GitHub\App-Trader\assets-service\node_modules\@aws-sdk\client-secrets-manager\dist-cjs\protocols\Aws_json1_1.js:562:20)
+    at processTicksAndRejections (node:internal/process/task_queues:96:5)
+    at async C:\Users\ChineseChikki\Documents\GitHub\App-Trader\assets-service\node_modules\@smithy\middleware-serde\dist-cjs\deserializerMiddleware.js:7:24
+    at async C:\Users\ChineseChikki\Documents\GitHub\App-Trader\assets-service\node_modules\@aws-sdk\middleware-signing\dist-cjs\awsAuthMiddleware.js:30:20
+    at async C:\Users\ChineseChikki\Documents\GitHub\App-Trader\assets-service\node_modules\@smithy\middleware-retry\dist-cjs\retryMiddleware.js:31:46
+    at async C:\Users\ChineseChikki\Documents\GitHub\App-Trader\assets-service\node_modules\@aws-sdk\middleware-logger\dist-cjs\loggerMiddleware.js:7:26 [assets-service] development 2024-01-23T15:34:44.503Z
+[31merror[39m: uncaughtException: User: arn:aws:iam::575439814610:user/traderapp-chineye is not authorized to perform: secretsmanager:GetSecretValue on resource: common-secrets/dev because no identity-based policy allows the secretsmanager:GetSecretValue action
+AccessDeniedException: User: arn:aws:iam::575439814610:user/traderapp-chineye is not authorized to perform: secretsmanager:GetSecretValue on resource: common-secrets/dev because no identity-based policy allows the secretsmanager:GetSecretValue action
+    at throwDefaultError (C:\Users\ChineseChikki\Documents\GitHub\App-Trader\assets-service\node_modules\@smithy\smithy-client\dist-cjs\default-error-handler.js:8:22)
+    at C:\Users\ChineseChikki\Documents\GitHub\App-Trader\assets-service\node_modules\@smithy\smithy-client\dist-cjs\default-error-handler.js:18:39
+    at de_GetSecretValueCommandError (C:\Users\ChineseChikki\Documents\GitHub\App-Trader\assets-service\node_modules\@aws-sdk\client-secrets-manager\dist-cjs\protocols\Aws_json1_1.js:562:20)
+    at processTicksAndRejections (node:internal/process/task_queues:96:5)
+    at async C:\Users\ChineseChikki\Documents\GitHub\App-Trader\assets-service\node_modules\@smithy\middleware-serde\dist-cjs\deserializerMiddleware.js:7:24
+    at async C:\Users\ChineseChikki\Documents\GitHub\App-Trader\assets-service\node_modules\@aws-sdk\middleware-signing\dist-cjs\awsAuthMiddleware.js:30:20
+    at async C:\Users\ChineseChikki\Documents\GitHub\App-Trader\assets-service\node_modules\@smithy\middleware-retry\dist-cjs\retryMiddleware.js:31:46
+    at async C:\Users\ChineseChikki\Documents\GitHub\App-Trader\assets-service\node_modules\@aws-sdk\middleware-logger\dist-cjs\loggerMiddleware.js:7:26 [assets-service] development 2024-01-23 16:48:00
+error: uncaughtException: User: arn:aws:iam::575439814610:user/traderapp-chineye is not authorized to perform: secretsmanager:GetSecretValue on resource: common-secrets/dev because no identity-based policy allows the secretsmanager:GetSecretValue action
+AccessDeniedException: User: arn:aws:iam::575439814610:user/traderapp-chineye is not authorized to perform: secretsmanager:GetSecretValue on resource: common-secrets/dev because no identity-based policy allows the secretsmanager:GetSecretValue action
+    at throwDefaultError (C:\Users\ChineseChikki\Documents\GitHub\App-Trader\assets-service\node_modules\@smithy\smithy-client\dist-cjs\default-error-handler.js:8:22)
+    at C:\Users\ChineseChikki\Documents\GitHub\App-Trader\assets-service\node_modules\@smithy\smithy-client\dist-cjs\default-error-handler.js:18:39
+    at de_GetSecretValueCommandError (C:\Users\ChineseChikki\Documents\GitHub\App-Trader\assets-service\node_modules\@aws-sdk\client-secrets-manager\dist-cjs\protocols\Aws_json1_1.js:562:20)
+    at processTicksAndRejections (node:internal/process/task_queues:96:5)
+    at async C:\Users\ChineseChikki\Documents\GitHub\App-Trader\assets-service\node_modules\@smithy\middleware-serde\dist-cjs\deserializerMiddleware.js:7:24
+    at async C:\Users\ChineseChikki\Documents\GitHub\App-Trader\assets-service\node_modules\@aws-sdk\middleware-signing\dist-cjs\awsAuthMiddleware.js:30:20
+    at async C:\Users\ChineseChikki\Documents\GitHub\App-Trader\assets-service\node_modules\@smithy\middleware-retry\dist-cjs\retryMiddleware.js:31:46
+    at async C:\Users\ChineseChikki\Documents\GitHub\App-Trader\assets-service\node_modules\@aws-sdk\middleware-logger\dist-cjs\loggerMiddleware.js:7:26 [assets-service] development 2024-01-23T15:48:00.324Z
+[31merror[39m: uncaughtException: User: arn:aws:iam::575439814610:user/traderapp-chineye is not authorized to perform: secretsmanager:GetSecretValue on resource: assets-service-secrets/dev because no identity-based policy allows the secretsmanager:GetSecretValue action
+AccessDeniedException: User: arn:aws:iam::575439814610:user/traderapp-chineye is not authorized to perform: secretsmanager:GetSecretValue on resource: assets-service-secrets/dev because no identity-based policy allows the secretsmanager:GetSecretValue action
+    at throwDefaultError (C:\Users\ChineseChikki\Documents\GitHub\App-Trader\assets-service\node_modules\@smithy\smithy-client\dist-cjs\default-error-handler.js:8:22)
+    at C:\Users\ChineseChikki\Documents\GitHub\App-Trader\assets-service\node_modules\@smithy\smithy-client\dist-cjs\default-error-handler.js:18:39
+    at de_GetSecretValueCommandError (C:\Users\ChineseChikki\Documents\GitHub\App-Trader\assets-service\node_modules\@aws-sdk\client-secrets-manager\dist-cjs\protocols\Aws_json1_1.js:562:20)
+    at processTicksAndRejections (node:internal/process/task_queues:96:5)
+    at async C:\Users\ChineseChikki\Documents\GitHub\App-Trader\assets-service\node_modules\@smithy\middleware-serde\dist-cjs\deserializerMiddleware.js:7:24
+    at async C:\Users\ChineseChikki\Documents\GitHub\App-Trader\assets-service\node_modules\@aws-sdk\middleware-signing\dist-cjs\awsAuthMiddleware.js:30:20
+    at async C:\Users\ChineseChikki\Documents\GitHub\App-Trader\assets-service\node_modules\@smithy\middleware-retry\dist-cjs\retryMiddleware.js:31:46
+    at async C:\Users\ChineseChikki\Documents\GitHub\App-Trader\assets-service\node_modules\@aws-sdk\middleware-logger\dist-cjs\loggerMiddleware.js:7:26 [assets-service] development 2024-01-23 16:48:27
+error: uncaughtException: User: arn:aws:iam::575439814610:user/traderapp-chineye is not authorized to perform: secretsmanager:GetSecretValue on resource: assets-service-secrets/dev because no identity-based policy allows the secretsmanager:GetSecretValue action
+AccessDeniedException: User: arn:aws:iam::575439814610:user/traderapp-chineye is not authorized to perform: secretsmanager:GetSecretValue on resource: assets-service-secrets/dev because no identity-based policy allows the secretsmanager:GetSecretValue action
+    at throwDefaultError (C:\Users\ChineseChikki\Documents\GitHub\App-Trader\assets-service\node_modules\@smithy\smithy-client\dist-cjs\default-error-handler.js:8:22)
+    at C:\Users\ChineseChikki\Documents\GitHub\App-Trader\assets-service\node_modules\@smithy\smithy-client\dist-cjs\default-error-handler.js:18:39
+    at de_GetSecretValueCommandError (C:\Users\ChineseChikki\Documents\GitHub\App-Trader\assets-service\node_modules\@aws-sdk\client-secrets-manager\dist-cjs\protocols\Aws_json1_1.js:562:20)
+    at processTicksAndRejections (node:internal/process/task_queues:96:5)
+    at async C:\Users\ChineseChikki\Documents\GitHub\App-Trader\assets-service\node_modules\@smithy\middleware-serde\dist-cjs\deserializerMiddleware.js:7:24
+    at async C:\Users\ChineseChikki\Documents\GitHub\App-Trader\assets-service\node_modules\@aws-sdk\middleware-signing\dist-cjs\awsAuthMiddleware.js:30:20
+    at async C:\Users\ChineseChikki\Documents\GitHub\App-Trader\assets-service\node_modules\@smithy\middleware-retry\dist-cjs\retryMiddleware.js:31:46
+    at async C:\Users\ChineseChikki\Documents\GitHub\App-Trader\assets-service\node_modules\@aws-sdk\middleware-logger\dist-cjs\loggerMiddleware.js:7:26 [assets-service] development 2024-01-23T15:48:27.411Z
+[31merror[39m: uncaughtException: ⨯ Unable to compile TypeScript:
+[96msrc/routes/ExchangeRoutes.ts[0m:[93m4[0m:[93m2[0m - [91merror[0m[90m TS2724: [0m'"../controllers/ExchangeController"' has no exported member named 'getExchangeByIdHandler'. Did you mean 'getExchangeById'?
+
+[7m4[0m  getExchangeByIdHandler,
+[7m [0m [91m ~~~~~~~~~~~~~~~~~~~~~~[0m
+
+  [96msrc/controllers/ExchangeController.ts[0m:[93m32[0m:[93m23[0m
+    [7m32[0m export async function getExchangeById(req: Request, res: Response, next: NextFunction) {
+    [7m  [0m [96m                      ~~~~~~~~~~~~~~~[0m
+    'getExchangeById' is declared here.
+
+TSError: ⨯ Unable to compile TypeScript:
+[96msrc/routes/ExchangeRoutes.ts[0m:[93m4[0m:[93m2[0m - [91merror[0m[90m TS2724: [0m'"../controllers/ExchangeController"' has no exported member named 'getExchangeByIdHandler'. Did you mean 'getExchangeById'?
+
+[7m4[0m  getExchangeByIdHandler,
+[7m [0m [91m ~~~~~~~~~~~~~~~~~~~~~~[0m
+
+  [96msrc/controllers/ExchangeController.ts[0m:[93m32[0m:[93m23[0m
+    [7m32[0m export async function getExchangeById(req: Request, res: Response, next: NextFunction) {
+    [7m  [0m [96m                      ~~~~~~~~~~~~~~~[0m
+    'getExchangeById' is declared here.
+
+    at createTSError (C:\Users\ChineseChikki\Documents\GitHub\App-Trader\assets-service\node_modules\ts-node\src\index.ts:859:12)
+    at reportTSError (C:\Users\ChineseChikki\Documents\GitHub\App-Trader\assets-service\node_modules\ts-node\src\index.ts:863:19)
+    at getOutput (C:\Users\ChineseChikki\Documents\GitHub\App-Trader\assets-service\node_modules\ts-node\src\index.ts:1077:36)
+    at Object.compile (C:\Users\ChineseChikki\Documents\GitHub\App-Trader\assets-service\node_modules\ts-node\src\index.ts:1433:41)
+    at Module.m._compile (C:\Users\ChineseChikki\Documents\GitHub\App-Trader\assets-service\node_modules\ts-node\src\index.ts:1617:30)
+    at Module._extensions..js (node:internal/modules/cjs/loader:1159:10)
+    at Object.require.extensions.<computed> [as .ts] (C:\Users\ChineseChikki\Documents\GitHub\App-Trader\assets-service\node_modules\ts-node\src\index.ts:1621:12)
+    at Module.load (node:internal/modules/cjs/loader:981:32)
+    at Function.Module._load (node:internal/modules/cjs/loader:822:12)
+    at Module.require (node:internal/modules/cjs/loader:1005:19) [assets-service] development 2024-01-23 22:23:26
+error: uncaughtException: ⨯ Unable to compile TypeScript:
+[96msrc/routes/ExchangeRoutes.ts[0m:[93m4[0m:[93m2[0m - [91merror[0m[90m TS2724: [0m'"../controllers/ExchangeController"' has no exported member named 'getExchangeByIdHandler'. Did you mean 'getExchangeById'?
+
+[7m4[0m  getExchangeByIdHandler,
+[7m [0m [91m ~~~~~~~~~~~~~~~~~~~~~~[0m
+
+  [96msrc/controllers/ExchangeController.ts[0m:[93m32[0m:[93m23[0m
+    [7m32[0m export async function getExchangeById(req: Request, res: Response, next: NextFunction) {
+    [7m  [0m [96m                      ~~~~~~~~~~~~~~~[0m
+    'getExchangeById' is declared here.
+
+TSError: ⨯ Unable to compile TypeScript:
+[96msrc/routes/ExchangeRoutes.ts[0m:[93m4[0m:[93m2[0m - [91merror[0m[90m TS2724: [0m'"../controllers/ExchangeController"' has no exported member named 'getExchangeByIdHandler'. Did you mean 'getExchangeById'?
+
+[7m4[0m  getExchangeByIdHandler,
+[7m [0m [91m ~~~~~~~~~~~~~~~~~~~~~~[0m
+
+  [96msrc/controllers/ExchangeController.ts[0m:[93m32[0m:[93m23[0m
+    [7m32[0m export async function getExchangeById(req: Request, res: Response, next: NextFunction) {
+    [7m  [0m [96m                      ~~~~~~~~~~~~~~~[0m
+    'getExchangeById' is declared here.
+
+    at createTSError (C:\Users\ChineseChikki\Documents\GitHub\App-Trader\assets-service\node_modules\ts-node\src\index.ts:859:12)
+    at reportTSError (C:\Users\ChineseChikki\Documents\GitHub\App-Trader\assets-service\node_modules\ts-node\src\index.ts:863:19)
+    at getOutput (C:\Users\ChineseChikki\Documents\GitHub\App-Trader\assets-service\node_modules\ts-node\src\index.ts:1077:36)
+    at Object.compile (C:\Users\ChineseChikki\Documents\GitHub\App-Trader\assets-service\node_modules\ts-node\src\index.ts:1433:41)
+    at Module.m._compile (C:\Users\ChineseChikki\Documents\GitHub\App-Trader\assets-service\node_modules\ts-node\src\index.ts:1617:30)
+    at Module._extensions..js (node:internal/modules/cjs/loader:1159:10)
+    at Object.require.extensions.<computed> [as .ts] (C:\Users\ChineseChikki\Documents\GitHub\App-Trader\assets-service\node_modules\ts-node\src\index.ts:1621:12)
+    at Module.load (node:internal/modules/cjs/loader:981:32)
+    at Function.Module._load (node:internal/modules/cjs/loader:822:12)
+    at Module.require (node:internal/modules/cjs/loader:1005:19) [assets-service] development 2024-01-23T21:23:26.209Z
+[31merror[39m: uncaughtException: ⨯ Unable to compile TypeScript:
+[96msrc/controllers/ExchangeController.ts[0m:[93m148[0m:[93m31[0m - [91merror[0m[90m TS2304: [0mCannot find name 'prisma'.
+
+[7m148[0m   const exchangePairs = await prisma.exchangePair.findMany({
+[7m   [0m [91m                              ~~~~~~[0m
+[96msrc/controllers/ExchangeController.ts[0m:[93m167[0m:[93m9[0m - [91merror[0m[90m TS2304: [0mCannot find name 'prisma'.
+
+[7m167[0m   await prisma.$disconnect();
+[7m   [0m [91m        ~~~~~~[0m
+
+TSError: ⨯ Unable to compile TypeScript:
+[96msrc/controllers/ExchangeController.ts[0m:[93m148[0m:[93m31[0m - [91merror[0m[90m TS2304: [0mCannot find name 'prisma'.
+
+[7m148[0m   const exchangePairs = await prisma.exchangePair.findMany({
+[7m   [0m [91m                              ~~~~~~[0m
+[96msrc/controllers/ExchangeController.ts[0m:[93m167[0m:[93m9[0m - [91merror[0m[90m TS2304: [0mCannot find name 'prisma'.
+
+[7m167[0m   await prisma.$disconnect();
+[7m   [0m [91m        ~~~~~~[0m
+
+    at createTSError (C:\Users\ChineseChikki\Documents\GitHub\App-Trader\assets-service\node_modules\ts-node\src\index.ts:859:12)
+    at reportTSError (C:\Users\ChineseChikki\Documents\GitHub\App-Trader\assets-service\node_modules\ts-node\src\index.ts:863:19)
+    at getOutput (C:\Users\ChineseChikki\Documents\GitHub\App-Trader\assets-service\node_modules\ts-node\src\index.ts:1077:36)
+    at Object.compile (C:\Users\ChineseChikki\Documents\GitHub\App-Trader\assets-service\node_modules\ts-node\src\index.ts:1433:41)
+    at Module.m._compile (C:\Users\ChineseChikki\Documents\GitHub\App-Trader\assets-service\node_modules\ts-node\src\index.ts:1617:30)
+    at Module._extensions..js (node:internal/modules/cjs/loader:1159:10)
+    at Object.require.extensions.<computed> [as .ts] (C:\Users\ChineseChikki\Documents\GitHub\App-Trader\assets-service\node_modules\ts-node\src\index.ts:1621:12)
+    at Module.load (node:internal/modules/cjs/loader:981:32)
+    at Function.Module._load (node:internal/modules/cjs/loader:822:12)
+    at Module.require (node:internal/modules/cjs/loader:1005:19) [assets-service] development 2024-01-23 22:24:21
+error: uncaughtException: ⨯ Unable to compile TypeScript:
+[96msrc/controllers/ExchangeController.ts[0m:[93m148[0m:[93m31[0m - [91merror[0m[90m TS2304: [0mCannot find name 'prisma'.
+
+[7m148[0m   const exchangePairs = await prisma.exchangePair.findMany({
+[7m   [0m [91m                              ~~~~~~[0m
+[96msrc/controllers/ExchangeController.ts[0m:[93m167[0m:[93m9[0m - [91merror[0m[90m TS2304: [0mCannot find name 'prisma'.
+
+[7m167[0m   await prisma.$disconnect();
+[7m   [0m [91m        ~~~~~~[0m
+
+TSError: ⨯ Unable to compile TypeScript:
+[96msrc/controllers/ExchangeController.ts[0m:[93m148[0m:[93m31[0m - [91merror[0m[90m TS2304: [0mCannot find name 'prisma'.
+
+[7m148[0m   const exchangePairs = await prisma.exchangePair.findMany({
+[7m   [0m [91m                              ~~~~~~[0m
+[96msrc/controllers/ExchangeController.ts[0m:[93m167[0m:[93m9[0m - [91merror[0m[90m TS2304: [0mCannot find name 'prisma'.
+
+[7m167[0m   await prisma.$disconnect();
+[7m   [0m [91m        ~~~~~~[0m
+
+    at createTSError (C:\Users\ChineseChikki\Documents\GitHub\App-Trader\assets-service\node_modules\ts-node\src\index.ts:859:12)
+    at reportTSError (C:\Users\ChineseChikki\Documents\GitHub\App-Trader\assets-service\node_modules\ts-node\src\index.ts:863:19)
+    at getOutput (C:\Users\ChineseChikki\Documents\GitHub\App-Trader\assets-service\node_modules\ts-node\src\index.ts:1077:36)
+    at Object.compile (C:\Users\ChineseChikki\Documents\GitHub\App-Trader\assets-service\node_modules\ts-node\src\index.ts:1433:41)
+    at Module.m._compile (C:\Users\ChineseChikki\Documents\GitHub\App-Trader\assets-service\node_modules\ts-node\src\index.ts:1617:30)
+    at Module._extensions..js (node:internal/modules/cjs/loader:1159:10)
+    at Object.require.extensions.<computed> [as .ts] (C:\Users\ChineseChikki\Documents\GitHub\App-Trader\assets-service\node_modules\ts-node\src\index.ts:1621:12)
+    at Module.load (node:internal/modules/cjs/loader:981:32)
+    at Function.Module._load (node:internal/modules/cjs/loader:822:12)
+    at Module.require (node:internal/modules/cjs/loader:1005:19) [assets-service] development 2024-01-23T21:24:21.406Z
+[31merror[39m: uncaughtException: ⨯ Unable to compile TypeScript:
+[96msrc/controllers/ExchangeController.ts[0m:[93m148[0m:[93m31[0m - [91merror[0m[90m TS2304: [0mCannot find name 'prisma'.
+
+[7m148[0m   const exchangePairs = await prisma.exchangePair.findMany({
+[7m   [0m [91m                              ~~~~~~[0m
+[96msrc/controllers/ExchangeController.ts[0m:[93m150[0m:[93m17[0m - [91merror[0m[90m TS2304: [0mCannot find name 'exchangeId'.
+
+[7m150[0m     exchangeId: exchangeId,
+[7m   [0m [91m                ~~~~~~~~~~[0m
+[96msrc/controllers/ExchangeController.ts[0m:[93m151[0m:[93m17[0m - [91merror[0m[90m TS2304: [0mCannot find name 'currencyId'.
+
+[7m151[0m     currencyId: currencyId,
+[7m   [0m [91m                ~~~~~~~~~~[0m
+[96msrc/controllers/ExchangeController.ts[0m:[93m167[0m:[93m9[0m - [91merror[0m[90m TS2304: [0mCannot find name 'prisma'.
+
+[7m167[0m   await prisma.$disconnect();
+[7m   [0m [91m        ~~~~~~[0m
+
+TSError: ⨯ Unable to compile TypeScript:
+[96msrc/controllers/ExchangeController.ts[0m:[93m148[0m:[93m31[0m - [91merror[0m[90m TS2304: [0mCannot find name 'prisma'.
+
+[7m148[0m   const exchangePairs = await prisma.exchangePair.findMany({
+[7m   [0m [91m                              ~~~~~~[0m
+[96msrc/controllers/ExchangeController.ts[0m:[93m150[0m:[93m17[0m - [91merror[0m[90m TS2304: [0mCannot find name 'exchangeId'.
+
+[7m150[0m     exchangeId: exchangeId,
+[7m   [0m [91m                ~~~~~~~~~~[0m
+[96msrc/controllers/ExchangeController.ts[0m:[93m151[0m:[93m17[0m - [91merror[0m[90m TS2304: [0mCannot find name 'currencyId'.
+
+[7m151[0m     currencyId: currencyId,
+[7m   [0m [91m                ~~~~~~~~~~[0m
+[96msrc/controllers/ExchangeController.ts[0m:[93m167[0m:[93m9[0m - [91merror[0m[90m TS2304: [0mCannot find name 'prisma'.
+
+[7m167[0m   await prisma.$disconnect();
+[7m   [0m [91m        ~~~~~~[0m
+
+    at createTSError (C:\Users\ChineseChikki\Documents\GitHub\App-Trader\assets-service\node_modules\ts-node\src\index.ts:859:12)
+    at reportTSError (C:\Users\ChineseChikki\Documents\GitHub\App-Trader\assets-service\node_modules\ts-node\src\index.ts:863:19)
+    at getOutput (C:\Users\ChineseChikki\Documents\GitHub\App-Trader\assets-service\node_modules\ts-node\src\index.ts:1077:36)
+    at Object.compile (C:\Users\ChineseChikki\Documents\GitHub\App-Trader\assets-service\node_modules\ts-node\src\index.ts:1433:41)
+    at Module.m._compile (C:\Users\ChineseChikki\Documents\GitHub\App-Trader\assets-service\node_modules\ts-node\src\index.ts:1617:30)
+    at Module._extensions..js (node:internal/modules/cjs/loader:1159:10)
+    at Object.require.extensions.<computed> [as .ts] (C:\Users\ChineseChikki\Documents\GitHub\App-Trader\assets-service\node_modules\ts-node\src\index.ts:1621:12)
+    at Module.load (node:internal/modules/cjs/loader:981:32)
+    at Function.Module._load (node:internal/modules/cjs/loader:822:12)
+    at Module.require (node:internal/modules/cjs/loader:1005:19) [assets-service] development 2024-01-23 22:25:29
+error: uncaughtException: ⨯ Unable to compile TypeScript:
+[96msrc/controllers/ExchangeController.ts[0m:[93m148[0m:[93m31[0m - [91merror[0m[90m TS2304: [0mCannot find name 'prisma'.
+
+[7m148[0m   const exchangePairs = await prisma.exchangePair.findMany({
+[7m   [0m [91m                              ~~~~~~[0m
+[96msrc/controllers/ExchangeController.ts[0m:[93m150[0m:[93m17[0m - [91merror[0m[90m TS2304: [0mCannot find name 'exchangeId'.
+
+[7m150[0m     exchangeId: exchangeId,
+[7m   [0m [91m                ~~~~~~~~~~[0m
+[96msrc/controllers/ExchangeController.ts[0m:[93m151[0m:[93m17[0m - [91merror[0m[90m TS2304: [0mCannot find name 'currencyId'.
+
+[7m151[0m     currencyId: currencyId,
+[7m   [0m [91m                ~~~~~~~~~~[0m
+[96msrc/controllers/ExchangeController.ts[0m:[93m167[0m:[93m9[0m - [91merror[0m[90m TS2304: [0mCannot find name 'prisma'.
+
+[7m167[0m   await prisma.$disconnect();
+[7m   [0m [91m        ~~~~~~[0m
+
+TSError: ⨯ Unable to compile TypeScript:
+[96msrc/controllers/ExchangeController.ts[0m:[93m148[0m:[93m31[0m - [91merror[0m[90m TS2304: [0mCannot find name 'prisma'.
+
+[7m148[0m   const exchangePairs = await prisma.exchangePair.findMany({
+[7m   [0m [91m                              ~~~~~~[0m
+[96msrc/controllers/ExchangeController.ts[0m:[93m150[0m:[93m17[0m - [91merror[0m[90m TS2304: [0mCannot find name 'exchangeId'.
+
+[7m150[0m     exchangeId: exchangeId,
+[7m   [0m [91m                ~~~~~~~~~~[0m
+[96msrc/controllers/ExchangeController.ts[0m:[93m151[0m:[93m17[0m - [91merror[0m[90m TS2304: [0mCannot find name 'currencyId'.
+
+[7m151[0m     currencyId: currencyId,
+[7m   [0m [91m                ~~~~~~~~~~[0m
+[96msrc/controllers/ExchangeController.ts[0m:[93m167[0m:[93m9[0m - [91merror[0m[90m TS2304: [0mCannot find name 'prisma'.
+
+[7m167[0m   await prisma.$disconnect();
+[7m   [0m [91m        ~~~~~~[0m
+
+    at createTSError (C:\Users\ChineseChikki\Documents\GitHub\App-Trader\assets-service\node_modules\ts-node\src\index.ts:859:12)
+    at reportTSError (C:\Users\ChineseChikki\Documents\GitHub\App-Trader\assets-service\node_modules\ts-node\src\index.ts:863:19)
+    at getOutput (C:\Users\ChineseChikki\Documents\GitHub\App-Trader\assets-service\node_modules\ts-node\src\index.ts:1077:36)
+    at Object.compile (C:\Users\ChineseChikki\Documents\GitHub\App-Trader\assets-service\node_modules\ts-node\src\index.ts:1433:41)
+    at Module.m._compile (C:\Users\ChineseChikki\Documents\GitHub\App-Trader\assets-service\node_modules\ts-node\src\index.ts:1617:30)
+    at Module._extensions..js (node:internal/modules/cjs/loader:1159:10)
+    at Object.require.extensions.<computed> [as .ts] (C:\Users\ChineseChikki\Documents\GitHub\App-Trader\assets-service\node_modules\ts-node\src\index.ts:1621:12)
+    at Module.load (node:internal/modules/cjs/loader:981:32)
+    at Function.Module._load (node:internal/modules/cjs/loader:822:12)
+    at Module.require (node:internal/modules/cjs/loader:1005:19) [assets-service] development 2024-01-23T21:25:29.291Z
+[31merror[39m: uncaughtException: ⨯ Unable to compile TypeScript:
+[96msrc/controllers/ExchangeController.ts[0m:[93m148[0m:[93m31[0m - [91merror[0m[90m TS2304: [0mCannot find name 'prisma'.
+
+[7m148[0m   const exchangePairs = await prisma.exchangePair.findMany({
+[7m   [0m [91m                              ~~~~~~[0m
+[96msrc/controllers/ExchangeController.ts[0m:[93m150[0m:[93m17[0m - [91merror[0m[90m TS2304: [0mCannot find name 'exchangeId'.
+
+[7m150[0m     exchangeId: exchangeId,
+[7m   [0m [91m                ~~~~~~~~~~[0m
+[96msrc/controllers/ExchangeController.ts[0m:[93m151[0m:[93m17[0m - [91merror[0m[90m TS2304: [0mCannot find name 'currencyId'.
+
+[7m151[0m     currencyId: currencyId,
+[7m   [0m [91m                ~~~~~~~~~~[0m
+[96msrc/controllers/ExchangeController.ts[0m:[93m167[0m:[93m9[0m - [91merror[0m[90m TS2304: [0mCannot find name 'prisma'.
+
+[7m167[0m   await prisma.$disconnect();
+[7m   [0m [91m        ~~~~~~[0m
+
+TSError: ⨯ Unable to compile TypeScript:
+[96msrc/controllers/ExchangeController.ts[0m:[93m148[0m:[93m31[0m - [91merror[0m[90m TS2304: [0mCannot find name 'prisma'.
+
+[7m148[0m   const exchangePairs = await prisma.exchangePair.findMany({
+[7m   [0m [91m                              ~~~~~~[0m
+[96msrc/controllers/ExchangeController.ts[0m:[93m150[0m:[93m17[0m - [91merror[0m[90m TS2304: [0mCannot find name 'exchangeId'.
+
+[7m150[0m     exchangeId: exchangeId,
+[7m   [0m [91m                ~~~~~~~~~~[0m
+[96msrc/controllers/ExchangeController.ts[0m:[93m151[0m:[93m17[0m - [91merror[0m[90m TS2304: [0mCannot find name 'currencyId'.
+
+[7m151[0m     currencyId: currencyId,
+[7m   [0m [91m                ~~~~~~~~~~[0m
+[96msrc/controllers/ExchangeController.ts[0m:[93m167[0m:[93m9[0m - [91merror[0m[90m TS2304: [0mCannot find name 'prisma'.
+
+[7m167[0m   await prisma.$disconnect();
+[7m   [0m [91m        ~~~~~~[0m
+
+    at createTSError (C:\Users\ChineseChikki\Documents\GitHub\App-Trader\assets-service\node_modules\ts-node\src\index.ts:859:12)
+    at reportTSError (C:\Users\ChineseChikki\Documents\GitHub\App-Trader\assets-service\node_modules\ts-node\src\index.ts:863:19)
+    at getOutput (C:\Users\ChineseChikki\Documents\GitHub\App-Trader\assets-service\node_modules\ts-node\src\index.ts:1077:36)
+    at Object.compile (C:\Users\ChineseChikki\Documents\GitHub\App-Trader\assets-service\node_modules\ts-node\src\index.ts:1433:41)
+    at Module.m._compile (C:\Users\ChineseChikki\Documents\GitHub\App-Trader\assets-service\node_modules\ts-node\src\index.ts:1617:30)
+    at Module._extensions..js (node:internal/modules/cjs/loader:1159:10)
+    at Object.require.extensions.<computed> [as .ts] (C:\Users\ChineseChikki\Documents\GitHub\App-Trader\assets-service\node_modules\ts-node\src\index.ts:1621:12)
+    at Module.load (node:internal/modules/cjs/loader:981:32)
+    at Function.Module._load (node:internal/modules/cjs/loader:822:12)
+    at Module.require (node:internal/modules/cjs/loader:1005:19) [assets-service] development 2024-01-23 22:26:03
+error: uncaughtException: ⨯ Unable to compile TypeScript:
+[96msrc/controllers/ExchangeController.ts[0m:[93m148[0m:[93m31[0m - [91merror[0m[90m TS2304: [0mCannot find name 'prisma'.
+
+[7m148[0m   const exchangePairs = await prisma.exchangePair.findMany({
+[7m   [0m [91m                              ~~~~~~[0m
+[96msrc/controllers/ExchangeController.ts[0m:[93m150[0m:[93m17[0m - [91merror[0m[90m TS2304: [0mCannot find name 'exchangeId'.
+
+[7m150[0m     exchangeId: exchangeId,
+[7m   [0m [91m                ~~~~~~~~~~[0m
+[96msrc/controllers/ExchangeController.ts[0m:[93m151[0m:[93m17[0m - [91merror[0m[90m TS2304: [0mCannot find name 'currencyId'.
+
+[7m151[0m     currencyId: currencyId,
+[7m   [0m [91m                ~~~~~~~~~~[0m
+[96msrc/controllers/ExchangeController.ts[0m:[93m167[0m:[93m9[0m - [91merror[0m[90m TS2304: [0mCannot find name 'prisma'.
+
+[7m167[0m   await prisma.$disconnect();
+[7m   [0m [91m        ~~~~~~[0m
+
+TSError: ⨯ Unable to compile TypeScript:
+[96msrc/controllers/ExchangeController.ts[0m:[93m148[0m:[93m31[0m - [91merror[0m[90m TS2304: [0mCannot find name 'prisma'.
+
+[7m148[0m   const exchangePairs = await prisma.exchangePair.findMany({
+[7m   [0m [91m                              ~~~~~~[0m
+[96msrc/controllers/ExchangeController.ts[0m:[93m150[0m:[93m17[0m - [91merror[0m[90m TS2304: [0mCannot find name 'exchangeId'.
+
+[7m150[0m     exchangeId: exchangeId,
+[7m   [0m [91m                ~~~~~~~~~~[0m
+[96msrc/controllers/ExchangeController.ts[0m:[93m151[0m:[93m17[0m - [91merror[0m[90m TS2304: [0mCannot find name 'currencyId'.
+
+[7m151[0m     currencyId: currencyId,
+[7m   [0m [91m                ~~~~~~~~~~[0m
+[96msrc/controllers/ExchangeController.ts[0m:[93m167[0m:[93m9[0m - [91merror[0m[90m TS2304: [0mCannot find name 'prisma'.
+
+[7m167[0m   await prisma.$disconnect();
+[7m   [0m [91m        ~~~~~~[0m
+
+    at createTSError (C:\Users\ChineseChikki\Documents\GitHub\App-Trader\assets-service\node_modules\ts-node\src\index.ts:859:12)
+    at reportTSError (C:\Users\ChineseChikki\Documents\GitHub\App-Trader\assets-service\node_modules\ts-node\src\index.ts:863:19)
+    at getOutput (C:\Users\ChineseChikki\Documents\GitHub\App-Trader\assets-service\node_modules\ts-node\src\index.ts:1077:36)
+    at Object.compile (C:\Users\ChineseChikki\Documents\GitHub\App-Trader\assets-service\node_modules\ts-node\src\index.ts:1433:41)
+    at Module.m._compile (C:\Users\ChineseChikki\Documents\GitHub\App-Trader\assets-service\node_modules\ts-node\src\index.ts:1617:30)
+    at Module._extensions..js (node:internal/modules/cjs/loader:1159:10)
+    at Object.require.extensions.<computed> [as .ts] (C:\Users\ChineseChikki\Documents\GitHub\App-Trader\assets-service\node_modules\ts-node\src\index.ts:1621:12)
+    at Module.load (node:internal/modules/cjs/loader:981:32)
+    at Function.Module._load (node:internal/modules/cjs/loader:822:12)
+    at Module.require (node:internal/modules/cjs/loader:1005:19) [assets-service] development 2024-01-23T21:26:03.462Z
+[31merror[39m: uncaughtException: ⨯ Unable to compile TypeScript:
+[96msrc/controllers/ExchangeController.ts[0m:[93m152[0m:[93m31[0m - [91merror[0m[90m TS2304: [0mCannot find name 'prisma'.
+
+[7m152[0m   const exchangePairs = await prisma.exchangePair.findMany({
+[7m   [0m [91m                              ~~~~~~[0m
+[96msrc/controllers/ExchangeController.ts[0m:[93m171[0m:[93m9[0m - [91merror[0m[90m TS2304: [0mCannot find name 'prisma'.
+
+[7m171[0m   await prisma.$disconnect();
+[7m   [0m [91m        ~~~~~~[0m
+
+TSError: ⨯ Unable to compile TypeScript:
+[96msrc/controllers/ExchangeController.ts[0m:[93m152[0m:[93m31[0m - [91merror[0m[90m TS2304: [0mCannot find name 'prisma'.
+
+[7m152[0m   const exchangePairs = await prisma.exchangePair.findMany({
+[7m   [0m [91m                              ~~~~~~[0m
+[96msrc/controllers/ExchangeController.ts[0m:[93m171[0m:[93m9[0m - [91merror[0m[90m TS2304: [0mCannot find name 'prisma'.
+
+[7m171[0m   await prisma.$disconnect();
+[7m   [0m [91m        ~~~~~~[0m
+
+    at createTSError (C:\Users\ChineseChikki\Documents\GitHub\App-Trader\assets-service\node_modules\ts-node\src\index.ts:859:12)
+    at reportTSError (C:\Users\ChineseChikki\Documents\GitHub\App-Trader\assets-service\node_modules\ts-node\src\index.ts:863:19)
+    at getOutput (C:\Users\ChineseChikki\Documents\GitHub\App-Trader\assets-service\node_modules\ts-node\src\index.ts:1077:36)
+    at Object.compile (C:\Users\ChineseChikki\Documents\GitHub\App-Trader\assets-service\node_modules\ts-node\src\index.ts:1433:41)
+    at Module.m._compile (C:\Users\ChineseChikki\Documents\GitHub\App-Trader\assets-service\node_modules\ts-node\src\index.ts:1617:30)
+    at Module._extensions..js (node:internal/modules/cjs/loader:1159:10)
+    at Object.require.extensions.<computed> [as .ts] (C:\Users\ChineseChikki\Documents\GitHub\App-Trader\assets-service\node_modules\ts-node\src\index.ts:1621:12)
+    at Module.load (node:internal/modules/cjs/loader:981:32)
+    at Function.Module._load (node:internal/modules/cjs/loader:822:12)
+    at Module.require (node:internal/modules/cjs/loader:1005:19) [assets-service] development 2024-01-23 22:26:39
+error: uncaughtException: ⨯ Unable to compile TypeScript:
+[96msrc/controllers/ExchangeController.ts[0m:[93m152[0m:[93m31[0m - [91merror[0m[90m TS2304: [0mCannot find name 'prisma'.
+
+[7m152[0m   const exchangePairs = await prisma.exchangePair.findMany({
+[7m   [0m [91m                              ~~~~~~[0m
+[96msrc/controllers/ExchangeController.ts[0m:[93m171[0m:[93m9[0m - [91merror[0m[90m TS2304: [0mCannot find name 'prisma'.
+
+[7m171[0m   await prisma.$disconnect();
+[7m   [0m [91m        ~~~~~~[0m
+
+TSError: ⨯ Unable to compile TypeScript:
+[96msrc/controllers/ExchangeController.ts[0m:[93m152[0m:[93m31[0m - [91merror[0m[90m TS2304: [0mCannot find name 'prisma'.
+
+[7m152[0m   const exchangePairs = await prisma.exchangePair.findMany({
+[7m   [0m [91m                              ~~~~~~[0m
+[96msrc/controllers/ExchangeController.ts[0m:[93m171[0m:[93m9[0m - [91merror[0m[90m TS2304: [0mCannot find name 'prisma'.
+
+[7m171[0m   await prisma.$disconnect();
+[7m   [0m [91m        ~~~~~~[0m
+
+    at createTSError (C:\Users\ChineseChikki\Documents\GitHub\App-Trader\assets-service\node_modules\ts-node\src\index.ts:859:12)
+    at reportTSError (C:\Users\ChineseChikki\Documents\GitHub\App-Trader\assets-service\node_modules\ts-node\src\index.ts:863:19)
+    at getOutput (C:\Users\ChineseChikki\Documents\GitHub\App-Trader\assets-service\node_modules\ts-node\src\index.ts:1077:36)
+    at Object.compile (C:\Users\ChineseChikki\Documents\GitHub\App-Trader\assets-service\node_modules\ts-node\src\index.ts:1433:41)
+    at Module.m._compile (C:\Users\ChineseChikki\Documents\GitHub\App-Trader\assets-service\node_modules\ts-node\src\index.ts:1617:30)
+    at Module._extensions..js (node:internal/modules/cjs/loader:1159:10)
+    at Object.require.extensions.<computed> [as .ts] (C:\Users\ChineseChikki\Documents\GitHub\App-Trader\assets-service\node_modules\ts-node\src\index.ts:1621:12)
+    at Module.load (node:internal/modules/cjs/loader:981:32)
+    at Function.Module._load (node:internal/modules/cjs/loader:822:12)
+    at Module.require (node:internal/modules/cjs/loader:1005:19) [assets-service] development 2024-01-23T21:26:39.863Z
+[31merror[39m: uncaughtException: ⨯ Unable to compile TypeScript:
+[96msrc/controllers/ExchangeController.ts[0m:[93m152[0m:[93m31[0m - [91merror[0m[90m TS2304: [0mCannot find name 'prisma'.
+
+[7m152[0m   const exchangePairs = await prisma.exchangePair.findMany({
+[7m   [0m [91m                              ~~~~~~[0m
+[96msrc/controllers/ExchangeController.ts[0m:[93m171[0m:[93m9[0m - [91merror[0m[90m TS2304: [0mCannot find name 'prisma'.
+
+[7m171[0m   await prisma.$disconnect();
+[7m   [0m [91m        ~~~~~~[0m
+
+TSError: ⨯ Unable to compile TypeScript:
+[96msrc/controllers/ExchangeController.ts[0m:[93m152[0m:[93m31[0m - [91merror[0m[90m TS2304: [0mCannot find name 'prisma'.
+
+[7m152[0m   const exchangePairs = await prisma.exchangePair.findMany({
+[7m   [0m [91m                              ~~~~~~[0m
+[96msrc/controllers/ExchangeController.ts[0m:[93m171[0m:[93m9[0m - [91merror[0m[90m TS2304: [0mCannot find name 'prisma'.
+
+[7m171[0m   await prisma.$disconnect();
+[7m   [0m [91m        ~~~~~~[0m
+
+    at createTSError (C:\Users\ChineseChikki\Documents\GitHub\App-Trader\assets-service\node_modules\ts-node\src\index.ts:859:12)
+    at reportTSError (C:\Users\ChineseChikki\Documents\GitHub\App-Trader\assets-service\node_modules\ts-node\src\index.ts:863:19)
+    at getOutput (C:\Users\ChineseChikki\Documents\GitHub\App-Trader\assets-service\node_modules\ts-node\src\index.ts:1077:36)
+    at Object.compile (C:\Users\ChineseChikki\Documents\GitHub\App-Trader\assets-service\node_modules\ts-node\src\index.ts:1433:41)
+    at Module.m._compile (C:\Users\ChineseChikki\Documents\GitHub\App-Trader\assets-service\node_modules\ts-node\src\index.ts:1617:30)
+    at Module._extensions..js (node:internal/modules/cjs/loader:1159:10)
+    at Object.require.extensions.<computed> [as .ts] (C:\Users\ChineseChikki\Documents\GitHub\App-Trader\assets-service\node_modules\ts-node\src\index.ts:1621:12)
+    at Module.load (node:internal/modules/cjs/loader:981:32)
+    at Function.Module._load (node:internal/modules/cjs/loader:822:12)
+    at Module.require (node:internal/modules/cjs/loader:1005:19) [assets-service] development 2024-01-23 22:27:03
+error: uncaughtException: ⨯ Unable to compile TypeScript:
+[96msrc/controllers/ExchangeController.ts[0m:[93m152[0m:[93m31[0m - [91merror[0m[90m TS2304: [0mCannot find name 'prisma'.
+
+[7m152[0m   const exchangePairs = await prisma.exchangePair.findMany({
+[7m   [0m [91m                              ~~~~~~[0m
+[96msrc/controllers/ExchangeController.ts[0m:[93m171[0m:[93m9[0m - [91merror[0m[90m TS2304: [0mCannot find name 'prisma'.
+
+[7m171[0m   await prisma.$disconnect();
+[7m   [0m [91m        ~~~~~~[0m
+
+TSError: ⨯ Unable to compile TypeScript:
+[96msrc/controllers/ExchangeController.ts[0m:[93m152[0m:[93m31[0m - [91merror[0m[90m TS2304: [0mCannot find name 'prisma'.
+
+[7m152[0m   const exchangePairs = await prisma.exchangePair.findMany({
+[7m   [0m [91m                              ~~~~~~[0m
+[96msrc/controllers/ExchangeController.ts[0m:[93m171[0m:[93m9[0m - [91merror[0m[90m TS2304: [0mCannot find name 'prisma'.
+
+[7m171[0m   await prisma.$disconnect();
+[7m   [0m [91m        ~~~~~~[0m
+
+    at createTSError (C:\Users\ChineseChikki\Documents\GitHub\App-Trader\assets-service\node_modules\ts-node\src\index.ts:859:12)
+    at reportTSError (C:\Users\ChineseChikki\Documents\GitHub\App-Trader\assets-service\node_modules\ts-node\src\index.ts:863:19)
+    at getOutput (C:\Users\ChineseChikki\Documents\GitHub\App-Trader\assets-service\node_modules\ts-node\src\index.ts:1077:36)
+    at Object.compile (C:\Users\ChineseChikki\Documents\GitHub\App-Trader\assets-service\node_modules\ts-node\src\index.ts:1433:41)
+    at Module.m._compile (C:\Users\ChineseChikki\Documents\GitHub\App-Trader\assets-service\node_modules\ts-node\src\index.ts:1617:30)
+    at Module._extensions..js (node:internal/modules/cjs/loader:1159:10)
+    at Object.require.extensions.<computed> [as .ts] (C:\Users\ChineseChikki\Documents\GitHub\App-Trader\assets-service\node_modules\ts-node\src\index.ts:1621:12)
+    at Module.load (node:internal/modules/cjs/loader:981:32)
+    at Function.Module._load (node:internal/modules/cjs/loader:822:12)
+    at Module.require (node:internal/modules/cjs/loader:1005:19) [assets-service] development 2024-01-23T21:27:03.147Z
+[31merror[39m: uncaughtException: ⨯ Unable to compile TypeScript:
+[96msrc/controllers/ExchangeController.ts[0m:[93m153[0m:[93m31[0m - [91merror[0m[90m TS2304: [0mCannot find name 'prisma'.
+
+[7m153[0m   const exchangePairs = await prisma.exchangePair.findMany({
+[7m   [0m [91m                              ~~~~~~[0m
+[96msrc/controllers/ExchangeController.ts[0m:[93m172[0m:[93m9[0m - [91merror[0m[90m TS2304: [0mCannot find name 'prisma'.
+
+[7m172[0m   await prisma.$disconnect();
+[7m   [0m [91m        ~~~~~~[0m
+
+TSError: ⨯ Unable to compile TypeScript:
+[96msrc/controllers/ExchangeController.ts[0m:[93m153[0m:[93m31[0m - [91merror[0m[90m TS2304: [0mCannot find name 'prisma'.
+
+[7m153[0m   const exchangePairs = await prisma.exchangePair.findMany({
+[7m   [0m [91m                              ~~~~~~[0m
+[96msrc/controllers/ExchangeController.ts[0m:[93m172[0m:[93m9[0m - [91merror[0m[90m TS2304: [0mCannot find name 'prisma'.
+
+[7m172[0m   await prisma.$disconnect();
+[7m   [0m [91m        ~~~~~~[0m
+
+    at createTSError (C:\Users\ChineseChikki\Documents\GitHub\App-Trader\assets-service\node_modules\ts-node\src\index.ts:859:12)
+    at reportTSError (C:\Users\ChineseChikki\Documents\GitHub\App-Trader\assets-service\node_modules\ts-node\src\index.ts:863:19)
+    at getOutput (C:\Users\ChineseChikki\Documents\GitHub\App-Trader\assets-service\node_modules\ts-node\src\index.ts:1077:36)
+    at Object.compile (C:\Users\ChineseChikki\Documents\GitHub\App-Trader\assets-service\node_modules\ts-node\src\index.ts:1433:41)
+    at Module.m._compile (C:\Users\ChineseChikki\Documents\GitHub\App-Trader\assets-service\node_modules\ts-node\src\index.ts:1617:30)
+    at Module._extensions..js (node:internal/modules/cjs/loader:1159:10)
+    at Object.require.extensions.<computed> [as .ts] (C:\Users\ChineseChikki\Documents\GitHub\App-Trader\assets-service\node_modules\ts-node\src\index.ts:1621:12)
+    at Module.load (node:internal/modules/cjs/loader:981:32)
+    at Function.Module._load (node:internal/modules/cjs/loader:822:12)
+    at Module.require (node:internal/modules/cjs/loader:1005:19) [assets-service] development 2024-01-23 22:27:27
+error: uncaughtException: ⨯ Unable to compile TypeScript:
+[96msrc/controllers/ExchangeController.ts[0m:[93m153[0m:[93m31[0m - [91merror[0m[90m TS2304: [0mCannot find name 'prisma'.
+
+[7m153[0m   const exchangePairs = await prisma.exchangePair.findMany({
+[7m   [0m [91m                              ~~~~~~[0m
+[96msrc/controllers/ExchangeController.ts[0m:[93m172[0m:[93m9[0m - [91merror[0m[90m TS2304: [0mCannot find name 'prisma'.
+
+[7m172[0m   await prisma.$disconnect();
+[7m   [0m [91m        ~~~~~~[0m
+
+TSError: ⨯ Unable to compile TypeScript:
+[96msrc/controllers/ExchangeController.ts[0m:[93m153[0m:[93m31[0m - [91merror[0m[90m TS2304: [0mCannot find name 'prisma'.
+
+[7m153[0m   const exchangePairs = await prisma.exchangePair.findMany({
+[7m   [0m [91m                              ~~~~~~[0m
+[96msrc/controllers/ExchangeController.ts[0m:[93m172[0m:[93m9[0m - [91merror[0m[90m TS2304: [0mCannot find name 'prisma'.
+
+[7m172[0m   await prisma.$disconnect();
+[7m   [0m [91m        ~~~~~~[0m
+
+    at createTSError (C:\Users\ChineseChikki\Documents\GitHub\App-Trader\assets-service\node_modules\ts-node\src\index.ts:859:12)
+    at reportTSError (C:\Users\ChineseChikki\Documents\GitHub\App-Trader\assets-service\node_modules\ts-node\src\index.ts:863:19)
+    at getOutput (C:\Users\ChineseChikki\Documents\GitHub\App-Trader\assets-service\node_modules\ts-node\src\index.ts:1077:36)
+    at Object.compile (C:\Users\ChineseChikki\Documents\GitHub\App-Trader\assets-service\node_modules\ts-node\src\index.ts:1433:41)
+    at Module.m._compile (C:\Users\ChineseChikki\Documents\GitHub\App-Trader\assets-service\node_modules\ts-node\src\index.ts:1617:30)
+    at Module._extensions..js (node:internal/modules/cjs/loader:1159:10)
+    at Object.require.extensions.<computed> [as .ts] (C:\Users\ChineseChikki\Documents\GitHub\App-Trader\assets-service\node_modules\ts-node\src\index.ts:1621:12)
+    at Module.load (node:internal/modules/cjs/loader:981:32)
+    at Function.Module._load (node:internal/modules/cjs/loader:822:12)
+    at Module.require (node:internal/modules/cjs/loader:1005:19) [assets-service] development 2024-01-23T21:27:27.397Z
+[31merror[39m: uncaughtException: ⨯ Unable to compile TypeScript:
+[96msrc/controllers/ExchangeController.ts[0m:[93m172[0m:[93m9[0m - [91merror[0m[90m TS2304: [0mCannot find name 'prisma'.
+
+[7m172[0m   await prisma.$disconnect();
+[7m   [0m [91m        ~~~~~~[0m
+
+TSError: ⨯ Unable to compile TypeScript:
+[96msrc/controllers/ExchangeController.ts[0m:[93m172[0m:[93m9[0m - [91merror[0m[90m TS2304: [0mCannot find name 'prisma'.
+
+[7m172[0m   await prisma.$disconnect();
+[7m   [0m [91m        ~~~~~~[0m
+
+    at createTSError (C:\Users\ChineseChikki\Documents\GitHub\App-Trader\assets-service\node_modules\ts-node\src\index.ts:859:12)
+    at reportTSError (C:\Users\ChineseChikki\Documents\GitHub\App-Trader\assets-service\node_modules\ts-node\src\index.ts:863:19)
+    at getOutput (C:\Users\ChineseChikki\Documents\GitHub\App-Trader\assets-service\node_modules\ts-node\src\index.ts:1077:36)
+    at Object.compile (C:\Users\ChineseChikki\Documents\GitHub\App-Trader\assets-service\node_modules\ts-node\src\index.ts:1433:41)
+    at Module.m._compile (C:\Users\ChineseChikki\Documents\GitHub\App-Trader\assets-service\node_modules\ts-node\src\index.ts:1617:30)
+    at Module._extensions..js (node:internal/modules/cjs/loader:1159:10)
+    at Object.require.extensions.<computed> [as .ts] (C:\Users\ChineseChikki\Documents\GitHub\App-Trader\assets-service\node_modules\ts-node\src\index.ts:1621:12)
+    at Module.load (node:internal/modules/cjs/loader:981:32)
+    at Function.Module._load (node:internal/modules/cjs/loader:822:12)
+    at Module.require (node:internal/modules/cjs/loader:1005:19) [assets-service] development 2024-01-23 22:32:00
+error: uncaughtException: ⨯ Unable to compile TypeScript:
+[96msrc/controllers/ExchangeController.ts[0m:[93m172[0m:[93m9[0m - [91merror[0m[90m TS2304: [0mCannot find name 'prisma'.
+
+[7m172[0m   await prisma.$disconnect();
+[7m   [0m [91m        ~~~~~~[0m
+
+TSError: ⨯ Unable to compile TypeScript:
+[96msrc/controllers/ExchangeController.ts[0m:[93m172[0m:[93m9[0m - [91merror[0m[90m TS2304: [0mCannot find name 'prisma'.
+
+[7m172[0m   await prisma.$disconnect();
+[7m   [0m [91m        ~~~~~~[0m
+
+    at createTSError (C:\Users\ChineseChikki\Documents\GitHub\App-Trader\assets-service\node_modules\ts-node\src\index.ts:859:12)
+    at reportTSError (C:\Users\ChineseChikki\Documents\GitHub\App-Trader\assets-service\node_modules\ts-node\src\index.ts:863:19)
+    at getOutput (C:\Users\ChineseChikki\Documents\GitHub\App-Trader\assets-service\node_modules\ts-node\src\index.ts:1077:36)
+    at Object.compile (C:\Users\ChineseChikki\Documents\GitHub\App-Trader\assets-service\node_modules\ts-node\src\index.ts:1433:41)
+    at Module.m._compile (C:\Users\ChineseChikki\Documents\GitHub\App-Trader\assets-service\node_modules\ts-node\src\index.ts:1617:30)
+    at Module._extensions..js (node:internal/modules/cjs/loader:1159:10)
+    at Object.require.extensions.<computed> [as .ts] (C:\Users\ChineseChikki\Documents\GitHub\App-Trader\assets-service\node_modules\ts-node\src\index.ts:1621:12)
+    at Module.load (node:internal/modules/cjs/loader:981:32)
+    at Function.Module._load (node:internal/modules/cjs/loader:822:12)
+    at Module.require (node:internal/modules/cjs/loader:1005:19) [assets-service] development 2024-01-23T21:32:00.449Z
+[31merror[39m: uncaughtException: ⨯ Unable to compile TypeScript:
+[96msrc/routes/ExchangeRoutes.ts[0m:[93m7[0m:[93m2[0m - [91merror[0m[90m TS2305: [0mModule '"../controllers/ExchangeController"' has no exported member 'currenciesByExchangeHandler'.
+
+[7m7[0m  currenciesByExchangeHandler,
+[7m [0m [91m ~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+TSError: ⨯ Unable to compile TypeScript:
+[96msrc/routes/ExchangeRoutes.ts[0m:[93m7[0m:[93m2[0m - [91merror[0m[90m TS2305: [0mModule '"../controllers/ExchangeController"' has no exported member 'currenciesByExchangeHandler'.
+
+[7m7[0m  currenciesByExchangeHandler,
+[7m [0m [91m ~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+    at createTSError (C:\Users\ChineseChikki\Documents\GitHub\App-Trader\assets-service\node_modules\ts-node\src\index.ts:859:12)
+    at reportTSError (C:\Users\ChineseChikki\Documents\GitHub\App-Trader\assets-service\node_modules\ts-node\src\index.ts:863:19)
+    at getOutput (C:\Users\ChineseChikki\Documents\GitHub\App-Trader\assets-service\node_modules\ts-node\src\index.ts:1077:36)
+    at Object.compile (C:\Users\ChineseChikki\Documents\GitHub\App-Trader\assets-service\node_modules\ts-node\src\index.ts:1433:41)
+    at Module.m._compile (C:\Users\ChineseChikki\Documents\GitHub\App-Trader\assets-service\node_modules\ts-node\src\index.ts:1617:30)
+    at Module._extensions..js (node:internal/modules/cjs/loader:1159:10)
+    at Object.require.extensions.<computed> [as .ts] (C:\Users\ChineseChikki\Documents\GitHub\App-Trader\assets-service\node_modules\ts-node\src\index.ts:1621:12)
+    at Module.load (node:internal/modules/cjs/loader:981:32)
+    at Function.Module._load (node:internal/modules/cjs/loader:822:12)
+    at Module.require (node:internal/modules/cjs/loader:1005:19) [assets-service] development 2024-01-23 22:34:19
+error: uncaughtException: ⨯ Unable to compile TypeScript:
+[96msrc/routes/ExchangeRoutes.ts[0m:[93m7[0m:[93m2[0m - [91merror[0m[90m TS2305: [0mModule '"../controllers/ExchangeController"' has no exported member 'currenciesByExchangeHandler'.
+
+[7m7[0m  currenciesByExchangeHandler,
+[7m [0m [91m ~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+TSError: ⨯ Unable to compile TypeScript:
+[96msrc/routes/ExchangeRoutes.ts[0m:[93m7[0m:[93m2[0m - [91merror[0m[90m TS2305: [0mModule '"../controllers/ExchangeController"' has no exported member 'currenciesByExchangeHandler'.
+
+[7m7[0m  currenciesByExchangeHandler,
+[7m [0m [91m ~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+    at createTSError (C:\Users\ChineseChikki\Documents\GitHub\App-Trader\assets-service\node_modules\ts-node\src\index.ts:859:12)
+    at reportTSError (C:\Users\ChineseChikki\Documents\GitHub\App-Trader\assets-service\node_modules\ts-node\src\index.ts:863:19)
+    at getOutput (C:\Users\ChineseChikki\Documents\GitHub\App-Trader\assets-service\node_modules\ts-node\src\index.ts:1077:36)
+    at Object.compile (C:\Users\ChineseChikki\Documents\GitHub\App-Trader\assets-service\node_modules\ts-node\src\index.ts:1433:41)
+    at Module.m._compile (C:\Users\ChineseChikki\Documents\GitHub\App-Trader\assets-service\node_modules\ts-node\src\index.ts:1617:30)
+    at Module._extensions..js (node:internal/modules/cjs/loader:1159:10)
+    at Object.require.extensions.<computed> [as .ts] (C:\Users\ChineseChikki\Documents\GitHub\App-Trader\assets-service\node_modules\ts-node\src\index.ts:1621:12)
+    at Module.load (node:internal/modules/cjs/loader:981:32)
+    at Function.Module._load (node:internal/modules/cjs/loader:822:12)
+    at Module.require (node:internal/modules/cjs/loader:1005:19) [assets-service] development 2024-01-23T21:34:19.753Z
+[31merror[39m: uncaughtException: ⨯ Unable to compile TypeScript:
+[96msrc/routes/ExchangeRoutes.ts[0m:[93m7[0m:[93m2[0m - [91merror[0m[90m TS2305: [0mModule '"../controllers/ExchangeController"' has no exported member 'currenciesByExchangeHandler'.
+
+[7m7[0m  currenciesByExchangeHandler,
+[7m [0m [91m ~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+TSError: ⨯ Unable to compile TypeScript:
+[96msrc/routes/ExchangeRoutes.ts[0m:[93m7[0m:[93m2[0m - [91merror[0m[90m TS2305: [0mModule '"../controllers/ExchangeController"' has no exported member 'currenciesByExchangeHandler'.
+
+[7m7[0m  currenciesByExchangeHandler,
+[7m [0m [91m ~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+    at createTSError (C:\Users\ChineseChikki\Documents\GitHub\App-Trader\assets-service\node_modules\ts-node\src\index.ts:859:12)
+    at reportTSError (C:\Users\ChineseChikki\Documents\GitHub\App-Trader\assets-service\node_modules\ts-node\src\index.ts:863:19)
+    at getOutput (C:\Users\ChineseChikki\Documents\GitHub\App-Trader\assets-service\node_modules\ts-node\src\index.ts:1077:36)
+    at Object.compile (C:\Users\ChineseChikki\Documents\GitHub\App-Trader\assets-service\node_modules\ts-node\src\index.ts:1433:41)
+    at Module.m._compile (C:\Users\ChineseChikki\Documents\GitHub\App-Trader\assets-service\node_modules\ts-node\src\index.ts:1617:30)
+    at Module._extensions..js (node:internal/modules/cjs/loader:1159:10)
+    at Object.require.extensions.<computed> [as .ts] (C:\Users\ChineseChikki\Documents\GitHub\App-Trader\assets-service\node_modules\ts-node\src\index.ts:1621:12)
+    at Module.load (node:internal/modules/cjs/loader:981:32)
+    at Function.Module._load (node:internal/modules/cjs/loader:822:12)
+    at Module.require (node:internal/modules/cjs/loader:1005:19) [assets-service] development 2024-01-23 22:36:50
+error: uncaughtException: ⨯ Unable to compile TypeScript:
+[96msrc/routes/ExchangeRoutes.ts[0m:[93m7[0m:[93m2[0m - [91merror[0m[90m TS2305: [0mModule '"../controllers/ExchangeController"' has no exported member 'currenciesByExchangeHandler'.
+
+[7m7[0m  currenciesByExchangeHandler,
+[7m [0m [91m ~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+TSError: ⨯ Unable to compile TypeScript:
+[96msrc/routes/ExchangeRoutes.ts[0m:[93m7[0m:[93m2[0m - [91merror[0m[90m TS2305: [0mModule '"../controllers/ExchangeController"' has no exported member 'currenciesByExchangeHandler'.
+
+[7m7[0m  currenciesByExchangeHandler,
+[7m [0m [91m ~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+    at createTSError (C:\Users\ChineseChikki\Documents\GitHub\App-Trader\assets-service\node_modules\ts-node\src\index.ts:859:12)
+    at reportTSError (C:\Users\ChineseChikki\Documents\GitHub\App-Trader\assets-service\node_modules\ts-node\src\index.ts:863:19)
+    at getOutput (C:\Users\ChineseChikki\Documents\GitHub\App-Trader\assets-service\node_modules\ts-node\src\index.ts:1077:36)
+    at Object.compile (C:\Users\ChineseChikki\Documents\GitHub\App-Trader\assets-service\node_modules\ts-node\src\index.ts:1433:41)
+    at Module.m._compile (C:\Users\ChineseChikki\Documents\GitHub\App-Trader\assets-service\node_modules\ts-node\src\index.ts:1617:30)
+    at Module._extensions..js (node:internal/modules/cjs/loader:1159:10)
+    at Object.require.extensions.<computed> [as .ts] (C:\Users\ChineseChikki\Documents\GitHub\App-Trader\assets-service\node_modules\ts-node\src\index.ts:1621:12)
+    at Module.load (node:internal/modules/cjs/loader:981:32)
+    at Function.Module._load (node:internal/modules/cjs/loader:822:12)
+    at Module.require (node:internal/modules/cjs/loader:1005:19) [assets-service] development 2024-01-23T21:36:50.981Z
+[31merror[39m: uncaughtException: ⨯ Unable to compile TypeScript:
+[96msrc/routes/ExchangeRoutes.ts[0m:[93m14[0m:[93m2[0m - [91merror[0m[90m TS2305: [0mModule '"../middlewares/ExchangeMiddleware"' has no exported member 'validateGetCurrenciesRequest'.
+
+[7m14[0m  validateGetCurrenciesRequest,
+[7m  [0m [91m ~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+TSError: ⨯ Unable to compile TypeScript:
+[96msrc/routes/ExchangeRoutes.ts[0m:[93m14[0m:[93m2[0m - [91merror[0m[90m TS2305: [0mModule '"../middlewares/ExchangeMiddleware"' has no exported member 'validateGetCurrenciesRequest'.
+
+[7m14[0m  validateGetCurrenciesRequest,
+[7m  [0m [91m ~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+    at createTSError (C:\Users\ChineseChikki\Documents\GitHub\App-Trader\assets-service\node_modules\ts-node\src\index.ts:859:12)
+    at reportTSError (C:\Users\ChineseChikki\Documents\GitHub\App-Trader\assets-service\node_modules\ts-node\src\index.ts:863:19)
+    at getOutput (C:\Users\ChineseChikki\Documents\GitHub\App-Trader\assets-service\node_modules\ts-node\src\index.ts:1077:36)
+    at Object.compile (C:\Users\ChineseChikki\Documents\GitHub\App-Trader\assets-service\node_modules\ts-node\src\index.ts:1433:41)
+    at Module.m._compile (C:\Users\ChineseChikki\Documents\GitHub\App-Trader\assets-service\node_modules\ts-node\src\index.ts:1617:30)
+    at Module._extensions..js (node:internal/modules/cjs/loader:1159:10)
+    at Object.require.extensions.<computed> [as .ts] (C:\Users\ChineseChikki\Documents\GitHub\App-Trader\assets-service\node_modules\ts-node\src\index.ts:1621:12)
+    at Module.load (node:internal/modules/cjs/loader:981:32)
+    at Function.Module._load (node:internal/modules/cjs/loader:822:12)
+    at Module.require (node:internal/modules/cjs/loader:1005:19) [assets-service] development 2024-01-23 22:39:01
+error: uncaughtException: ⨯ Unable to compile TypeScript:
+[96msrc/routes/ExchangeRoutes.ts[0m:[93m14[0m:[93m2[0m - [91merror[0m[90m TS2305: [0mModule '"../middlewares/ExchangeMiddleware"' has no exported member 'validateGetCurrenciesRequest'.
+
+[7m14[0m  validateGetCurrenciesRequest,
+[7m  [0m [91m ~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+TSError: ⨯ Unable to compile TypeScript:
+[96msrc/routes/ExchangeRoutes.ts[0m:[93m14[0m:[93m2[0m - [91merror[0m[90m TS2305: [0mModule '"../middlewares/ExchangeMiddleware"' has no exported member 'validateGetCurrenciesRequest'.
+
+[7m14[0m  validateGetCurrenciesRequest,
+[7m  [0m [91m ~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+    at createTSError (C:\Users\ChineseChikki\Documents\GitHub\App-Trader\assets-service\node_modules\ts-node\src\index.ts:859:12)
+    at reportTSError (C:\Users\ChineseChikki\Documents\GitHub\App-Trader\assets-service\node_modules\ts-node\src\index.ts:863:19)
+    at getOutput (C:\Users\ChineseChikki\Documents\GitHub\App-Trader\assets-service\node_modules\ts-node\src\index.ts:1077:36)
+    at Object.compile (C:\Users\ChineseChikki\Documents\GitHub\App-Trader\assets-service\node_modules\ts-node\src\index.ts:1433:41)
+    at Module.m._compile (C:\Users\ChineseChikki\Documents\GitHub\App-Trader\assets-service\node_modules\ts-node\src\index.ts:1617:30)
+    at Module._extensions..js (node:internal/modules/cjs/loader:1159:10)
+    at Object.require.extensions.<computed> [as .ts] (C:\Users\ChineseChikki\Documents\GitHub\App-Trader\assets-service\node_modules\ts-node\src\index.ts:1621:12)
+    at Module.load (node:internal/modules/cjs/loader:981:32)
+    at Function.Module._load (node:internal/modules/cjs/loader:822:12)
+    at Module.require (node:internal/modules/cjs/loader:1005:19) [assets-service] development 2024-01-23T21:39:01.610Z

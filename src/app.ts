@@ -23,7 +23,8 @@ initSecrets({
 	secretsJson,
 })
 	.then(() => {
-		const port = process.env.PORT;
+		// const port = process.env.PORT;
+		const port = 5001;
 		app.listen(port, async () => {
 			await initDatabase();
 			startServer();

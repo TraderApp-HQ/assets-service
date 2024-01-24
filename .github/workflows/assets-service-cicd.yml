@@ -47,6 +47,7 @@ jobs:
         run: npm run start &
 
   docker_build_then_push_to_ecr_and_ecs:
+    needs: build
     runs-on: ubuntu-latest
     environment:
       name: ${{ github.event_name == 'pull_request' && 'dev' || github.ref_name }}

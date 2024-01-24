@@ -33,14 +33,14 @@ jobs:
       - name: Build # build the node
         # - this uses the build script in the script file
         run: npm run build
-      
-      - name: Generate prisma client
-        run: npm run codegen
 
       - name: Apply all pending migrations to the database
         run: npx prisma migrate deploy
         env:
           DATABASE_URL: ${{ secrets.DATABASE_URL }}
+      
+      - name: Generate prisma client
+        run: npm run codegen
 
       - name: Start #  start the server
         # - this uses the start script in the script file

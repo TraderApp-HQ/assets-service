@@ -34,11 +34,11 @@ jobs:
         # - this uses the build script in the script file
         run: npm run build
 
-      - name: Apply all pending migrations to the database
-        run: npx prisma migrate deploy
-        env:
-          DATABASE_URL: ${{ secrets.DATABASE_URL }}
-      
+      # - name: Apply all pending migrations to the database
+      #   run: npx prisma migrate deploy
+      #   env:
+      #     DATABASE_URL: ${{ secrets.DATABASE_URL }}
+     
       - name: Generate prisma client
         run: npm run codegen
 

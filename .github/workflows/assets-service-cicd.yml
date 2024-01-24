@@ -1,11 +1,16 @@
 name: assets-service-cicd-pipeline
 
 on:
+  workflow_run:
+    workflows: ["assets-service-ci-test"]
+    types:
+      - completed
   push:
     branches:
       - dev
-      - staging
-      - main
+  pull_request:
+    branches:
+      - dev
   workflow_dispatch: # manual runs of the pipeline.
 
 jobs:

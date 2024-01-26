@@ -56,13 +56,7 @@ export async function getAllAssetsInExchange(req: Request, res: Response, next: 
 	try {
 		const db = await prismaClient();
 
-		const exchangeId: number | undefined = req.body.exchangeId;
-
-		if (exchangeId === undefined) {
-			const error = new Error("Exchange ID is missing in the request body");
-			error.name = RESPONSE_CODES.badRequest;
-			throw error;
-		}
+		const exchangeId = Number(req.params.exchangeId);
 
 		const assetsInExchange = await db.exchangePair.findMany({
 			where: {
@@ -71,9 +65,7 @@ export async function getAllAssetsInExchange(req: Request, res: Response, next: 
 		});
 
 		if (!assetsInExchange || assetsInExchange.length === 0) {
-			const error = new Error(`No assets found in the exchange with ID '${exchangeId}'`);
-			error.name = RESPONSE_CODES.notFound;
-			throw error;
+			return [];
 		}
 
 		res.status(200).json(apiResponseHandler({ object: assetsInExchange }));
@@ -91,21 +83,16 @@ export async function updateExchangeInfo(req: Request, res: Response, next: Next
 
 		const { description, isTradingActive, makerFee, takerFee } = req.body;
 
+		const data = {
+			description,
+			isTradingActive,
+			makerFee,
+			takerFee,
+		};
 		const updatedExchange = await db.exchange.update({
 			where: { id: exchangeId },
-			data: {
-				description,
-				isTradingActive,
-				makerFee,
-				takerFee,
-			},
+			data,
 		});
-
-		if (!updatedExchange) {
-			const error = new Error("Exchange not found");
-			error.name = RESPONSE_CODES.notFound;
-			throw error;
-		}
 
 		res.status(200).json(apiResponseHandler({ object: updatedExchange }));
 	} catch (err) {
@@ -117,13 +104,11 @@ export async function getCurrenciesForExchange(req: Request, res: Response, next
 	try {
 		const exchangeId = Number(req.params.exchangeId);
 
-		const currencyId = Number(req.params.currencyId);
-
 		const db = await prismaClient();
+
 		const exchangePairs = await db.exchangePair.findMany({
 			where: {
 				exchangeId,
-				currencyId,
 			},
 			include: {
 				exchange: true,
@@ -136,9 +121,7 @@ export async function getCurrenciesForExchange(req: Request, res: Response, next
 		});
 
 		if (exchangePairs.length === 0) {
-			const error = new Error("No currencies found for the exchange");
-			error.name = RESPONSE_CODES.notFound;
-			throw error;
+			return [];
 		}
 
 		res.status(200).json(apiResponseHandler({ object: exchangePairs }));

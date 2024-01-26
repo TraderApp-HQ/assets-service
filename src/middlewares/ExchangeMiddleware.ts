@@ -47,11 +47,7 @@ export async function validateExchangeRequest(req: Request, _res: Response, next
 	}
 }
 
-export async function validateGetAllAssetsRequest(
-	req: Request,
-	_res: Response,
-	next: NextFunction
-) {
+export async function validateExchangeIdRequest(req: Request, _res: Response, next: NextFunction) {
 	try {
 		// check accessToken and admin role
 		await checkAdmin(req);
@@ -60,7 +56,7 @@ export async function validateGetAllAssetsRequest(
 			exchangeId: Joi.number().required().label("Exchange Id"),
 		});
 
-		const { error } = schema.validate(req.body);
+		const { error } = schema.validate(req.params);
 
 		if (error) {
 			error.message = error.message.replace(/\"/g, "");
@@ -83,53 +79,28 @@ export async function validateUpdateExchangeInfoRequest(
 		// check accessToken and admin role
 		await checkAdmin(req);
 
-		const exchangeId = Number(req.params.id);
+		const exchangeId = req.params;
 
 		const { description, isTradingActive, makerFee, takerFee } = req.body;
 
 		const schema = Joi.object({
-			id: Joi.number().required().label("Exchange Id"),
+			exchangeId: Joi.number().required().label("Exchange Id"),
 			description: Joi.string().optional().label("Description"),
 			isTradingActive: Joi.boolean().optional().label("Is Trading Active"),
 			makerFee: Joi.number().optional().label("Maker Fee"),
 			takerFee: Joi.number().optional().label("Taker Fee"),
 		});
 
-		const { error } = schema.validate({
-			id: exchangeId,
+		const data = {
 			description,
 			isTradingActive,
 			makerFee,
 			takerFee,
+		};
+		const { error } = schema.validate({
+			exchangeId,
+			data,
 		});
-
-		if (error) {
-			error.message = error.message.replace(/\"/g, "");
-			next(error);
-			return;
-		}
-
-		next();
-	} catch (err: any) {
-		next(err);
-	}
-}
-
-export async function validateGetCurrenciesRequest(
-	req: Request,
-	_res: Response,
-	next: NextFunction
-) {
-	try {
-		// check accessToken and admin role
-		await checkAdmin(req);
-
-		const schema = Joi.object({
-			exchangeId: Joi.number().required().label("Exchange Id"),
-			currencyId: Joi.number().required().label("Currency Id"),
-		});
-
-		const { error } = schema.validate(req.params);
 
 		if (error) {
 			error.message = error.message.replace(/\"/g, "");

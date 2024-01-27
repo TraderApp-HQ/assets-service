@@ -44,6 +44,7 @@ jobs:
               run: npm run start &
 
     Test_if_the_update_can_build_into_an_image:
+        needs: build
         runs-on: ubuntu-latest
         environment:
           name: ${{ github.event_name == 'pull_request' && 'dev' || github.ref_name }}

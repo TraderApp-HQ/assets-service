@@ -47,29 +47,6 @@ export async function validateExchangeRequest(req: Request, _res: Response, next
 	}
 }
 
-export async function validateExchangeIdRequest(req: Request, _res: Response, next: NextFunction) {
-	try {
-		// check accessToken and admin role
-		await checkAdmin(req);
-
-		const schema = Joi.object({
-			exchangeId: Joi.number().required().label("Exchange Id"),
-		});
-
-		const { error } = schema.validate(req.params);
-
-		if (error) {
-			error.message = error.message.replace(/\"/g, "");
-			next(error);
-			return;
-		}
-
-		next();
-	} catch (err: any) {
-		next(err);
-	}
-}
-
 export async function validateUpdateExchangeInfoRequest(
 	req: Request,
 	_res: Response,

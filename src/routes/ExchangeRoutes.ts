@@ -10,7 +10,6 @@ import {
 	validateExchangesRequest,
 	validateExchangeRequest,
 	validateUpdateExchangeInfoRequest,
-	validateExchangeIdRequest,
 } from "../middlewares/ExchangeMiddleware";
 
 const router = Router();
@@ -18,7 +17,7 @@ const router = Router();
 router.get("/", validateExchangesRequest, getAllExchanges);
 router.get("/:id", validateExchangeRequest, getExchangeById);
 router.patch("/:id", validateUpdateExchangeInfoRequest, updateExchangeInfo);
-router.get("/:exchangeId", validateExchangeIdRequest, getAllAssetsInExchange);
-router.get("/:exchangeId", validateExchangeIdRequest, getCurrenciesForExchange);
+router.get("/:exchangeId", validateExchangeRequest, getAllAssetsInExchange);
+router.get("/:exchangeId", validateExchangeRequest, getCurrenciesForExchange);
 
 export default router;

@@ -64,10 +64,6 @@ export async function getAllAssetsInExchange(req: Request, res: Response, next: 
 			},
 		});
 
-		if (!assetsInExchange || assetsInExchange.length === 0) {
-			return [];
-		}
-
 		res.status(200).json(apiResponseHandler({ object: assetsInExchange }));
 	} catch (err) {
 		next(err);
@@ -100,6 +96,7 @@ export async function updateExchangeInfo(req: Request, res: Response, next: Next
 	}
 }
 
+// Function to get all currencies in an exchange
 export async function getCurrenciesForExchange(req: Request, res: Response, next: NextFunction) {
 	try {
 		const exchangeId = Number(req.params.exchangeId);
@@ -119,10 +116,6 @@ export async function getCurrenciesForExchange(req: Request, res: Response, next
 				},
 			},
 		});
-
-		if (exchangePairs.length === 0) {
-			return [];
-		}
 
 		res.status(200).json(apiResponseHandler({ object: exchangePairs }));
 	} catch (err) {

@@ -2,7 +2,6 @@ import { Request, Response, NextFunction } from "express";
 import { prismaClient } from "../config/database";
 import { apiResponseHandler } from "@traderapp/shared-resources";
 import { RESPONSE_CODES } from "../config/constants";
-import { Exchange } from "@prisma/client";
 
 //	A function to get all Exchange
 export async function getAllExchanges(req: Request, res: Response, next: NextFunction) {
@@ -80,7 +79,7 @@ export async function updateExchangeInfo(req: Request, res: Response, next: Next
 
 		const { description, isTradingActive, makerFee, takerFee } = req.body;
 
-		const updateData: Partial<Exchange> = {
+		const updateData = {
 			description,
 			isTradingActive,
 			makerFee,

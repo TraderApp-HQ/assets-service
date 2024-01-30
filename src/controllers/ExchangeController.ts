@@ -1,15 +1,21 @@
 import { Request, Response, NextFunction } from "express";
 import { prismaClient } from "../config/database";
 import { apiResponseHandler } from "@traderapp/shared-resources";
-import { RESPONSE_CODES, ResponseMessage } from "../config/constants";
+import {
+	DEFAULT_PAGE,
+	DEFAULT_ROWS_PER_PAGE,
+	RESPONSE_CODES,
+	ResponseMessage,
+} from "../config/constants";
 
 //	A function to get all Exchange
 export async function getAllExchanges(req: Request, res: Response, next: NextFunction) {
 	try {
 		const db = await prismaClient();
 
-		const page: number = parseInt(req.query.page as string) || 1;
-		let rowsPerPage: number = parseInt(req.query.rowsPerPage as string) || 10;
+		const page: number = parseInt(req.query.page as string, 10) || DEFAULT_PAGE;
+		let rowsPerPage: number =
+			parseInt(req.query.rowsPerPage as string, 10) || DEFAULT_ROWS_PER_PAGE;
 		rowsPerPage = rowsPerPage > 100 ? 100 : rowsPerPage;
 
 		const order = (req.query.orderBy as string) || "asc";
@@ -22,7 +28,9 @@ export async function getAllExchanges(req: Request, res: Response, next: NextFun
 				name: order as "asc" | "desc",
 			},
 		});
-		res.status(200).json(apiResponseHandler({ object: allExchanges }));
+		res.status(200).json(
+			apiResponseHandler({ object: allExchanges, message: ResponseMessage.GET_EXCHANGES })
+		);
 	} catch (err) {
 		next(err);
 	}
@@ -45,7 +53,9 @@ export async function getExchangeById(req: Request, res: Response, next: NextFun
 			throw error;
 		}
 
-		res.status(200).json(apiResponseHandler({ object: exchange }));
+		res.status(200).json(
+			apiResponseHandler({ object: exchange, message: ResponseMessage.GET_EXCHANGE })
+		);
 	} catch (err) {
 		next(err);
 	}
@@ -64,7 +74,9 @@ export async function getAllAssetsInExchange(req: Request, res: Response, next: 
 			},
 		});
 
-		res.status(200).json(apiResponseHandler({ object: assetsInExchange }));
+		res.status(200).json(
+			apiResponseHandler({ object: assetsInExchange, message: ResponseMessage.GET_ASSETS })
+		);
 	} catch (err) {
 		next(err);
 	}
@@ -123,7 +135,9 @@ export async function getCurrenciesForExchange(req: Request, res: Response, next
 			},
 		});
 
-		res.status(200).json(apiResponseHandler({ object: exchangePairs }));
+		res.status(200).json(
+			apiResponseHandler({ object: exchangePairs, message: ResponseMessage.GET_CURRENCIES })
+		);
 	} catch (err) {
 		next(err);
 	}

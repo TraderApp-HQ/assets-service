@@ -1,6 +1,7 @@
 import { Request, Response, NextFunction } from "express";
 import Joi from "joi";
 import { checkAdmin } from "../utils/tokens";
+import { DEFAULT_PAGE, DEFAULT_ROWS_PER_PAGE } from "../config/constants";
 
 export async function validateExchangesRequest(req: Request, _res: Response, next: NextFunction) {
 	try {
@@ -8,8 +9,13 @@ export async function validateExchangesRequest(req: Request, _res: Response, nex
 		await checkAdmin(req);
 
 		const querySchema = Joi.object({
-			rowsPerPage: Joi.number().integer().min(1).positive().label("Rows per page"),
-			page: Joi.number().integer().min(1).label("Page"),
+			rowsPerPage: Joi.number()
+				.integer()
+				.min(1)
+				.positive()
+				.default(DEFAULT_ROWS_PER_PAGE)
+				.label("Rows per page"),
+			page: Joi.number().integer().min(1).default(DEFAULT_PAGE).label("Page"),
 		});
 		const { error } = querySchema.validate(req.query, { abortEarly: true });
 

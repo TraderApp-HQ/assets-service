@@ -1488,3 +1488,19 @@ TSError: ⨯ Unable to compile TypeScript:
     at Module.load (node:internal/modules/cjs/loader:981:32)
     at Function.Module._load (node:internal/modules/cjs/loader:822:12)
     at Module.require (node:internal/modules/cjs/loader:1005:19) [assets-service] development 2024-01-30T07:38:49.445Z
+[31merror[39m: uncaughtException: listen EADDRINUSE: address already in use :::8080
+Error: listen EADDRINUSE: address already in use :::8080
+    at Server.setupListenHandle [as _listen2] (node:net:1372:16)
+    at listenInCluster (node:net:1420:12)
+    at Server.listen (node:net:1508:7)
+    at Function.listen (C:\Users\ChineseChikki\Documents\GitHub\App-Trader\assets-service\node_modules\express\lib\application.js:635:24)
+    at C:\Users\ChineseChikki\Documents\GitHub\App-Trader\assets-service\src\app.ts:27:7
+    at processTicksAndRejections (node:internal/process/task_queues:96:5) [assets-service] development 2024-01-30 14:26:28
+error: uncaughtException: listen EADDRINUSE: address already in use :::8080
+Error: listen EADDRINUSE: address already in use :::8080
+    at Server.setupListenHandle [as _listen2] (node:net:1372:16)
+    at listenInCluster (node:net:1420:12)
+    at Server.listen (node:net:1508:7)
+    at Function.listen (C:\Users\ChineseChikki\Documents\GitHub\App-Trader\assets-service\node_modules\express\lib\application.js:635:24)
+    at C:\Users\ChineseChikki\Documents\GitHub\App-Trader\assets-service\src\app.ts:27:7
+    at processTicksAndRejections (node:internal/process/task_queues:96:5) [assets-service] development 2024-01-30T13:26:28.633Z

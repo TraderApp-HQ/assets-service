@@ -29,3 +29,7 @@ export const ResponseType = {
 	SUCCESS: "success",
 	ERROR: "error",
 };
+
+export const ResponseMessage = {
+	UPDATE_EXCHANGE: "Exchange Updated successfully",
+};

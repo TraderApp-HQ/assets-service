@@ -1,7 +1,7 @@
 import { Request, Response, NextFunction } from "express";
 import { prismaClient } from "../config/database";
 import { apiResponseHandler } from "@traderapp/shared-resources";
-import { RESPONSE_CODES } from "../config/constants";
+import { RESPONSE_CODES, ResponseMessage } from "../config/constants";
 
 //	A function to get all Exchange
 export async function getAllExchanges(req: Request, res: Response, next: NextFunction) {
@@ -91,7 +91,12 @@ export async function updateExchangeInfo(req: Request, res: Response, next: Next
 			data: updateData,
 		});
 
-		res.status(200).json(apiResponseHandler({ object: updatedExchange }));
+		res.status(200).json(
+			apiResponseHandler({
+				object: updatedExchange,
+				message: ResponseMessage.UPDATE_EXCHANGE,
+			})
+		);
 	} catch (err) {
 		next(err);
 	}

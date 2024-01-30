@@ -1424,3 +1424,67 @@ Error: getaddrinfo ENOTFOUND secretsmanager.eu-west-1.amazonaws.com
 error: uncaughtException: getaddrinfo ENOTFOUND secretsmanager.eu-west-1.amazonaws.com
 Error: getaddrinfo ENOTFOUND secretsmanager.eu-west-1.amazonaws.com
     at GetAddrInfoReqWrap.onlookup [as oncomplete] (node:dns:71:26) [assets-service] development 2024-01-29T11:42:32.626Z
+[31merror[39m: uncaughtException: ⨯ Unable to compile TypeScript:
+[96msrc/controllers/ExchangeController.ts[0m:[93m94[0m:[93m79[0m - [91merror[0m[90m TS2345: [0mArgument of type '{ message: string; upda: any; }' is not assignable to parameter of type 'APIResponseInput'.
+  Object literal may only specify known properties, and 'upda' does not exist in type 'APIResponseInput'.
+
+[7m94[0m   res.status(200).json(apiResponseHandler({ message: "Update was successful", upda }));
+[7m  [0m [91m                                                                              ~~~~[0m
+[96msrc/controllers/ExchangeController.ts[0m:[93m94[0m:[93m79[0m - [91merror[0m[90m TS18004: [0mNo value exists in scope for the shorthand property 'upda'. Either declare one or provide an initializer.
+
+[7m94[0m   res.status(200).json(apiResponseHandler({ message: "Update was successful", upda }));
+[7m  [0m [91m                                                                              ~~~~[0m
+
+TSError: ⨯ Unable to compile TypeScript:
+[96msrc/controllers/ExchangeController.ts[0m:[93m94[0m:[93m79[0m - [91merror[0m[90m TS2345: [0mArgument of type '{ message: string; upda: any; }' is not assignable to parameter of type 'APIResponseInput'.
+  Object literal may only specify known properties, and 'upda' does not exist in type 'APIResponseInput'.
+
+[7m94[0m   res.status(200).json(apiResponseHandler({ message: "Update was successful", upda }));
+[7m  [0m [91m                                                                              ~~~~[0m
+[96msrc/controllers/ExchangeController.ts[0m:[93m94[0m:[93m79[0m - [91merror[0m[90m TS18004: [0mNo value exists in scope for the shorthand property 'upda'. Either declare one or provide an initializer.
+
+[7m94[0m   res.status(200).json(apiResponseHandler({ message: "Update was successful", upda }));
+[7m  [0m [91m                                                                              ~~~~[0m
+
+    at createTSError (C:\Users\ChineseChikki\Documents\GitHub\App-Trader\assets-service\node_modules\ts-node\src\index.ts:859:12)
+    at reportTSError (C:\Users\ChineseChikki\Documents\GitHub\App-Trader\assets-service\node_modules\ts-node\src\index.ts:863:19)
+    at getOutput (C:\Users\ChineseChikki\Documents\GitHub\App-Trader\assets-service\node_modules\ts-node\src\index.ts:1077:36)
+    at Object.compile (C:\Users\ChineseChikki\Documents\GitHub\App-Trader\assets-service\node_modules\ts-node\src\index.ts:1433:41)
+    at Module.m._compile (C:\Users\ChineseChikki\Documents\GitHub\App-Trader\assets-service\node_modules\ts-node\src\index.ts:1617:30)
+    at Module._extensions..js (node:internal/modules/cjs/loader:1159:10)
+    at Object.require.extensions.<computed> [as .ts] (C:\Users\ChineseChikki\Documents\GitHub\App-Trader\assets-service\node_modules\ts-node\src\index.ts:1621:12)
+    at Module.load (node:internal/modules/cjs/loader:981:32)
+    at Function.Module._load (node:internal/modules/cjs/loader:822:12)
+    at Module.require (node:internal/modules/cjs/loader:1005:19) [assets-service] development 2024-01-30 08:38:49
+error: uncaughtException: ⨯ Unable to compile TypeScript:
+[96msrc/controllers/ExchangeController.ts[0m:[93m94[0m:[93m79[0m - [91merror[0m[90m TS2345: [0mArgument of type '{ message: string; upda: any; }' is not assignable to parameter of type 'APIResponseInput'.
+  Object literal may only specify known properties, and 'upda' does not exist in type 'APIResponseInput'.
+
+[7m94[0m   res.status(200).json(apiResponseHandler({ message: "Update was successful", upda }));
+[7m  [0m [91m                                                                              ~~~~[0m
+[96msrc/controllers/ExchangeController.ts[0m:[93m94[0m:[93m79[0m - [91merror[0m[90m TS18004: [0mNo value exists in scope for the shorthand property 'upda'. Either declare one or provide an initializer.
+
+[7m94[0m   res.status(200).json(apiResponseHandler({ message: "Update was successful", upda }));
+[7m  [0m [91m                                                                              ~~~~[0m
+
+TSError: ⨯ Unable to compile TypeScript:
+[96msrc/controllers/ExchangeController.ts[0m:[93m94[0m:[93m79[0m - [91merror[0m[90m TS2345: [0mArgument of type '{ message: string; upda: any; }' is not assignable to parameter of type 'APIResponseInput'.
+  Object literal may only specify known properties, and 'upda' does not exist in type 'APIResponseInput'.
+
+[7m94[0m   res.status(200).json(apiResponseHandler({ message: "Update was successful", upda }));
+[7m  [0m [91m                                                                              ~~~~[0m
+[96msrc/controllers/ExchangeController.ts[0m:[93m94[0m:[93m79[0m - [91merror[0m[90m TS18004: [0mNo value exists in scope for the shorthand property 'upda'. Either declare one or provide an initializer.
+
+[7m94[0m   res.status(200).json(apiResponseHandler({ message: "Update was successful", upda }));
+[7m  [0m [91m                                                                              ~~~~[0m
+
+    at createTSError (C:\Users\ChineseChikki\Documents\GitHub\App-Trader\assets-service\node_modules\ts-node\src\index.ts:859:12)
+    at reportTSError (C:\Users\ChineseChikki\Documents\GitHub\App-Trader\assets-service\node_modules\ts-node\src\index.ts:863:19)
+    at getOutput (C:\Users\ChineseChikki\Documents\GitHub\App-Trader\assets-service\node_modules\ts-node\src\index.ts:1077:36)
+    at Object.compile (C:\Users\ChineseChikki\Documents\GitHub\App-Trader\assets-service\node_modules\ts-node\src\index.ts:1433:41)
+    at Module.m._compile (C:\Users\ChineseChikki\Documents\GitHub\App-Trader\assets-service\node_modules\ts-node\src\index.ts:1617:30)
+    at Module._extensions..js (node:internal/modules/cjs/loader:1159:10)
+    at Object.require.extensions.<computed> [as .ts] (C:\Users\ChineseChikki\Documents\GitHub\App-Trader\assets-service\node_modules\ts-node\src\index.ts:1621:12)
+    at Module.load (node:internal/modules/cjs/loader:981:32)
+    at Function.Module._load (node:internal/modules/cjs/loader:822:12)
+    at Module.require (node:internal/modules/cjs/loader:1005:19) [assets-service] development 2024-01-30T07:38:49.445Z

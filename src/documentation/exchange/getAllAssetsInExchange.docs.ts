@@ -1,29 +1,19 @@
 import { DOC_RESPONSE, RESPONSE_CODES, RESPONSE_TAGS } from "../../config/constants";
 
-const getAllAssetsInExchangeBody = {
-	type: "object",
-	required: ["exchangeId"],
-	properties: {
-		exchangeId: {
-			type: "integer",
-			example: 123,
-		},
-	},
-};
-
 const getAllAssetsInExchangeById = {
 	tags: [RESPONSE_TAGS.exchange],
-	description: "get all assets in an exchange by the ExchangeID",
-	requestBody: {
-		content: {
-			"application/json": {
-				schema: {
-					$ref: "#/components/schemas/getAllAssetsInExchangeBody",
-				},
+	parameters: [
+		{
+			in: "path",
+			name: "exchangeId",
+			required: true,
+			schema: {
+				type: "integer",
 			},
+			description: "Get all assets in an exchange by the ExchangeID",
+			example: 123,
 		},
-		required: true,
-	},
+	],
 	responses: {
 		[RESPONSE_CODES.ok]: DOC_RESPONSE.SUCCESS,
 		[RESPONSE_CODES.badRequest]: DOC_RESPONSE.BADREQUEST,
@@ -32,4 +22,4 @@ const getAllAssetsInExchangeById = {
 	},
 };
 
-export { getAllAssetsInExchangeBody, getAllAssetsInExchangeById };
+export { getAllAssetsInExchangeById };

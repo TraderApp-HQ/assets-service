@@ -1504,3 +1504,349 @@ Error: listen EADDRINUSE: address already in use :::8080
     at Function.listen (C:\Users\ChineseChikki\Documents\GitHub\App-Trader\assets-service\node_modules\express\lib\application.js:635:24)
     at C:\Users\ChineseChikki\Documents\GitHub\App-Trader\assets-service\src\app.ts:27:7
     at processTicksAndRejections (node:internal/process/task_queues:96:5) [assets-service] development 2024-01-30T13:26:28.633Z
+[31merror[39m: uncaughtException: ⨯ Unable to compile TypeScript:
+[96msrc/utils/swagger.ts[0m:[93m8[0m:[93m2[0m - [91merror[0m[90m TS2724: [0m'"../documentation/exchange"' has no exported member named 'getExchange'. Did you mean 'getExchanges'?
+
+[7m8[0m  getExchange,
+[7m [0m [91m ~~~~~~~~~~~[0m
+
+TSError: ⨯ Unable to compile TypeScript:
+[96msrc/utils/swagger.ts[0m:[93m8[0m:[93m2[0m - [91merror[0m[90m TS2724: [0m'"../documentation/exchange"' has no exported member named 'getExchange'. Did you mean 'getExchanges'?
+
+[7m8[0m  getExchange,
+[7m [0m [91m ~~~~~~~~~~~[0m
+
+    at createTSError (C:\Users\ChineseChikki\Documents\GitHub\App-Trader\assets-service\node_modules\ts-node\src\index.ts:859:12)
+    at reportTSError (C:\Users\ChineseChikki\Documents\GitHub\App-Trader\assets-service\node_modules\ts-node\src\index.ts:863:19)
+    at getOutput (C:\Users\ChineseChikki\Documents\GitHub\App-Trader\assets-service\node_modules\ts-node\src\index.ts:1077:36)
+    at Object.compile (C:\Users\ChineseChikki\Documents\GitHub\App-Trader\assets-service\node_modules\ts-node\src\index.ts:1433:41)
+    at Module.m._compile (C:\Users\ChineseChikki\Documents\GitHub\App-Trader\assets-service\node_modules\ts-node\src\index.ts:1617:30)
+    at Module._extensions..js (node:internal/modules/cjs/loader:1159:10)
+    at Object.require.extensions.<computed> [as .ts] (C:\Users\ChineseChikki\Documents\GitHub\App-Trader\assets-service\node_modules\ts-node\src\index.ts:1621:12)
+    at Module.load (node:internal/modules/cjs/loader:981:32)
+    at Function.Module._load (node:internal/modules/cjs/loader:822:12)
+    at Module.require (node:internal/modules/cjs/loader:1005:19) [assets-service] development 2024-02-02 10:44:02
+error: uncaughtException: ⨯ Unable to compile TypeScript:
+[96msrc/utils/swagger.ts[0m:[93m8[0m:[93m2[0m - [91merror[0m[90m TS2724: [0m'"../documentation/exchange"' has no exported member named 'getExchange'. Did you mean 'getExchanges'?
+
+[7m8[0m  getExchange,
+[7m [0m [91m ~~~~~~~~~~~[0m
+
+TSError: ⨯ Unable to compile TypeScript:
+[96msrc/utils/swagger.ts[0m:[93m8[0m:[93m2[0m - [91merror[0m[90m TS2724: [0m'"../documentation/exchange"' has no exported member named 'getExchange'. Did you mean 'getExchanges'?
+
+[7m8[0m  getExchange,
+[7m [0m [91m ~~~~~~~~~~~[0m
+
+    at createTSError (C:\Users\ChineseChikki\Documents\GitHub\App-Trader\assets-service\node_modules\ts-node\src\index.ts:859:12)
+    at reportTSError (C:\Users\ChineseChikki\Documents\GitHub\App-Trader\assets-service\node_modules\ts-node\src\index.ts:863:19)
+    at getOutput (C:\Users\ChineseChikki\Documents\GitHub\App-Trader\assets-service\node_modules\ts-node\src\index.ts:1077:36)
+    at Object.compile (C:\Users\ChineseChikki\Documents\GitHub\App-Trader\assets-service\node_modules\ts-node\src\index.ts:1433:41)
+    at Module.m._compile (C:\Users\ChineseChikki\Documents\GitHub\App-Trader\assets-service\node_modules\ts-node\src\index.ts:1617:30)
+    at Module._extensions..js (node:internal/modules/cjs/loader:1159:10)
+    at Object.require.extensions.<computed> [as .ts] (C:\Users\ChineseChikki\Documents\GitHub\App-Trader\assets-service\node_modules\ts-node\src\index.ts:1621:12)
+    at Module.load (node:internal/modules/cjs/loader:981:32)
+    at Function.Module._load (node:internal/modules/cjs/loader:822:12)
+    at Module.require (node:internal/modules/cjs/loader:1005:19) [assets-service] development 2024-02-02T09:44:02.130Z
+[31merror[39m: uncaughtException: ⨯ Unable to compile TypeScript:
+[96msrc/utils/swagger.ts[0m:[93m45[0m:[93m40[0m - [91merror[0m[90m TS2304: [0mCannot find name 'getExchange'.
+
+[7m45[0m    [`/exchanges${ROUTES.get}`]: { get: getExchange },
+[7m  [0m [91m                                       ~~~~~~~~~~~[0m
+
+TSError: ⨯ Unable to compile TypeScript:
+[96msrc/utils/swagger.ts[0m:[93m45[0m:[93m40[0m - [91merror[0m[90m TS2304: [0mCannot find name 'getExchange'.
+
+[7m45[0m    [`/exchanges${ROUTES.get}`]: { get: getExchange },
+[7m  [0m [91m                                       ~~~~~~~~~~~[0m
+
+    at createTSError (C:\Users\ChineseChikki\Documents\GitHub\App-Trader\assets-service\node_modules\ts-node\src\index.ts:859:12)
+    at reportTSError (C:\Users\ChineseChikki\Documents\GitHub\App-Trader\assets-service\node_modules\ts-node\src\index.ts:863:19)
+    at getOutput (C:\Users\ChineseChikki\Documents\GitHub\App-Trader\assets-service\node_modules\ts-node\src\index.ts:1077:36)
+    at Object.compile (C:\Users\ChineseChikki\Documents\GitHub\App-Trader\assets-service\node_modules\ts-node\src\index.ts:1433:41)
+    at Module.m._compile (C:\Users\ChineseChikki\Documents\GitHub\App-Trader\assets-service\node_modules\ts-node\src\index.ts:1617:30)
+    at Module._extensions..js (node:internal/modules/cjs/loader:1159:10)
+    at Object.require.extensions.<computed> [as .ts] (C:\Users\ChineseChikki\Documents\GitHub\App-Trader\assets-service\node_modules\ts-node\src\index.ts:1621:12)
+    at Module.load (node:internal/modules/cjs/loader:981:32)
+    at Function.Module._load (node:internal/modules/cjs/loader:822:12)
+    at Module.require (node:internal/modules/cjs/loader:1005:19) [assets-service] development 2024-02-02 10:45:10
+error: uncaughtException: ⨯ Unable to compile TypeScript:
+[96msrc/utils/swagger.ts[0m:[93m45[0m:[93m40[0m - [91merror[0m[90m TS2304: [0mCannot find name 'getExchange'.
+
+[7m45[0m    [`/exchanges${ROUTES.get}`]: { get: getExchange },
+[7m  [0m [91m                                       ~~~~~~~~~~~[0m
+
+TSError: ⨯ Unable to compile TypeScript:
+[96msrc/utils/swagger.ts[0m:[93m45[0m:[93m40[0m - [91merror[0m[90m TS2304: [0mCannot find name 'getExchange'.
+
+[7m45[0m    [`/exchanges${ROUTES.get}`]: { get: getExchange },
+[7m  [0m [91m                                       ~~~~~~~~~~~[0m
+
+    at createTSError (C:\Users\ChineseChikki\Documents\GitHub\App-Trader\assets-service\node_modules\ts-node\src\index.ts:859:12)
+    at reportTSError (C:\Users\ChineseChikki\Documents\GitHub\App-Trader\assets-service\node_modules\ts-node\src\index.ts:863:19)
+    at getOutput (C:\Users\ChineseChikki\Documents\GitHub\App-Trader\assets-service\node_modules\ts-node\src\index.ts:1077:36)
+    at Object.compile (C:\Users\ChineseChikki\Documents\GitHub\App-Trader\assets-service\node_modules\ts-node\src\index.ts:1433:41)
+    at Module.m._compile (C:\Users\ChineseChikki\Documents\GitHub\App-Trader\assets-service\node_modules\ts-node\src\index.ts:1617:30)
+    at Module._extensions..js (node:internal/modules/cjs/loader:1159:10)
+    at Object.require.extensions.<computed> [as .ts] (C:\Users\ChineseChikki\Documents\GitHub\App-Trader\assets-service\node_modules\ts-node\src\index.ts:1621:12)
+    at Module.load (node:internal/modules/cjs/loader:981:32)
+    at Function.Module._load (node:internal/modules/cjs/loader:822:12)
+    at Module.require (node:internal/modules/cjs/loader:1005:19) [assets-service] development 2024-02-02T09:45:10.503Z
+[31merror[39m: uncaughtException: ⨯ Unable to compile TypeScript:
+[96msrc/utils/swagger.ts[0m:[93m9[0m:[93m2[0m - [91merror[0m[90m TS2724: [0m'"../documentation/exchange"' has no exported member named 'getExchangeById'. Did you mean 'getExchanges'?
+
+[7m9[0m  getExchangeById,
+[7m [0m [91m ~~~~~~~~~~~~~~~[0m
+[96msrc/utils/swagger.ts[0m:[93m11[0m:[93m2[0m - [91merror[0m[90m TS2305: [0mModule '"../documentation/exchange"' has no exported member 'getExchangeByIdBody'.
+
+[7m11[0m  getExchangeByIdBody,
+[7m  [0m [91m ~~~~~~~~~~~~~~~~~~~[0m
+
+TSError: ⨯ Unable to compile TypeScript:
+[96msrc/utils/swagger.ts[0m:[93m9[0m:[93m2[0m - [91merror[0m[90m TS2724: [0m'"../documentation/exchange"' has no exported member named 'getExchangeById'. Did you mean 'getExchanges'?
+
+[7m9[0m  getExchangeById,
+[7m [0m [91m ~~~~~~~~~~~~~~~[0m
+[96msrc/utils/swagger.ts[0m:[93m11[0m:[93m2[0m - [91merror[0m[90m TS2305: [0mModule '"../documentation/exchange"' has no exported member 'getExchangeByIdBody'.
+
+[7m11[0m  getExchangeByIdBody,
+[7m  [0m [91m ~~~~~~~~~~~~~~~~~~~[0m
+
+    at createTSError (C:\Users\ChineseChikki\Documents\GitHub\App-Trader\assets-service\node_modules\ts-node\src\index.ts:859:12)
+    at reportTSError (C:\Users\ChineseChikki\Documents\GitHub\App-Trader\assets-service\node_modules\ts-node\src\index.ts:863:19)
+    at getOutput (C:\Users\ChineseChikki\Documents\GitHub\App-Trader\assets-service\node_modules\ts-node\src\index.ts:1077:36)
+    at Object.compile (C:\Users\ChineseChikki\Documents\GitHub\App-Trader\assets-service\node_modules\ts-node\src\index.ts:1433:41)
+    at Module.m._compile (C:\Users\ChineseChikki\Documents\GitHub\App-Trader\assets-service\node_modules\ts-node\src\index.ts:1617:30)
+    at Module._extensions..js (node:internal/modules/cjs/loader:1159:10)
+    at Object.require.extensions.<computed> [as .ts] (C:\Users\ChineseChikki\Documents\GitHub\App-Trader\assets-service\node_modules\ts-node\src\index.ts:1621:12)
+    at Module.load (node:internal/modules/cjs/loader:981:32)
+    at Function.Module._load (node:internal/modules/cjs/loader:822:12)
+    at Module.require (node:internal/modules/cjs/loader:1005:19) [assets-service] development 2024-02-02 10:48:20
+error: uncaughtException: ⨯ Unable to compile TypeScript:
+[96msrc/utils/swagger.ts[0m:[93m9[0m:[93m2[0m - [91merror[0m[90m TS2724: [0m'"../documentation/exchange"' has no exported member named 'getExchangeById'. Did you mean 'getExchanges'?
+
+[7m9[0m  getExchangeById,
+[7m [0m [91m ~~~~~~~~~~~~~~~[0m
+[96msrc/utils/swagger.ts[0m:[93m11[0m:[93m2[0m - [91merror[0m[90m TS2305: [0mModule '"../documentation/exchange"' has no exported member 'getExchangeByIdBody'.
+
+[7m11[0m  getExchangeByIdBody,
+[7m  [0m [91m ~~~~~~~~~~~~~~~~~~~[0m
+
+TSError: ⨯ Unable to compile TypeScript:
+[96msrc/utils/swagger.ts[0m:[93m9[0m:[93m2[0m - [91merror[0m[90m TS2724: [0m'"../documentation/exchange"' has no exported member named 'getExchangeById'. Did you mean 'getExchanges'?
+
+[7m9[0m  getExchangeById,
+[7m [0m [91m ~~~~~~~~~~~~~~~[0m
+[96msrc/utils/swagger.ts[0m:[93m11[0m:[93m2[0m - [91merror[0m[90m TS2305: [0mModule '"../documentation/exchange"' has no exported member 'getExchangeByIdBody'.
+
+[7m11[0m  getExchangeByIdBody,
+[7m  [0m [91m ~~~~~~~~~~~~~~~~~~~[0m
+
+    at createTSError (C:\Users\ChineseChikki\Documents\GitHub\App-Trader\assets-service\node_modules\ts-node\src\index.ts:859:12)
+    at reportTSError (C:\Users\ChineseChikki\Documents\GitHub\App-Trader\assets-service\node_modules\ts-node\src\index.ts:863:19)
+    at getOutput (C:\Users\ChineseChikki\Documents\GitHub\App-Trader\assets-service\node_modules\ts-node\src\index.ts:1077:36)
+    at Object.compile (C:\Users\ChineseChikki\Documents\GitHub\App-Trader\assets-service\node_modules\ts-node\src\index.ts:1433:41)
+    at Module.m._compile (C:\Users\ChineseChikki\Documents\GitHub\App-Trader\assets-service\node_modules\ts-node\src\index.ts:1617:30)
+    at Module._extensions..js (node:internal/modules/cjs/loader:1159:10)
+    at Object.require.extensions.<computed> [as .ts] (C:\Users\ChineseChikki\Documents\GitHub\App-Trader\assets-service\node_modules\ts-node\src\index.ts:1621:12)
+    at Module.load (node:internal/modules/cjs/loader:981:32)
+    at Function.Module._load (node:internal/modules/cjs/loader:822:12)
+    at Module.require (node:internal/modules/cjs/loader:1005:19) [assets-service] development 2024-02-02T09:48:20.161Z
+[31merror[39m: uncaughtException: ⨯ Unable to compile TypeScript:
+[96msrc/utils/swagger.ts[0m:[93m11[0m:[93m2[0m - [91merror[0m[90m TS2724: [0m'"../documentation/exchange"' has no exported member named 'getExchangeByIdBody'. Did you mean 'getExchangeById'?
+
+[7m11[0m  getExchangeByIdBody,
+[7m  [0m [91m ~~~~~~~~~~~~~~~~~~~[0m
+
+TSError: ⨯ Unable to compile TypeScript:
+[96msrc/utils/swagger.ts[0m:[93m11[0m:[93m2[0m - [91merror[0m[90m TS2724: [0m'"../documentation/exchange"' has no exported member named 'getExchangeByIdBody'. Did you mean 'getExchangeById'?
+
+[7m11[0m  getExchangeByIdBody,
+[7m  [0m [91m ~~~~~~~~~~~~~~~~~~~[0m
+
+    at createTSError (C:\Users\ChineseChikki\Documents\GitHub\App-Trader\assets-service\node_modules\ts-node\src\index.ts:859:12)
+    at reportTSError (C:\Users\ChineseChikki\Documents\GitHub\App-Trader\assets-service\node_modules\ts-node\src\index.ts:863:19)
+    at getOutput (C:\Users\ChineseChikki\Documents\GitHub\App-Trader\assets-service\node_modules\ts-node\src\index.ts:1077:36)
+    at Object.compile (C:\Users\ChineseChikki\Documents\GitHub\App-Trader\assets-service\node_modules\ts-node\src\index.ts:1433:41)
+    at Module.m._compile (C:\Users\ChineseChikki\Documents\GitHub\App-Trader\assets-service\node_modules\ts-node\src\index.ts:1617:30)
+    at Module._extensions..js (node:internal/modules/cjs/loader:1159:10)
+    at Object.require.extensions.<computed> [as .ts] (C:\Users\ChineseChikki\Documents\GitHub\App-Trader\assets-service\node_modules\ts-node\src\index.ts:1621:12)
+    at Module.load (node:internal/modules/cjs/loader:981:32)
+    at Function.Module._load (node:internal/modules/cjs/loader:822:12)
+    at Module.require (node:internal/modules/cjs/loader:1005:19) [assets-service] development 2024-02-02 10:48:40
+error: uncaughtException: ⨯ Unable to compile TypeScript:
+[96msrc/utils/swagger.ts[0m:[93m11[0m:[93m2[0m - [91merror[0m[90m TS2724: [0m'"../documentation/exchange"' has no exported member named 'getExchangeByIdBody'. Did you mean 'getExchangeById'?
+
+[7m11[0m  getExchangeByIdBody,
+[7m  [0m [91m ~~~~~~~~~~~~~~~~~~~[0m
+
+TSError: ⨯ Unable to compile TypeScript:
+[96msrc/utils/swagger.ts[0m:[93m11[0m:[93m2[0m - [91merror[0m[90m TS2724: [0m'"../documentation/exchange"' has no exported member named 'getExchangeByIdBody'. Did you mean 'getExchangeById'?
+
+[7m11[0m  getExchangeByIdBody,
+[7m  [0m [91m ~~~~~~~~~~~~~~~~~~~[0m
+
+    at createTSError (C:\Users\ChineseChikki\Documents\GitHub\App-Trader\assets-service\node_modules\ts-node\src\index.ts:859:12)
+    at reportTSError (C:\Users\ChineseChikki\Documents\GitHub\App-Trader\assets-service\node_modules\ts-node\src\index.ts:863:19)
+    at getOutput (C:\Users\ChineseChikki\Documents\GitHub\App-Trader\assets-service\node_modules\ts-node\src\index.ts:1077:36)
+    at Object.compile (C:\Users\ChineseChikki\Documents\GitHub\App-Trader\assets-service\node_modules\ts-node\src\index.ts:1433:41)
+    at Module.m._compile (C:\Users\ChineseChikki\Documents\GitHub\App-Trader\assets-service\node_modules\ts-node\src\index.ts:1617:30)
+    at Module._extensions..js (node:internal/modules/cjs/loader:1159:10)
+    at Object.require.extensions.<computed> [as .ts] (C:\Users\ChineseChikki\Documents\GitHub\App-Trader\assets-service\node_modules\ts-node\src\index.ts:1621:12)
+    at Module.load (node:internal/modules/cjs/loader:981:32)
+    at Function.Module._load (node:internal/modules/cjs/loader:822:12)
+    at Module.require (node:internal/modules/cjs/loader:1005:19) [assets-service] development 2024-02-02T09:48:40.096Z
+[31merror[39m: uncaughtException: ⨯ Unable to compile TypeScript:
+[96msrc/routes/ExchangeRoutes.ts[0m:[93m19[0m:[93m19[0m - [91merror[0m[90m TS2339: [0mProperty 'getById' does not exist on type '{ get: string; patchById: string; getAllAssets: string; getByCurrencies: string; }'.
+
+[7m19[0m router.get(ROUTES.getById, getExchangeById);
+[7m  [0m [91m                  ~~~~~~~[0m
+
+TSError: ⨯ Unable to compile TypeScript:
+[96msrc/routes/ExchangeRoutes.ts[0m:[93m19[0m:[93m19[0m - [91merror[0m[90m TS2339: [0mProperty 'getById' does not exist on type '{ get: string; patchById: string; getAllAssets: string; getByCurrencies: string; }'.
+
+[7m19[0m router.get(ROUTES.getById, getExchangeById);
+[7m  [0m [91m                  ~~~~~~~[0m
+
+    at createTSError (C:\Users\ChineseChikki\Documents\GitHub\App-Trader\assets-service\node_modules\ts-node\src\index.ts:859:12)
+    at reportTSError (C:\Users\ChineseChikki\Documents\GitHub\App-Trader\assets-service\node_modules\ts-node\src\index.ts:863:19)
+    at getOutput (C:\Users\ChineseChikki\Documents\GitHub\App-Trader\assets-service\node_modules\ts-node\src\index.ts:1077:36)
+    at Object.compile (C:\Users\ChineseChikki\Documents\GitHub\App-Trader\assets-service\node_modules\ts-node\src\index.ts:1433:41)
+    at Module.m._compile (C:\Users\ChineseChikki\Documents\GitHub\App-Trader\assets-service\node_modules\ts-node\src\index.ts:1617:30)
+    at Module._extensions..js (node:internal/modules/cjs/loader:1159:10)
+    at Object.require.extensions.<computed> [as .ts] (C:\Users\ChineseChikki\Documents\GitHub\App-Trader\assets-service\node_modules\ts-node\src\index.ts:1621:12)
+    at Module.load (node:internal/modules/cjs/loader:981:32)
+    at Function.Module._load (node:internal/modules/cjs/loader:822:12)
+    at Module.require (node:internal/modules/cjs/loader:1005:19) [assets-service] development 2024-02-02 11:32:46
+error: uncaughtException: ⨯ Unable to compile TypeScript:
+[96msrc/routes/ExchangeRoutes.ts[0m:[93m19[0m:[93m19[0m - [91merror[0m[90m TS2339: [0mProperty 'getById' does not exist on type '{ get: string; patchById: string; getAllAssets: string; getByCurrencies: string; }'.
+
+[7m19[0m router.get(ROUTES.getById, getExchangeById);
+[7m  [0m [91m                  ~~~~~~~[0m
+
+TSError: ⨯ Unable to compile TypeScript:
+[96msrc/routes/ExchangeRoutes.ts[0m:[93m19[0m:[93m19[0m - [91merror[0m[90m TS2339: [0mProperty 'getById' does not exist on type '{ get: string; patchById: string; getAllAssets: string; getByCurrencies: string; }'.
+
+[7m19[0m router.get(ROUTES.getById, getExchangeById);
+[7m  [0m [91m                  ~~~~~~~[0m
+
+    at createTSError (C:\Users\ChineseChikki\Documents\GitHub\App-Trader\assets-service\node_modules\ts-node\src\index.ts:859:12)
+    at reportTSError (C:\Users\ChineseChikki\Documents\GitHub\App-Trader\assets-service\node_modules\ts-node\src\index.ts:863:19)
+    at getOutput (C:\Users\ChineseChikki\Documents\GitHub\App-Trader\assets-service\node_modules\ts-node\src\index.ts:1077:36)
+    at Object.compile (C:\Users\ChineseChikki\Documents\GitHub\App-Trader\assets-service\node_modules\ts-node\src\index.ts:1433:41)
+    at Module.m._compile (C:\Users\ChineseChikki\Documents\GitHub\App-Trader\assets-service\node_modules\ts-node\src\index.ts:1617:30)
+    at Module._extensions..js (node:internal/modules/cjs/loader:1159:10)
+    at Object.require.extensions.<computed> [as .ts] (C:\Users\ChineseChikki\Documents\GitHub\App-Trader\assets-service\node_modules\ts-node\src\index.ts:1621:12)
+    at Module.load (node:internal/modules/cjs/loader:981:32)
+    at Function.Module._load (node:internal/modules/cjs/loader:822:12)
+    at Module.require (node:internal/modules/cjs/loader:1005:19) [assets-service] development 2024-02-02T10:32:46.941Z
+[31merror[39m: uncaughtException: ⨯ Unable to compile TypeScript:
+[96msrc/config/constants.ts[0m:[93m44[0m:[93m2[0m - [91merror[0m[90m TS1117: [0mAn object literal cannot have multiple properties with the same name.
+
+[7m44[0m  get: "/exchange/{id}",
+[7m  [0m [91m ~~~[0m
+
+TSError: ⨯ Unable to compile TypeScript:
+[96msrc/config/constants.ts[0m:[93m44[0m:[93m2[0m - [91merror[0m[90m TS1117: [0mAn object literal cannot have multiple properties with the same name.
+
+[7m44[0m  get: "/exchange/{id}",
+[7m  [0m [91m ~~~[0m
+
+    at createTSError (C:\Users\ChineseChikki\Documents\GitHub\App-Trader\assets-service\node_modules\ts-node\src\index.ts:859:12)
+    at reportTSError (C:\Users\ChineseChikki\Documents\GitHub\App-Trader\assets-service\node_modules\ts-node\src\index.ts:863:19)
+    at getOutput (C:\Users\ChineseChikki\Documents\GitHub\App-Trader\assets-service\node_modules\ts-node\src\index.ts:1077:36)
+    at Object.compile (C:\Users\ChineseChikki\Documents\GitHub\App-Trader\assets-service\node_modules\ts-node\src\index.ts:1433:41)
+    at Module.m._compile (C:\Users\ChineseChikki\Documents\GitHub\App-Trader\assets-service\node_modules\ts-node\src\index.ts:1617:30)
+    at Module._extensions..js (node:internal/modules/cjs/loader:1159:10)
+    at Object.require.extensions.<computed> [as .ts] (C:\Users\ChineseChikki\Documents\GitHub\App-Trader\assets-service\node_modules\ts-node\src\index.ts:1621:12)
+    at Module.load (node:internal/modules/cjs/loader:981:32)
+    at Function.Module._load (node:internal/modules/cjs/loader:822:12)
+    at Module.require (node:internal/modules/cjs/loader:1005:19) [assets-service] development 2024-02-02 11:32:54
+[31merror[39m: uncaughtException: ⨯ Unable to compile TypeScript:
+[96msrc/utils/swagger.ts[0m:[93m4[0m:[93m2[0m - [91merror[0m[90m TS2724: [0m'"../documentation/exchange"' has no exported member named 'getAllAssetsInExchangeBody'. Did you mean 'getAllAssetsInExchangeById'?
+
+[7m4[0m  getAllAssetsInExchangeBody,
+[7m [0m [91m ~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+TSError: ⨯ Unable to compile TypeScript:
+[96msrc/utils/swagger.ts[0m:[93m4[0m:[93m2[0m - [91merror[0m[90m TS2724: [0m'"../documentation/exchange"' has no exported member named 'getAllAssetsInExchangeBody'. Did you mean 'getAllAssetsInExchangeById'?
+
+[7m4[0m  getAllAssetsInExchangeBody,
+[7m [0m [91m ~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+    at createTSError (C:\Users\ChineseChikki\Documents\GitHub\App-Trader\assets-service\node_modules\ts-node\src\index.ts:859:12)
+    at reportTSError (C:\Users\ChineseChikki\Documents\GitHub\App-Trader\assets-service\node_modules\ts-node\src\index.ts:863:19)
+    at getOutput (C:\Users\ChineseChikki\Documents\GitHub\App-Trader\assets-service\node_modules\ts-node\src\index.ts:1077:36)
+    at Object.compile (C:\Users\ChineseChikki\Documents\GitHub\App-Trader\assets-service\node_modules\ts-node\src\index.ts:1433:41)
+    at Module.m._compile (C:\Users\ChineseChikki\Documents\GitHub\App-Trader\assets-service\node_modules\ts-node\src\index.ts:1617:30)
+    at Module._extensions..js (node:internal/modules/cjs/loader:1159:10)
+    at Object.require.extensions.<computed> [as .ts] (C:\Users\ChineseChikki\Documents\GitHub\App-Trader\assets-service\node_modules\ts-node\src\index.ts:1621:12)
+    at Module.load (node:internal/modules/cjs/loader:981:32)
+    at Function.Module._load (node:internal/modules/cjs/loader:822:12)
+    at Module.require (node:internal/modules/cjs/loader:1005:19) [assets-service] development 2024-02-02 11:53:08
+error: uncaughtException: ⨯ Unable to compile TypeScript:
+[96msrc/utils/swagger.ts[0m:[93m4[0m:[93m2[0m - [91merror[0m[90m TS2724: [0m'"../documentation/exchange"' has no exported member named 'getAllAssetsInExchangeBody'. Did you mean 'getAllAssetsInExchangeById'?
+
+[7m4[0m  getAllAssetsInExchangeBody,
+[7m [0m [91m ~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+TSError: ⨯ Unable to compile TypeScript:
+[96msrc/utils/swagger.ts[0m:[93m4[0m:[93m2[0m - [91merror[0m[90m TS2724: [0m'"../documentation/exchange"' has no exported member named 'getAllAssetsInExchangeBody'. Did you mean 'getAllAssetsInExchangeById'?
+
+[7m4[0m  getAllAssetsInExchangeBody,
+[7m [0m [91m ~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+    at createTSError (C:\Users\ChineseChikki\Documents\GitHub\App-Trader\assets-service\node_modules\ts-node\src\index.ts:859:12)
+    at reportTSError (C:\Users\ChineseChikki\Documents\GitHub\App-Trader\assets-service\node_modules\ts-node\src\index.ts:863:19)
+    at getOutput (C:\Users\ChineseChikki\Documents\GitHub\App-Trader\assets-service\node_modules\ts-node\src\index.ts:1077:36)
+    at Object.compile (C:\Users\ChineseChikki\Documents\GitHub\App-Trader\assets-service\node_modules\ts-node\src\index.ts:1433:41)
+    at Module.m._compile (C:\Users\ChineseChikki\Documents\GitHub\App-Trader\assets-service\node_modules\ts-node\src\index.ts:1617:30)
+    at Module._extensions..js (node:internal/modules/cjs/loader:1159:10)
+    at Object.require.extensions.<computed> [as .ts] (C:\Users\ChineseChikki\Documents\GitHub\App-Trader\assets-service\node_modules\ts-node\src\index.ts:1621:12)
+    at Module.load (node:internal/modules/cjs/loader:981:32)
+    at Function.Module._load (node:internal/modules/cjs/loader:822:12)
+    at Module.require (node:internal/modules/cjs/loader:1005:19) [assets-service] development 2024-02-02T10:53:08.250Z
+[31merror[39m: uncaughtException: ⨯ Unable to compile TypeScript:
+[96msrc/utils/swagger.ts[0m:[93m5[0m:[93m2[0m - [91merror[0m[90m TS2724: [0m'"../documentation/exchange"' has no exported member named 'getCurrenciesForExchangeBody'. Did you mean 'getCurrenciesForExchangeById'?
+
+[7m5[0m  getCurrenciesForExchangeBody,
+[7m [0m [91m ~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+TSError: ⨯ Unable to compile TypeScript:
+[96msrc/utils/swagger.ts[0m:[93m5[0m:[93m2[0m - [91merror[0m[90m TS2724: [0m'"../documentation/exchange"' has no exported member named 'getCurrenciesForExchangeBody'. Did you mean 'getCurrenciesForExchangeById'?
+
+[7m5[0m  getCurrenciesForExchangeBody,
+[7m [0m [91m ~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+    at createTSError (C:\Users\ChineseChikki\Documents\GitHub\App-Trader\assets-service\node_modules\ts-node\src\index.ts:859:12)
+    at reportTSError (C:\Users\ChineseChikki\Documents\GitHub\App-Trader\assets-service\node_modules\ts-node\src\index.ts:863:19)
+    at getOutput (C:\Users\ChineseChikki\Documents\GitHub\App-Trader\assets-service\node_modules\ts-node\src\index.ts:1077:36)
+    at Object.compile (C:\Users\ChineseChikki\Documents\GitHub\App-Trader\assets-service\node_modules\ts-node\src\index.ts:1433:41)
+    at Module.m._compile (C:\Users\ChineseChikki\Documents\GitHub\App-Trader\assets-service\node_modules\ts-node\src\index.ts:1617:30)
+    at Module._extensions..js (node:internal/modules/cjs/loader:1159:10)
+    at Object.require.extensions.<computed> [as .ts] (C:\Users\ChineseChikki\Documents\GitHub\App-Trader\assets-service\node_modules\ts-node\src\index.ts:1621:12)
+    at Module.load (node:internal/modules/cjs/loader:981:32)
+    at Function.Module._load (node:internal/modules/cjs/loader:822:12)
+    at Module.require (node:internal/modules/cjs/loader:1005:19) [assets-service] development 2024-02-02 11:59:43
+error: uncaughtException: ⨯ Unable to compile TypeScript:
+[96msrc/utils/swagger.ts[0m:[93m5[0m:[93m2[0m - [91merror[0m[90m TS2724: [0m'"../documentation/exchange"' has no exported member named 'getCurrenciesForExchangeBody'. Did you mean 'getCurrenciesForExchangeById'?
+
+[7m5[0m  getCurrenciesForExchangeBody,
+[7m [0m [91m ~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+TSError: ⨯ Unable to compile TypeScript:
+[96msrc/utils/swagger.ts[0m:[93m5[0m:[93m2[0m - [91merror[0m[90m TS2724: [0m'"../documentation/exchange"' has no exported member named 'getCurrenciesForExchangeBody'. Did you mean 'getCurrenciesForExchangeById'?
+
+[7m5[0m  getCurrenciesForExchangeBody,
+[7m [0m [91m ~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+    at createTSError (C:\Users\ChineseChikki\Documents\GitHub\App-Trader\assets-service\node_modules\ts-node\src\index.ts:859:12)
+    at reportTSError (C:\Users\ChineseChikki\Documents\GitHub\App-Trader\assets-service\node_modules\ts-node\src\index.ts:863:19)
+    at getOutput (C:\Users\ChineseChikki\Documents\GitHub\App-Trader\assets-service\node_modules\ts-node\src\index.ts:1077:36)
+    at Object.compile (C:\Users\ChineseChikki\Documents\GitHub\App-Trader\assets-service\node_modules\ts-node\src\index.ts:1433:41)
+    at Module.m._compile (C:\Users\ChineseChikki\Documents\GitHub\App-Trader\assets-service\node_modules\ts-node\src\index.ts:1617:30)
+    at Module._extensions..js (node:internal/modules/cjs/loader:1159:10)
+    at Object.require.extensions.<computed> [as .ts] (C:\Users\ChineseChikki\Documents\GitHub\App-Trader\assets-service\node_modules\ts-node\src\index.ts:1621:12)
+    at Module.load (node:internal/modules/cjs/loader:981:32)
+    at Function.Module._load (node:internal/modules/cjs/loader:822:12)
+    at Module.require (node:internal/modules/cjs/loader:1005:19) [assets-service] development 2024-02-02T10:59:43.880Z

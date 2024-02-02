@@ -36,7 +36,7 @@ export async function validateExchangeRequest(req: Request, _res: Response, next
 		await checkAdmin(req);
 
 		const schema = Joi.object({
-			id: Joi.number().required().label("Exchange Id"),
+			id: Joi.number().required().label("id"),
 		});
 
 		const { error } = schema.validate(req.params);

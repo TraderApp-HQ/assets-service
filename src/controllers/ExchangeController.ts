@@ -37,14 +37,39 @@ export async function getAllExchanges(req: Request, res: Response, next: NextFun
 }
 
 // A function to get an Exchange by ID
+// export async function getExchangeById(req: Request, res: Response, next: NextFunction) {
+// 	try {
+// 		console.log("req.params:", req.params);
+// 		const id = Number(req.params.id);
+// 		console.log("here", id);
+
+// 		const db = await prismaClient();
+// 		const exchange = await db.exchange.findUnique({
+// 			where: { id },
+// 		});
+
+// 		if (!exchange) {
+// 			const error = new Error("Exchange not found");
+// 			error.name = RESPONSE_CODES.notFound;
+// 			throw error;
+// 		}
+
+// 		res.status(200).json(
+// 			apiResponseHandler({ object: exchange, message: ResponseMessage.GET_EXCHANGE })
+// 		);
+// 	} catch (err) {
+// 		next(err);
+// 	}
+// }
 export async function getExchangeById(req: Request, res: Response, next: NextFunction) {
 	try {
+		console.log("req.params:", req.params);
+		const id = Number(req.params.id);
+		console.log("here", id);
+
 		const db = await prismaClient();
-
-		const exchangeId = Number(req.params.id);
-
 		const exchange = await db.exchange.findUnique({
-			where: { id: exchangeId },
+			where: { id: Number(id) },
 		});
 
 		if (!exchange) {
@@ -109,6 +134,7 @@ export async function updateExchangeInfo(req: Request, res: Response, next: Next
 				message: ResponseMessage.UPDATE_EXCHANGE,
 			})
 		);
+		console.log("here", updatedExchange, ResponseMessage.UPDATE_EXCHANGE);
 	} catch (err) {
 		next(err);
 	}

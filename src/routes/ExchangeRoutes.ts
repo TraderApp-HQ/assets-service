@@ -7,18 +7,18 @@ import {
 	updateExchangeInfo,
 	getCurrenciesForExchange,
 } from "../controllers/ExchangeController";
-import {
-	validateExchangesRequest,
-	validateExchangeRequest,
-	validateUpdateExchangeInfoRequest,
-} from "../middlewares/ExchangeMiddleware";
+// import {
+// 	validateExchangesRequest,
+// 	validateExchangeRequest,
+// 	validateUpdateExchangeInfoRequest,
+// } from "../middlewares/ExchangeMiddleware";
 
 const router = Router();
 
-router.get(ROUTES.get, validateExchangesRequest, getAllExchanges);
-router.get(ROUTES.getById, validateExchangeRequest, getExchangeById);
-router.patch(ROUTES.patchById, validateUpdateExchangeInfoRequest, updateExchangeInfo);
-router.get(ROUTES.getAllAssets, validateExchangeRequest, getAllAssetsInExchange);
-router.get(ROUTES.getByCurrencies, validateExchangeRequest, getCurrenciesForExchange);
+router.get(ROUTES.get, getAllExchanges);
+router.get(ROUTES.getById, getExchangeById);
+router.patch(ROUTES.patchById, updateExchangeInfo);
+router.get(ROUTES.getAllAssets, getAllAssetsInExchange);
+router.get(ROUTES.getByCurrencies, getCurrenciesForExchange);
 
 export default router;

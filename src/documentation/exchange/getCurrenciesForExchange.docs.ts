@@ -1,29 +1,19 @@
 import { DOC_RESPONSE, RESPONSE_CODES, RESPONSE_TAGS } from "../../config/constants";
 
-const getCurrenciesForExchangeBody = {
-	type: "object",
-	required: ["exchangeId"],
-	properties: {
-		exchangeId: {
-			type: "integer",
-			example: 123,
-		},
-	},
-};
-
 const getCurrenciesForExchangeById = {
 	tags: [RESPONSE_TAGS.exchange],
-	description: "Get currencies for an exchange by ExchangeID",
-	requestBody: {
-		content: {
-			"application/json": {
-				schema: {
-					$ref: "#/components/schemas/getCurrenciesForExchangeBody",
-				},
+	parameters: [
+		{
+			in: "path",
+			name: "exchangeId",
+			required: true,
+			schema: {
+				type: "integer",
 			},
+			description: "Get currencies for an exchange by ExchangeID",
+			example: 123,
 		},
-		required: true,
-	},
+	],
 	responses: {
 		[RESPONSE_CODES.ok]: DOC_RESPONSE.SUCCESS,
 		[RESPONSE_CODES.badRequest]: DOC_RESPONSE.BADREQUEST,
@@ -32,4 +22,4 @@ const getCurrenciesForExchangeById = {
 	},
 };
 
-export { getCurrenciesForExchangeBody, getCurrenciesForExchangeById };
+export { getCurrenciesForExchangeById };

@@ -1,33 +1,59 @@
 import { DOC_RESPONSE, RESPONSE_CODES, RESPONSE_TAGS } from "../../config/constants";
 
-const getExchangeBody = {
+const getExchangesParams = {
 	type: "object",
-	required: [],
 	properties: {
 		page: {
-			type: "number",
+			type: "integer",
+			description: "Page number for pagination",
 			example: 1,
 		},
-		pageLimit: {
-			type: "number",
+		rowPerPage: {
+			type: "integer",
+			description: "Number of rows per page",
 			example: 10,
+		},
+		orderBy: {
+			type: "string",
+			description: "Field is to be ordered by (asc | desc)",
+			enum: ["asc", "desc"],
+			default: "asc",
 		},
 	},
 };
 
-const getExchange = {
+const getExchanges = {
 	tags: [RESPONSE_TAGS.exchange],
-	description: "get exchange",
-	requestBody: {
-		content: {
-			"application/json": {
-				schema: {
-					$ref: "#/components/schemas/getExchangeBody",
-				},
+	description: "Get exchanges",
+	parameters: [
+		{
+			in: "query",
+			name: "page",
+			description: "Page number for pagination",
+			required: false,
+			schema: {
+				$ref: "#/components/schemas/getExchangesParams/properties/page",
 			},
 		},
-		required: false,
-	},
+		{
+			in: "query",
+			name: "rowPerPage",
+			description: "Number of rows per page",
+			required: false,
+			schema: {
+				$ref: "#/components/schemas/getExchangesParams/properties/rowPerPage",
+			},
+		},
+		{
+			in: "query",
+			name: "orderBy",
+			description: "Field is to be ordered by (asc | desc)",
+			required: false,
+			schema: {
+				$ref: "#/components/schemas/getExchangesParams/properties/orderBy",
+			},
+		},
+	],
 	responses: {
 		[RESPONSE_CODES.ok]: DOC_RESPONSE.SUCCESS,
 		[RESPONSE_CODES.badRequest]: DOC_RESPONSE.BADREQUEST,
@@ -36,4 +62,4 @@ const getExchange = {
 	},
 };
 
-export { getExchange, getExchangeBody };
+export { getExchangesParams, getExchanges };

@@ -1,14 +1,11 @@
 import swaggerJsdoc from "swagger-jsdoc";
 import { ROUTES } from "../config/constants";
 import {
-	getAllAssetsInExchangeBody,
 	getAllAssetsInExchangeById,
-	getCurrenciesForExchangeBody,
 	getCurrenciesForExchangeById,
-	getExchange,
-	getExchangeBody,
+	getExchangesParams,
 	getExchangeById,
-	getExchangeByIdBody,
+	getExchanges,
 	updateExchangeInfoBody,
 	updateExchangeInfoById,
 } from "../documentation/exchange";
@@ -22,7 +19,7 @@ const options: swaggerJsdoc.Options = {
 			description: "API documentation for Exchange Service Trader App",
 		},
 		components: {
-			securitySchemas: {
+			securitySchemes: {
 				bearerAuth: {
 					type: "http",
 					scheme: "bearer",
@@ -30,10 +27,7 @@ const options: swaggerJsdoc.Options = {
 				},
 			},
 			schemas: {
-				getExchangeBody,
-				getAllAssetsInExchangeBody,
-				getCurrenciesForExchangeBody,
-				getExchangeByIdBody,
+				getExchangesParams,
 				updateExchangeInfoBody,
 			},
 		},
@@ -43,7 +37,7 @@ const options: swaggerJsdoc.Options = {
 			},
 		],
 		paths: {
-			[`/exchanges${ROUTES.get}`]: { get: getExchange },
+			[`/exchanges${ROUTES.get}`]: { get: getExchanges },
 			[`/exchanges${ROUTES.getById}`]: { get: getExchangeById },
 			[`/exchanges${ROUTES.patchById}`]: { patch: updateExchangeInfoById },
 			[`/exchanges${ROUTES.getAllAssets}`]: { get: getAllAssetsInExchangeById },

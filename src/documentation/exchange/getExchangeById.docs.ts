@@ -1,29 +1,19 @@
 import { DOC_RESPONSE, RESPONSE_CODES, RESPONSE_TAGS } from "../../config/constants";
 
-const getExchangeByIdBody = {
-	type: "object",
-	required: ["Id"],
-	properties: {
-		Id: {
-			type: "integer",
-			example: 123,
-		},
-	},
-};
-
 const getExchangeById = {
 	tags: [RESPONSE_TAGS.exchange],
-	description: "get exchange by ID",
-	requestBody: {
-		content: {
-			"application/json": {
-				schema: {
-					$ref: "#/components/schemas/getExchangeByIdBody",
-				},
+	parameters: [
+		{
+			in: "path",
+			name: "id",
+			required: true,
+			schema: {
+				type: "integer",
 			},
+			description: "The exchange ID",
+			example: 123,
 		},
-		required: true,
-	},
+	],
 	responses: {
 		[RESPONSE_CODES.ok]: DOC_RESPONSE.SUCCESS,
 		[RESPONSE_CODES.badRequest]: DOC_RESPONSE.BADREQUEST,
@@ -32,4 +22,4 @@ const getExchangeById = {
 	},
 };
 
-export { getExchangeById, getExchangeByIdBody };
+export { getExchangeById };

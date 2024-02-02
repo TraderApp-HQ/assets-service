@@ -43,7 +43,7 @@ export const ROUTES = {
 	get: "/",
 	getById: "/:id",
 	patchById: "/update/:id",
-	getAllAssets: "/:exchangeId",
+	getAllAssets: "/exchange/:exchangeId",
 	getByCurrencies: "/currency/:exchangeId",
 };
 

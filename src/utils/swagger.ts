@@ -1,5 +1,4 @@
 import swaggerJsdoc from "swagger-jsdoc";
-import { ROUTES } from "../config/constants";
 import {
 	getAllAssetsInExchangeById,
 	getCurrenciesForExchangeById,
@@ -37,11 +36,11 @@ const options: swaggerJsdoc.Options = {
 			},
 		],
 		paths: {
-			[`/exchanges${ROUTES.get}`]: { get: getExchanges },
-			[`/exchanges${ROUTES.getById}`]: { get: getExchangeById },
-			[`/exchanges${ROUTES.patchById}`]: { patch: updateExchangeInfoById },
-			[`/exchanges${ROUTES.getAllAssets}`]: { get: getAllAssetsInExchangeById },
-			[`/exchanges${ROUTES.getByCurrencies}`]: { get: getCurrenciesForExchangeById },
+			[`/exchanges/`]: { get: getExchanges },
+			[`/exchanges/{id}`]: { get: getExchangeById },
+			[`/exchanges/update/{id}`]: { patch: updateExchangeInfoById },
+			[`/exchanges/exchange/{exchangeId}`]: { get: getAllAssetsInExchangeById },
+			[`/exchanges/currency/{exchangeId}`]: { get: getCurrenciesForExchangeById },
 		},
 	},
 	apis: ["./src/routes/*.ts", "./src/models/*.ts"], // Point to your route files

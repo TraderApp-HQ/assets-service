@@ -37,39 +37,13 @@ export async function getAllExchanges(req: Request, res: Response, next: NextFun
 }
 
 // A function to get an Exchange by ID
-// export async function getExchangeById(req: Request, res: Response, next: NextFunction) {
-// 	try {
-// 		console.log("req.params:", req.params);
-// 		const id = Number(req.params.id);
-// 		console.log("here", id);
-
-// 		const db = await prismaClient();
-// 		const exchange = await db.exchange.findUnique({
-// 			where: { id },
-// 		});
-
-// 		if (!exchange) {
-// 			const error = new Error("Exchange not found");
-// 			error.name = RESPONSE_CODES.notFound;
-// 			throw error;
-// 		}
-
-// 		res.status(200).json(
-// 			apiResponseHandler({ object: exchange, message: ResponseMessage.GET_EXCHANGE })
-// 		);
-// 	} catch (err) {
-// 		next(err);
-// 	}
-// }
 export async function getExchangeById(req: Request, res: Response, next: NextFunction) {
 	try {
-		console.log("req.params:", req.params);
 		const id = Number(req.params.id);
-		console.log("here", id);
 
 		const db = await prismaClient();
 		const exchange = await db.exchange.findUnique({
-			where: { id: Number(id) },
+			where: { id },
 		});
 
 		if (!exchange) {

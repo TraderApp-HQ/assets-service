@@ -41,8 +41,8 @@ export const DEFAULT_PAGE = 1;
 
 export const ROUTES = {
 	get: "/",
-	getById: "/:id",
-	patchById: "/update/:id",
+	getExchangeById: "/:id",
+	patchExchangeById: "/update/:id",
 	getAllAssets: "/exchange/:exchangeId",
 	getByCurrencies: "/currency/:exchangeId",
 };

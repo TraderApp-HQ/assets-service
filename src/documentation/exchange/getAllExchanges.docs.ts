@@ -15,9 +15,7 @@ const getExchangesParams = {
 		},
 		orderBy: {
 			type: "string",
-			description: "Field is to be ordered by (asc | desc)",
 			enum: ["asc", "desc"],
-			default: "asc",
 		},
 	},
 };
@@ -47,7 +45,6 @@ const getExchanges = {
 		{
 			in: "query",
 			name: "orderBy",
-			description: "Field is to be ordered by (asc | desc)",
 			required: false,
 			schema: {
 				$ref: "#/components/schemas/getExchangesParams/properties/orderBy",

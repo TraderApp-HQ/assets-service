@@ -9,13 +9,14 @@ export async function validateExchangesRequest(req: Request, _res: Response, nex
 		await checkAdmin(req);
 
 		const querySchema = Joi.object({
-			rowsPerPage: Joi.number()
+			rowPerPage: Joi.number()
 				.integer()
 				.min(1)
 				.positive()
 				.default(DEFAULT_ROWS_PER_PAGE)
-				.label("Rows per page"),
+				.label("Row per page"),
 			page: Joi.number().integer().min(1).default(DEFAULT_PAGE).label("Page"),
+			orderBy: Joi.string().label("asc"),
 		});
 		const { error } = querySchema.validate(req.query, { abortEarly: true });
 
@@ -62,7 +63,7 @@ export async function validateUpdateExchangeInfoRequest(
 		// check accessToken and admin role
 		await checkAdmin(req);
 
-		const exchangeId = req.params;
+		const exchangeId = Number(req.params.exchangeId);
 
 		const { description, isTradingActive, makerFee, takerFee } = req.body;
 
@@ -75,15 +76,13 @@ export async function validateUpdateExchangeInfoRequest(
 		});
 
 		const data = {
+			exchangeId,
 			description,
 			isTradingActive,
 			makerFee,
 			takerFee,
 		};
-		const { error } = schema.validate({
-			exchangeId,
-			data,
-		});
+		const { error } = schema.validate(data);
 
 		if (error) {
 			error.message = error.message.replace(/\"/g, "");

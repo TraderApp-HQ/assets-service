@@ -25,15 +25,13 @@ const updateExchangeInfoBody = {
 
 const updateExchangeInfoById = {
 	tags: [RESPONSE_TAGS.exchange],
-	description: "Update exchange information by ExchangeID",
 	parameters: [
 		{
 			in: "path",
-			name: "id",
+			name: "exchangeId",
 			required: true,
 			schema: {
-				type: "integer",
-				minimum: 1,
+				type: "number",
 			},
 			description: "The ID of the exchange to be updated.",
 		},

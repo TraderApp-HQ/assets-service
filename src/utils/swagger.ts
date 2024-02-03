@@ -38,7 +38,7 @@ const options: swaggerJsdoc.Options = {
 		paths: {
 			[`/exchanges/`]: { get: getExchanges },
 			[`/exchanges/{id}`]: { get: getExchangeById },
-			[`/exchanges/update/{id}`]: { patch: updateExchangeInfoById },
+			[`/exchanges/update/{exchangeId}`]: { patch: updateExchangeInfoById },
 			[`/exchanges/exchange/{exchangeId}`]: { get: getAllAssetsInExchangeById },
 			[`/exchanges/currency/{exchangeId}`]: { get: getCurrenciesForExchangeById },
 		},

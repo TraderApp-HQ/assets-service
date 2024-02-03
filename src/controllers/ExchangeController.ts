@@ -13,25 +13,13 @@ export async function getAllExchanges(req: Request, res: Response, next: NextFun
 	try {
 		const db = await prismaClient();
 
-		const totalExchanges = await db.exchange.count(); // Count total exchanges in the database
-
 		const page: number = parseInt(req.query.page as string, 10) || DEFAULT_PAGE;
+
 		let rowsPerPage: number =
 			parseInt(req.query.rowsPerPage as string, 10) || DEFAULT_ROWS_PER_PAGE;
 		rowsPerPage = rowsPerPage > 100 ? 100 : rowsPerPage;
 
 		const order = (req.query.orderBy as string) || "asc";
-		const totalPages = Math.ceil(totalExchanges / rowsPerPage);
-
-		if (page > totalPages) {
-			return res.status(400).json({
-				data: [],
-				error: {
-					message: `Page ${page} is not available. Total available pages: ${totalPages}`,
-				},
-			});
-		}
-
 		const offset = page <= 0 ? 0 : (page - 1) * rowsPerPage;
 
 		const allExchanges = await db.exchange.findMany({

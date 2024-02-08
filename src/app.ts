@@ -1,5 +1,3 @@
-/* eslint-disable @typescript-eslint/restrict-template-expressions */
-/* eslint-disable @typescript-eslint/naming-convention */
 import express, { Application, Request, Response, NextFunction } from "express";
 import { apiResponseHandler, initSecrets, logger } from "@traderapp/shared-resources";
 import cors from "cors";
@@ -9,6 +7,8 @@ import initDatabase from "./config/database";
 import { CoinRoutes, ExchangeRoutes } from "./routes";
 import secretsJson from "./env.json";
 import { ENVIRONMENTS } from "./config/constants";
+import swaggerUi from "swagger-ui-express";
+import specs from "./utils/swagger";
 
 config();
 const app: Application = express();
@@ -23,11 +23,12 @@ initSecrets({
 	secretsJson,
 })
 	.then(() => {
-		const port = process.env.PORT;
+		const port = process.env.PORT as string;
 		app.listen(port, async () => {
 			await initDatabase();
 			startServer();
 			logger.log(`Server listening at port ${port}`);
+			logger.log(`Docs available at http://localhost:${port}/api-docs`);
 		});
 	})
 	.catch((err) => {
@@ -48,6 +49,9 @@ function startServer() {
 	app.use(express.urlencoded({ extended: true }));
 	app.use(express.json());
 
+	// documentation
+	app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(specs));
+
 	// api routes
 	app.use(`/coins`, CoinRoutes);
 	app.use(`/exchanges`, ExchangeRoutes);
@@ -60,7 +64,7 @@ function startServer() {
 	// handle errors
 	app.use((err: Error, _req: Request, res: Response, _next: NextFunction) => {
 		const error = err;
-		let error_message = err.message;
+		let errorMessage = err.message;
 		let statusCode;
 
 		if (err.name === "ValidationError") statusCode = 400;
@@ -70,7 +74,7 @@ function startServer() {
 		else {
 			statusCode = 500;
 			error.name = "InternalServerError";
-			error_message = "Something went wrong. Please try again after a while.";
+			errorMessage = "Something went wrong. Please try again after a while.";
 			console.log("Error name: ", err.name, "Error message: ", err.message);
 		}
 
@@ -78,7 +82,7 @@ function startServer() {
 			apiResponseHandler({
 				type: "error",
 				object: error,
-				message: error_message,
+				message: errorMessage,
 			})
 		);
 	});

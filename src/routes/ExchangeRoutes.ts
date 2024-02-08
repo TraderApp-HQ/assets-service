@@ -1,13 +1,24 @@
 import { Router } from "express";
-import { getAllExchanges, getExchangeByIdHandler } from "../controllers/ExchangeController";
+import { ROUTES } from "../config/constants";
+import {
+	getAllExchanges,
+	getExchangeById,
+	getAllAssetsInExchange,
+	updateExchangeInfo,
+	getCurrenciesForExchange,
+} from "../controllers/ExchangeController";
 import {
 	validateExchangesRequest,
 	validateExchangeRequest,
+	validateUpdateExchangeInfoRequest,
 } from "../middlewares/ExchangeMiddleware";
 
 const router = Router();
 
-router.get("/", validateExchangesRequest, getAllExchanges);
-router.get("/:id", validateExchangeRequest, getExchangeByIdHandler);
+router.get(ROUTES.get, validateExchangesRequest, getAllExchanges);
+router.get(ROUTES.getExchangeById, validateExchangeRequest, getExchangeById);
+router.patch(ROUTES.patchExchangeById, validateUpdateExchangeInfoRequest, updateExchangeInfo);
+router.get(ROUTES.getAllAssets, getAllAssetsInExchange);
+router.get(ROUTES.getByCurrencies, getCurrenciesForExchange);
 
 export default router;

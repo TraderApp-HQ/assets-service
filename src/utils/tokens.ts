@@ -22,22 +22,18 @@ export async function verifyAccessToken(accessToken: string) {
 	});
 }
 
-// A function to get accessToken from headers, verify it and check if user is admin
 export async function checkAdmin(req: Request) {
 	// admin role IDs
 	const roles = [UserRoles.ADMIN, UserRoles.SUPER_ADMIN];
 
-	// get accessToken from req headers
 	const accessToken = req.headers.authorization?.split(" ")[1];
 
-	// check if access token was supplied
 	if (!accessToken) {
 		const error = new Error("Invalid Token");
 		error.name = "Unauthorized";
 		throw error;
 	}
 
-	// verify accessToken and get user role
 	const { role } = (await verifyAccessToken(accessToken)) as any;
 
 	// check if user role is admin
@@ -50,30 +46,16 @@ export async function checkAdmin(req: Request) {
 	}
 }
 
-// A function to get accessToken from headers, verify it and check if user is admin
 export async function checkUser(req: Request) {
-	// admin role IDs
-	const roles = [UserRoles.ADMIN, UserRoles.SUPER_ADMIN];
-
-	// get accessToken from req headers
 	const accessToken = req.headers.authorization?.split(" ")[1];
 
-	// check if access token was supplied and throw error if not
 	if (!accessToken) {
-		const error = new Error("No access token");
+		const error = new Error("Invalid Token");
 		error.name = "Unauthorized";
 		throw error;
 	}
 
-	// verify accessToken
 	const { role } = (await verifyAccessToken(accessToken)) as any;
 
-	// check if user role is admin and throw error if not
-	if (roles.indexOf(role) === -1) {
-		const error = new Error(
-			"You don't have the necessary permission to perform this operation."
-		);
-		error.name = "Forbidden";
-		throw error;
-	}
+	return role;
 }

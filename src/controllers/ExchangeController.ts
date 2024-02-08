@@ -110,7 +110,6 @@ export async function updateExchangeInfo(req: Request, res: Response, next: Next
 				message: ResponseMessage.UPDATE_EXCHANGE,
 			})
 		);
-		console.log("here", updatedExchange, ResponseMessage.UPDATE_EXCHANGE);
 	} catch (err) {
 		next(err);
 	}

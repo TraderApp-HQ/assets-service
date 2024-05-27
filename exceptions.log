@@ -1866,3 +1866,13 @@ Error: listen EADDRINUSE: address already in use :::8080
     at Function.listen (C:\Users\ChineseChikki\Documents\GitHub\App-Trader\assets-service\node_modules\express\lib\application.js:635:24)
     at C:\Users\ChineseChikki\Documents\GitHub\App-Trader\assets-service\src\app.ts:27:7
     at processTicksAndRejections (node:internal/process/task_queues:96:5) [assets-service] development 2024-02-02T12:42:14.919Z
+[31merror[39m: uncaughtException: Could not load credentials from any providers
+CredentialsProviderError: Could not load credentials from any providers
+    at /Users/superuser/work/traderapp/assets-service/node_modules/@aws-sdk/credential-provider-node/dist-cjs/defaultProvider.js:13:11
+    at /Users/superuser/work/traderapp/assets-service/node_modules/@smithy/property-provider/dist-cjs/chain.js:12:39
+    at processTicksAndRejections (node:internal/process/task_queues:95:5) [unkown-service] development 2024-05-27 11:28:04
+error: uncaughtException: Could not load credentials from any providers
+CredentialsProviderError: Could not load credentials from any providers
+    at /Users/superuser/work/traderapp/assets-service/node_modules/@aws-sdk/credential-provider-node/dist-cjs/defaultProvider.js:13:11
+    at /Users/superuser/work/traderapp/assets-service/node_modules/@smithy/property-provider/dist-cjs/chain.js:12:39
+    at processTicksAndRejections (node:internal/process/task_queues:95:5) [unkown-service] development 2024-05-27T10:28:04.969Z

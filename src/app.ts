@@ -58,7 +58,7 @@ function startServer() {
 
 	// health check
 	app.get(`/ping`, (_req, res) => {
-		res.status(200).send(apiResponseHandler({ message: "pong" }));
+		res.status(200).send(apiResponseHandler({ message: "pong from assets service" }));
 	});
 
 	// handle errors

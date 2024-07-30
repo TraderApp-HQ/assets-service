@@ -1,7 +1,4 @@
 import { initCoins as getCoins } from "../fixtures/coins";
+import { runScript } from "./config";
 
-async function initCoins() {
-	await getCoins();
-}
-
-void initCoins();
+runScript({ scriptFunction: getCoins });

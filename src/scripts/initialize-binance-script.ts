@@ -1,7 +1,4 @@
 import { getBinanceMarkets } from "../fixtures/binance";
+import { runScript } from "./config";
 
-async function initBinance() {
-	await getBinanceMarkets();
-}
-
-void initBinance();
+runScript({ scriptFunction: getBinanceMarkets });

@@ -1,8 +1,9 @@
 import express, { Application, Request, Response, NextFunction } from "express";
+import mongoose from "mongoose";
 import { apiResponseHandler, initSecrets, logger } from "@traderapp/shared-resources";
 import cors from "cors";
 import { config } from "dotenv";
-import initDatabase from "./config/database";
+// import initDatabase from "./config/database";
 
 import { CoinRoutes, ExchangeRoutes } from "./routes";
 import secretsJson from "./env.json";
@@ -13,28 +14,53 @@ import specs from "./utils/swagger";
 config();
 const app: Application = express();
 
-const env = process.env.NODE_ENV || "development";
-const suffix = ENVIRONMENTS[env] || "dev";
+const env = process.env.NODE_ENV ?? "development";
+const suffix = ENVIRONMENTS[env] ?? "dev";
 const secretNames = ["common-secrets", "assets-service-secrets"];
 
-initSecrets({
-	env: suffix,
-	secretNames,
-	secretsJson,
-})
-	.then(() => {
-		const port = process.env.PORT as string;
-		app.listen(port, async () => {
-			await initDatabase();
-			startServer();
-			logger.log(`Server listening at port ${port}`);
-			logger.log(`Docs available at http://localhost:${port}/api-docs`);
-		});
-	})
-	.catch((err) => {
-		logger.log(`Error getting secrets. === ${JSON.stringify(err)}`);
-		throw err;
+// initSecrets({
+// 	env: suffix,
+// 	secretNames,
+// 	secretsJson,
+// })
+// 	.then(() => {
+// 		// const port = process.env.PORT as string;
+// 		const port = 8082;
+// 		app.listen(port, async () => {
+// 			await initDatabase();
+// 			startServer();
+// 			logger.log(`Server listening at port ${port}`);
+// 			logger.log(`Docs available at http://localhost:${port}/api-docs`);
+// 		});
+// 	})
+// 	.catch((err) => {
+// 		logger.log(`Error getting secrets. === ${JSON.stringify(err)}`);
+// 		throw err;
+// 	});
+
+(async function () {
+	await initSecrets({
+		env: suffix,
+		secretNames,
+		secretsJson,
 	});
+	const port = process.env.PORT ?? "";
+	// const port = 8082;
+	const dbUrl = process.env.ASSETS_SERVICE_DB_URL ?? "";
+	// connect to mongodb
+	mongoose
+		.connect(dbUrl)
+		.then(() => {
+			app.listen(port, () => {
+				logger.log(`Server listening at port ${port}`);
+				startServer();
+				logger.log(`Docs available at http://localhost:${port}/api-docs`);
+			});
+		})
+		.catch((err) => {
+			logger.error(`Unable to connect to mongodb. Error === ${JSON.stringify(err)}`);
+		});
+})();
 
 function startServer() {
 	// cors
@@ -63,7 +89,7 @@ function startServer() {
 
 	// handle errors
 	app.use((err: Error, _req: Request, res: Response, _next: NextFunction) => {
-		const error = err;
+		let errorName = err.name;
 		let errorMessage = err.message;
 		let statusCode;
 
@@ -73,15 +99,19 @@ function startServer() {
 		else if (err.name === "NotFound") statusCode = 404;
 		else {
 			statusCode = 500;
-			error.name = "InternalServerError";
+			errorName = "InternalServerError";
 			errorMessage = "Something went wrong. Please try again after a while.";
-			console.log("Error name: ", err.name, "Error message: ", err.message);
+			logger.error(`Error: , ${err}`);
 		}
 
 		res.status(statusCode).json(
 			apiResponseHandler({
 				type: "error",
-				object: error,
+				object: {
+					statusCode,
+					errorName,
+					errorMessage,
+				},
 				message: errorMessage,
 			})
 		);

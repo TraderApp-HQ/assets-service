@@ -1,7 +1,4 @@
 import { getKucoinMarkets } from "../fixtures/kucoin";
+import { runScript } from "./config";
 
-async function initKucoin() {
-	await getKucoinMarkets();
-}
-
-void initKucoin();
+runScript({ scriptFunction: getKucoinMarkets });

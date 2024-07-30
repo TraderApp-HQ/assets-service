@@ -1,32 +1,31 @@
 import { Request, Response, NextFunction } from "express";
-import { prismaClient } from "../config/database";
+// import { prismaClient } from "../config/database";
 import { IPagedResultData } from "../helpers/interfaces/pageResult";
 import { apiResponseHandler } from "@traderapp/shared-resources";
+import Coin from "../models/Coin";
 
 //	A function to get all coins
 export async function coinsHandler(req: Request, res: Response, next: NextFunction) {
 	try {
-		const db = await prismaClient()
+		// const db = await prismaClient()
 
 		const page: number = parseInt(req.query.page as string) || 1;
-    	let rowsPerPage:number = parseInt(req.query.rowsPerPage as string) || 10;
-		rowsPerPage = rowsPerPage > 100 ? 100: rowsPerPage;
+		let rowsPerPage: number = parseInt(req.query.rowsPerPage as string) || 10;
+		rowsPerPage = rowsPerPage > 100 ? 100 : rowsPerPage;
 
-		const order = req.query.orderBy as string || 'asc';
-		const sort = req.query.sort as string || 'rank';
-		const offset = page <= 0 ? 0 : (page - 1) * rowsPerPage; 
+		const order = (req.query.orderBy as string) || "asc";
+		const sort = (req.query.sort as string) || "rank";
+		const offset = page <= 0 ? 0 : (page - 1) * rowsPerPage;
 
-		const variable = sort 
+		const variable = sort;
 		const orderby = {
-			[variable]: order
-		}
+			[variable]: order,
+		};
 
-		const coinsArr: any = await db.coin.findMany({
+		const coinsArr: any = await Coin.find({
 			take: rowsPerPage,
 			skip: offset,
-			orderBy: [
-				orderby
-			],
+			orderBy: [orderby],
 			where: { isTradingActive: true, isCoinActive: true },
 			select: {
 				id: true,
@@ -35,7 +34,7 @@ export async function coinsHandler(req: Request, res: Response, next: NextFuncti
 				rank: true,
 				logo: true,
 				dateLaunched: true,
-				urls: true
+				urls: true,
 			},
 		});
 
@@ -44,23 +43,24 @@ export async function coinsHandler(req: Request, res: Response, next: NextFuncti
 			return { ...coin, urls: JSON.parse(coin.urls) };
 		});
 
-		const count = await db.coin.count({
-			where: { isTradingActive: true, isCoinActive: true },
-		})
+		// const count = await Coin.count({
+		// 	where: { isTradingActive: true, isCoinActive: true },
+		// })
+		const count = 10;
 
 		const pageCount = Math.ceil(count / rowsPerPage);
 
 		const response: IPagedResultData = {
-			currentPage : page,
-			  itemsCount: count,
-			  pageCount: pageCount,
-			  rowsPerPage: rowsPerPage,
-			  sortBy: sort,
-			  orderBy: order,
-			  coins: coins,
-		  }; 
+			currentPage: page,
+			itemsCount: count,
+			pageCount,
+			rowsPerPage,
+			sortBy: sort,
+			orderBy: order,
+			coins,
+		};
 
-		  res.status(200).json(apiResponseHandler({ object: response }));
+		res.status(200).json(apiResponseHandler({ object: response }));
 	} catch (err: any) {
 		next(err);
 	}
@@ -78,8 +78,8 @@ export async function coinHandler(req: Request, res: Response, next: NextFunctio
 		const id = Number(req.params.id);
 
 		//	fetch coin by id
-		const db = await prismaClient();
-		const coin: any = await db.coin.findUnique({
+		// const db = await prismaClient();
+		const coin: any = await Coin.findOne({
 			where: { id },
 			select: {
 				id: true,

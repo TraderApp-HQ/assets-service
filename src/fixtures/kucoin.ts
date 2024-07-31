@@ -42,6 +42,6 @@ export async function getKucoinMarkets() {
 		// insert exchange pairs
 		await insertExchangePairs(symbols, exchangeId);
 	} catch (err: any) {
-		console.log("Error getting kucoin markets: ", err);
+		console.log("Error getting kucoin markets: ", err.message);
 	}
 }

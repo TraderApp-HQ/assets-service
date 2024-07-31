@@ -14,12 +14,15 @@
 				"@typescript-eslint/strict-boolean-expressions": "off",
 				"@typescript-eslint/explicit-function-return-type": "off",
 				"@typescript-eslint/no-misused-promises": "off",
-				"@typescript-eslint/prefer-nullish-coalescing": "off",
 				"@typescript-eslint/return-await": "off",
 				"no-useless-escape": "off",
-				"@typescript-eslint/no-dynamic-delete": "off",
 				"@typescript-eslint/dot-notation": "off",
-				"no-useless-catch": "off"
+				"no-useless-catch": "off",
+				"@typescript-eslint/no-floating-promises": "off",
+				"@typescript-eslint/no-confusing-void-expression": "off",
+				"@typescript-eslint/restrict-template-expressions": "off",
+				"@typescript-eslint/no-var-requires": "off",
+				"no-template-curly-in-string": "off"
 			}
 		}
 	],

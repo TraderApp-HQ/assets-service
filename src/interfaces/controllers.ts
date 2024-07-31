@@ -8,6 +8,7 @@ export interface ICoin {
 	urls: string;
 	dateLaunched: Date;
 	isCoinActive: boolean;
+	isTradingActive: boolean;
 	rank: number;
 }
 export interface IPagedResultData {

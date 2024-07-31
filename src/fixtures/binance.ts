@@ -38,6 +38,6 @@ export async function getBinanceMarkets() {
 		// insert exchange pairs
 		await insertExchangePairs(symbols, exchangeId);
 	} catch (err: any) {
-		console.log("Error getting binance markets: ", err);
+		console.log("Error getting binance markets: ", err.message);
 	}
 }

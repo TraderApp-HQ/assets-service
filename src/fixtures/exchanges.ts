@@ -1,11 +1,12 @@
 import axios from "axios";
 import { config } from "dotenv";
-import { PrismaClient } from "@prisma/client";
+import Exchange from "../models/Exchange";
+// import { PrismaClient } from "@prisma/client";
 
 // load env variables
 config();
 
-const prisma = new PrismaClient();
+// const prisma = new PrismaClient();
 
 const CMC_API_KEY = process.env.CMC_API_KEY as string;
 const exchanges = ["binance", "kucoin"];
@@ -44,7 +45,7 @@ export async function getExchanges() {
 			const dateLaunched = exchange.date_launched;
 
 			data.push({
-				id,
+				_id: id,
 				name,
 				slug,
 				description,
@@ -57,7 +58,7 @@ export async function getExchanges() {
 		});
 
 		// insert records into db
-		const ex = await prisma.exchange.createMany({ data });
+		const ex = await Exchange.insertMany(data, { ordered: false });
 		console.log("records inserted: ", ex);
 	} catch (err: any) {
 		console.log("Error getting exchanges: ", err.message);

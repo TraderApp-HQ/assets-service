@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from "express";
 // import { prismaClient } from "../config/database";
-import { IPagedResultData } from "../helpers/interfaces/pageResult";
+import { ICoin, IPagedResultData } from "../interfaces/controllers";
 import { apiResponseHandler } from "@traderapp/shared-resources";
 import Coin from "../models/Coin";
 
@@ -22,7 +22,7 @@ export async function coinsHandler(req: Request, res: Response, next: NextFuncti
 			[variable]: order,
 		};
 
-		const coinsArr: any = await Coin.find({
+		const coinsArr = await Coin.find({
 			take: rowsPerPage,
 			skip: offset,
 			orderBy: [orderby],
@@ -39,8 +39,9 @@ export async function coinsHandler(req: Request, res: Response, next: NextFuncti
 		});
 
 		//	parse urls back to js Object. NB: Urls was stored in db as strings using JSON.stringify
-		const coins = coinsArr.map((coin: any) => {
-			return { ...coin, urls: JSON.parse(coin.urls) };
+		const coins: ICoin[] = coinsArr.map((coin) => {
+			const coinObj = coin as ICoin;
+			return { ...coinObj, urls: JSON.parse(coinObj.urls), id: coin._id };
 		});
 
 		// const count = await Coin.count({

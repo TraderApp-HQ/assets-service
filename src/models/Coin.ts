@@ -12,11 +12,13 @@ export interface ICoin extends Document {
 	isCoinActive: boolean;
 	isTradingActive: boolean;
 	dateLaunched: Date;
+	// currency: mongoose.Types.ObjectId
+	// exchangePairs: mongoose.Types.ObjectId[];
 }
 
 interface ICoinModel extends ICoin {}
 
-const CoinSchema = new Schema<ICoinModel>(
+export const CoinSchema = new Schema<ICoinModel>(
 	{
 		_id: { type: Number, required: true },
 		name: { type: String, required: true },

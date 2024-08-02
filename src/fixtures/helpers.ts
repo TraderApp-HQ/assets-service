@@ -41,13 +41,13 @@ export async function getAllCurrencies() {
 	const currencies: { [k: string]: any } = {};
 
 	// get currencies from db
-	const allCurrencies = await Currency.find({
-		include: { coin: true },
-	});
+	// const allCurrencies = await Currency.find().populate("coin");
+	const allCurrencies = await Currency.find();
 
 	// put currencies in hash table for easy retrieval
 	allCurrencies.forEach((currency: any) => {
-		currencies[currency.coin?.symbol] = currency.coinId;
+		currencies[currency.symbol] = currency._id;
+		// currencies[currency.coin?.symbol] = currency.coinId;
 	});
 
 	return currencies;

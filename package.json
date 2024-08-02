@@ -13,6 +13,10 @@
 		"init-coins": "npx ts-node src/scripts/initialize-coins-script",
 		"init-binance": "npx ts-node src/scripts/initialize-binance-script",
 		"init-kucoin": "npx ts-node src/scripts/initialize-kucoin-script",
+		"init-coins-transfer": "npx ts-node src/scripts/transfer-coins-collection-script",
+		"init-exchanges-transfer": "npx ts-node src/scripts/transfer-exchanges-collection-script",
+		"init-currencies-transfer": "npx ts-node src/scripts/transfer-currencies-collection-script",
+		"init-exchangepair-transfer": "npx ts-node src/scripts/transfer-exchangepair-unknown-coin.script",
 		"prepare": "husky install",
 		"codegen": "npx prisma generate",
 		"migration": "npx prisma migrate deploy"

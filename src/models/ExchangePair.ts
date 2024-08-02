@@ -6,9 +6,9 @@ export interface IExchangePair extends Document {
 	currencyId: number;
 }
 
-interface IExchangePairModel extends IExchangePair {}
+export interface IExchangePairModel extends IExchangePair {}
 
-const ExchangePairSchema = new Schema<IExchangePairModel>(
+export const ExchangePairSchema = new Schema<IExchangePairModel>(
 	{
 		exchangeId: { type: Number, ref: "Exchange", required: true },
 		coinId: { type: Number, ref: "Coin", required: true },

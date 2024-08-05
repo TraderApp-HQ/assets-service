@@ -8,8 +8,9 @@ import {
 } from "../config/constants";
 import { ExchangeService } from "../services/ExchangeService";
 import { HttpStatus } from "../utils/httpStatus";
-// import ExchangeModel from "../models/Exchange";
 import ExchangePairModel from "../models/ExchangePair";
+import Currency from "../models/Currency";
+import Coin from "../models/Coin";
 
 export async function getAllExchanges(req: Request, res: Response, next: NextFunction) {
 	const exchangeService: ExchangeService = new ExchangeService();
@@ -73,17 +74,17 @@ export async function getAllAssetsInExchange(req: Request, res: Response, next: 
 	try {
 		const exchangeId = Number(req.params.exchangeId);
 
-		// const populateFields = [
-		// 	{
-		// 		path: "exchange",
-		// 		model: ExchangeModel,
-		// 	},
-		// ]
+		const populateFields = [
+			{
+				path: "coinId",
+				model: Coin,
+			},
+		];
 
 		const assetsInExchange = await exchangeService.getManyExchangeById(
 			ExchangePairModel,
-			exchangeId
-			// populateFields
+			exchangeId,
+			populateFields
 		);
 		res.status(HttpStatus.OK).json(
 			apiResponseHandler({
@@ -132,24 +133,18 @@ export async function getCurrenciesForExchange(req: Request, res: Response, next
 		const exchangeId = Number(req.params.exchangeId);
 
 		// Define the populate fields if needed
-		// const populateFields = [
-		// 	{
-		// 		path: "exchange",
-		// 		model: ExchangeModel,
-		// 	},
-		// 	{
-		// 		path: "coin",
-		// 		populate: {
-		// 			path: "currency",
-		// 		},
-		// 	},
-		// ];
+		const populateFields = [
+			{
+				path: "currencyId",
+				model: Currency,
+			},
+		];
 
 		// Call the reusable function
 		const exchangePairs = await exchangeService.getManyExchangeById(
 			ExchangePairModel,
-			exchangeId
-			// populateFields
+			exchangeId,
+			populateFields
 		);
 
 		res.status(HttpStatus.OK).json(

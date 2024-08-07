@@ -8,6 +8,7 @@ import {
 	updateExchangeInfoBody,
 	updateExchangeInfoById,
 } from "../documentation/exchange";
+import { getCoins, getCoinsParams, getCoinById } from "../documentation/coin";
 
 const options: swaggerJsdoc.Options = {
 	swaggerDefinition: {
@@ -28,6 +29,8 @@ const options: swaggerJsdoc.Options = {
 			schemas: {
 				getExchangesParams,
 				updateExchangeInfoBody,
+				getCoinsParams,
+				getCoins,
 			},
 		},
 		security: [
@@ -41,6 +44,10 @@ const options: swaggerJsdoc.Options = {
 			[`/exchanges/update/{exchangeId}`]: { patch: updateExchangeInfoById },
 			[`/exchanges/exchange/{exchangeId}`]: { get: getAllAssetsInExchangeById },
 			[`/exchanges/currency/{exchangeId}`]: { get: getCurrenciesForExchangeById },
+
+			// coins
+			[`/coins/{id}`]: { get: getCoinById },
+			[`/coins/`]: { get: getCoins },
 		},
 	},
 	apis: ["./src/routes/*.ts", "./src/models/*.ts"], // Point to your route files

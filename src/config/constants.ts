@@ -25,6 +25,7 @@ export const ResponseType = {
 
 export const RESPONSE_TAGS = {
 	exchange: "Exchange",
+	coin: "Coin",
 };
 
 export const ResponseMessage = {

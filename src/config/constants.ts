@@ -25,6 +25,7 @@ export const ResponseType = {
 
 export const RESPONSE_TAGS = {
 	exchange: "Exchange",
+	coin: "Coin",
 };
 
 export const ResponseMessage = {
@@ -33,6 +34,10 @@ export const ResponseMessage = {
 	GET_ASSETS: "All Assets in an Exchange Fetched Successfully ",
 	UPDATE_EXCHANGE: "Exchange Updated Successfully",
 	GET_CURRENCIES: "All Currency Fetched Successfully",
+	EXCHANGE_NOT_FOUND: "Exchange not found.",
+
+	GET_COINS: "Coins Fetched Successfully",
+	GET_COIN: "Coin Fetched Successfully",
 };
 
 export const DEFAULT_ROWS_PER_PAGE = 10;

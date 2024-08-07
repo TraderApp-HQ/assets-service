@@ -15,7 +15,7 @@ export interface IExchange extends Document {
 
 interface IExchangeModel extends IExchange {}
 
-const ExchangeSchema = new Schema<IExchangeModel>(
+export const ExchangeSchema = new Schema<IExchangeModel>(
 	{
 		_id: { type: Number, required: true },
 		name: { type: String, required: true },

@@ -8,7 +8,7 @@ export interface IUnknownCoin extends Document {
 }
 
 // Create the schema
-const UnknownCoinSchema = new Schema<IUnknownCoin>(
+export const UnknownCoinSchema = new Schema<IUnknownCoin>(
 	{
 		_id: Number,
 		symbol: { type: String },

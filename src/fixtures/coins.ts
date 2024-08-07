@@ -20,7 +20,7 @@ export async function initCoins() {
 	const startPoints: number[] = [];
 
 	// total number of coins to get from cmc
-	const total = 5000;
+	const total = 10000;
 	let last = 1;
 	while (last <= total) {
 		startPoints.push(last);

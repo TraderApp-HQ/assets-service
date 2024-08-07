@@ -1,6 +1,6 @@
 import { DOC_RESPONSE, RESPONSE_CODES, RESPONSE_TAGS } from "../../config/constants";
 
-const getExchangesParams = {
+const getCoinsParams = {
 	type: "object",
 	properties: {
 		page: {
@@ -20,9 +20,9 @@ const getExchangesParams = {
 	},
 };
 
-const getExchanges = {
-	tags: [RESPONSE_TAGS.exchange],
-	description: "Get exchanges",
+const getCoins = {
+	tags: [RESPONSE_TAGS.coin],
+	description: "Get coins",
 	parameters: [
 		{
 			in: "query",
@@ -30,7 +30,7 @@ const getExchanges = {
 			description: "Page number for pagination",
 			required: false,
 			schema: {
-				$ref: "#/components/schemas/getExchangesParams/properties/page",
+				$ref: "#/components/schemas/getCoinsParams/properties/page",
 			},
 		},
 		{
@@ -39,7 +39,7 @@ const getExchanges = {
 			description: "Number of rows per page",
 			required: false,
 			schema: {
-				$ref: "#/components/schemas/getExchangesParams/properties/rowsPerPage",
+				$ref: "#/components/schemas/getCoinsParams/properties/rowsPerPage",
 			},
 		},
 		{
@@ -47,7 +47,7 @@ const getExchanges = {
 			name: "orderBy",
 			required: false,
 			schema: {
-				$ref: "#/components/schemas/getExchangesParams/properties/orderBy",
+				$ref: "#/components/schemas/getCoinsParams/properties/orderBy",
 			},
 		},
 	],
@@ -59,4 +59,4 @@ const getExchanges = {
 	},
 };
 
-export { getExchangesParams, getExchanges };
+export { getCoinsParams, getCoins };

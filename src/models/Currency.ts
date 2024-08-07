@@ -11,9 +11,9 @@ export interface ICurrency extends Document {
 
 interface ICurrencyModel extends ICurrency {}
 
-const CurrencySchema = new Schema<ICurrencyModel>(
+export const CurrencySchema = new Schema<ICurrencyModel>(
 	{
-		_id: { type: Number, ref: "Coin", required: true, unique: true },
+		_id: { type: Number, required: true },
 		name: { type: String, required: true },
 		symbol: { type: String, required: true },
 		isTradingActive: { type: Boolean, default: true },

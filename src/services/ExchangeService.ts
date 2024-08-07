@@ -1,16 +1,17 @@
-import { Model, Document, PopulateOptions } from "mongoose";
 import ExchangeModel, { IExchange } from "../models/Exchange";
+import {
+	GetManyExchangeByIdProps,
+	IExchangeServiceGetAllExchangesParams,
+	IExchangeServiceUpdateExchangeByIdProps,
+} from "../interfaces/controllers";
+import ExchangePair, { IExchangePair } from "../models/ExchangePair";
 
 export class ExchangeService {
 	public async getAllExchanges({
 		page,
 		rowsPerPage,
 		orderBy,
-	}: {
-		page: number;
-		rowsPerPage: number;
-		orderBy: "asc" | "desc";
-	}): Promise<IExchange[] | null> {
+	}: IExchangeServiceGetAllExchangesParams): Promise<IExchange[] | null> {
 		try {
 			const offset = (page - 1) * rowsPerPage;
 
@@ -34,12 +35,12 @@ export class ExchangeService {
 		return exchange;
 	}
 
-	public async updateExchangeById(
-		id: number,
-		updateData: Partial<IExchange>
-	): Promise<IExchange | null> {
+	public async updateExchangeById({
+		exchangeId,
+		updateData,
+	}: IExchangeServiceUpdateExchangeByIdProps): Promise<IExchange | null> {
 		try {
-			const updatedExchange = await ExchangeModel.findByIdAndUpdate(id, updateData, {
+			const updatedExchange = await ExchangeModel.findByIdAndUpdate(exchangeId, updateData, {
 				new: true,
 			}).exec();
 
@@ -52,13 +53,12 @@ export class ExchangeService {
 		}
 	}
 
-	public async getManyExchangeById<T extends Document>(
-		model: Model<T>,
-		exchangeId: number,
-		populateFields?: PopulateOptions[]
-	): Promise<T[] | null> {
+	public async getManyExchangeById({
+		exchangeId,
+		populateFields,
+	}: GetManyExchangeByIdProps): Promise<IExchangePair[] | null> {
 		try {
-			let query = model.find({ exchangeId });
+			let query = ExchangePair.find({ exchangeId });
 
 			if (populateFields && populateFields.length > 0) {
 				query = query.populate(populateFields);

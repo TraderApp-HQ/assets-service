@@ -1,3 +1,6 @@
+import { PopulateOptions } from "mongoose";
+import { IExchange } from "../models/Exchange";
+
 export interface ICoin {
 	id: number;
 	name: string;
@@ -26,4 +29,27 @@ export interface IQueryParameter {
 	query: any;
 	operations: any;
 	model: any;
+}
+
+export interface ICoinServiceGetAllCoinsParams {
+	page: number;
+	rowsPerPage: number;
+	orderBy: "asc" | "desc";
+}
+
+export interface ICoinServiceGetCoinByIdProps {
+	id: number;
+	populateFields?: PopulateOptions[];
+}
+
+export interface IExchangeServiceGetAllExchangesParams extends ICoinServiceGetAllCoinsParams {}
+
+export interface IExchangeServiceUpdateExchangeByIdProps {
+	exchangeId: number;
+	updateData: Partial<IExchange>;
+}
+
+export interface GetManyExchangeByIdProps {
+	exchangeId: number;
+	populateFields?: PopulateOptions[];
 }

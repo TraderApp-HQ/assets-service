@@ -91,7 +91,7 @@ export async function getCoinById(req: Request, res: Response, next: NextFunctio
 		// ];
 
 		// fetch coin by id using the service method
-		const coin: any = await coinService.getCoinById(id);
+		const coin: any = await coinService.getCoinById({ id });
 		console.log("coins ...............", coin);
 
 		// // loop through coin exchange pairs

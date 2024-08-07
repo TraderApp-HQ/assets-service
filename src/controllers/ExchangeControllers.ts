@@ -8,7 +8,6 @@ import {
 } from "../config/constants";
 import { ExchangeService } from "../services/ExchangeService";
 import { HttpStatus } from "../utils/httpStatus";
-import ExchangePairModel from "../models/ExchangePair";
 import Currency from "../models/Currency";
 import Coin from "../models/Coin";
 
@@ -81,11 +80,10 @@ export async function getAllAssetsInExchange(req: Request, res: Response, next: 
 			},
 		];
 
-		const assetsInExchange = await exchangeService.getManyExchangeById(
-			ExchangePairModel,
+		const assetsInExchange = await exchangeService.getManyExchangeById({
 			exchangeId,
-			populateFields
-		);
+			populateFields,
+		});
 		res.status(HttpStatus.OK).json(
 			apiResponseHandler({
 				type: ResponseType.SUCCESS,
@@ -112,7 +110,10 @@ export async function updateExchangeInfo(req: Request, res: Response, next: Next
 			takerFee,
 		};
 
-		const updatedExchange = await exchangeService.updateExchangeById(exchangeId, updateData);
+		const updatedExchange = await exchangeService.updateExchangeById({
+			exchangeId,
+			updateData,
+		});
 
 		res.status(HttpStatus.OK).json(
 			apiResponseHandler({
@@ -141,11 +142,10 @@ export async function getCurrenciesForExchange(req: Request, res: Response, next
 		];
 
 		// Call the reusable function
-		const exchangePairs = await exchangeService.getManyExchangeById(
-			ExchangePairModel,
+		const exchangePairs = await exchangeService.getManyExchangeById({
 			exchangeId,
-			populateFields
-		);
+			populateFields,
+		});
 
 		res.status(HttpStatus.OK).json(
 			apiResponseHandler({

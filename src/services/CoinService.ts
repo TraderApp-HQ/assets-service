@@ -1,17 +1,15 @@
-// import { Model, Document, PopulateOptions } from "mongoose";
-import { PopulateOptions } from "mongoose";
 import Coin, { ICoin } from "../models/Coin";
+import {
+	ICoinServiceGetAllCoinsParams,
+	ICoinServiceGetCoinByIdProps,
+} from "../interfaces/controllers";
 
 export class CoinService {
 	public async getAllCoins({
 		page,
 		rowsPerPage,
 		orderBy,
-	}: {
-		page: number;
-		rowsPerPage: number;
-		orderBy: "asc" | "desc";
-	}): Promise<ICoin[] | null> {
+	}: ICoinServiceGetAllCoinsParams): Promise<ICoin[] | null> {
 		try {
 			const offset = (page - 1) * rowsPerPage;
 
@@ -40,10 +38,10 @@ export class CoinService {
 		}
 	}
 
-	public async getCoinById(
-		id: number,
-		populateFields?: PopulateOptions[]
-	): Promise<ICoin | null> {
+	public async getCoinById({
+		id,
+		populateFields,
+	}: ICoinServiceGetCoinByIdProps): Promise<ICoin | null> {
 		try {
 			let query = Coin.findOne({ _id: id }).select({
 				id: 1,

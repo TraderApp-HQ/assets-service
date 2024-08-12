@@ -26,6 +26,7 @@ export const ResponseType = {
 export const RESPONSE_TAGS = {
 	exchange: "Exchange",
 	coin: "Coin",
+	signal: "Signal",
 };
 
 export const ResponseMessage = {
@@ -38,6 +39,12 @@ export const ResponseMessage = {
 
 	GET_COINS: "Coins Fetched Successfully",
 	GET_COIN: "Coin Fetched Successfully",
+
+	CREATE_SIGNAL: "Signal was placed Successfully",
+	GET_SIGNALS: "Signals Fetched Successfully",
+	GET_SIGNAL: "Signal Fetched Successfully",
+	NO_SIGNAL: "No signal found",
+	UPDATE_SIGNAL: "signal updated Successfully",
 };
 
 export const DEFAULT_ROWS_PER_PAGE = 10;
@@ -57,4 +64,23 @@ export const DOC_RESPONSE = {
 	UNAUTHORIZED: apiDocumentationResponseObject("Error: Unauthorized"),
 	BADREQUEST: apiDocumentationResponseObject("Error: Bad Request"),
 	SUCCESS: apiDocumentationResponseObject("Success"),
+};
+
+export const RESPONSE_FLAGS = {
+	unauthorized: "Unauthorized",
+	validationError: "ValidationError",
+	forbidden: "Forbidden",
+	notfound: "NotFound",
+};
+
+export const PAGINATION_VALUES = {
+	createdAt: "createdAt",
+	desc: "desc",
+};
+
+export const SIGNAL_ROUTES = {
+	post: "/create",
+	get: "/",
+	getSignalById: "/:id",
+	updateSignalById: "/update/:id",
 };

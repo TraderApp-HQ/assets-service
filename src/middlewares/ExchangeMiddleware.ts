@@ -1,7 +1,7 @@
 import { Request, Response, NextFunction } from "express";
 import Joi from "joi";
-import { checkAdmin } from "../utils/tokens";
 import { DEFAULT_PAGE, DEFAULT_ROWS_PER_PAGE } from "../config/constants";
+import { checkAdmin } from "../helpers/middlewares";
 
 export async function validateExchangesRequest(req: Request, _res: Response, next: NextFunction) {
 	try {

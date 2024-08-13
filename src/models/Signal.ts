@@ -4,7 +4,6 @@ import { ISignal } from "../config/interfaces";
 
 const SignalSchema = new Schema<ISignal>(
 	{
-		id: { type: String, unique: true },
 		targetProfits: [
 			{
 				price: { type: Number, required: true },
@@ -33,7 +32,18 @@ const SignalSchema = new Schema<ISignal>(
 		asset: { type: Number, ref: "Coin", required: true },
 		baseCurrency: { type: Number, ref: "Coin", required: true },
 	},
-	{ versionKey: false, timestamps: false }
+	{
+		versionKey: false,
+		timestamps: false,
+		toJSON: {
+			virtuals: true,
+			transform: (doc, ret) => {
+				ret.id = ret._id; // Optionally include _id as id
+				delete ret._id; // Remove _id from output
+				return ret;
+			},
+		},
+	}
 );
 
 export default mongoose.model<ISignal>("Signal", SignalSchema);

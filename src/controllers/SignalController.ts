@@ -9,7 +9,7 @@ import {
 } from "../config/constants";
 import { apiResponseHandler } from "@traderapp/shared-resources";
 import { ISignal, ISignalServiceCreateSignalProps } from "../config/interfaces";
-// import { formatSignalResponse } from "./helpers";
+import { formatSignalResponse } from "./helpers";
 import { SignalService } from "../services/SignalService";
 import { HttpStatus } from "../utils/httpStatus";
 import { SignalStatus } from "../config/enums";
@@ -43,7 +43,6 @@ export async function createSignalHandler(req: Request, res: Response, next: Nex
 
 		// Data to be set in the document
 		const newSignal: ISignalServiceCreateSignalProps = {
-			id,
 			asset,
 			baseCurrency,
 			entryPrice,
@@ -62,7 +61,6 @@ export async function createSignalHandler(req: Request, res: Response, next: Nex
 
 		const signal = await signalService.createSignal(newSignal);
 
-		// const returnObj = formatSignalResponse(signal as ISignal);
 		const returnObj = signal as ISignal;
 		res.status(HttpStatus.OK).json(
 			apiResponseHandler({
@@ -121,14 +119,14 @@ export async function getSignalsHandler(req: Request, res: Response, next: NextF
 		const totalPages = Math.ceil(totalRecords / rowsPerPage);
 
 		// Format the response
-		// const signalsObj = signals.map((signal) => formatSignalResponse(signal));
+		const signalsObj = signals.map((signals) => formatSignalResponse(signals));
 		const response = {
-			signals,
+			signals: signalsObj,
 			rowsPerPage,
 			page,
 			totalPages,
 			totalRecords,
-			startAfterDoc: signals.length > 0 ? signals[signals.length - 1]._id : null,
+			startAfterDoc: signals.length > 0 ? signals[signals.length - 1].id : null,
 		};
 
 		res.status(HttpStatus.OK).json(
@@ -163,11 +161,12 @@ export async function getSignalByIdHandler(req: Request, res: Response, next: Ne
 			return;
 		}
 
+		const signalsObj = formatSignalResponse(signal);
 		res.status(HttpStatus.OK).json(
 			apiResponseHandler({
 				type: ResponseType.SUCCESS,
 				message: ResponseMessage.GET_SIGNAL,
-				object: signal,
+				object: signalsObj,
 			})
 		);
 	} catch (err) {

@@ -3,6 +3,7 @@ import { SignalStatus } from "../config/enums";
 import {
 	IExchange,
 	ISignal,
+	ISignalResponse,
 	ISignalServiceCreateSignalProps,
 	ISignalServiceGetSignalsParams,
 	ISignalServiceUpdateSignalByIdProps,
@@ -44,7 +45,7 @@ export class SignalService {
 		startAfterDoc, // Document to start after, for pagination
 		keyword, // Keyword for filtering by name or other fields
 		status,
-	}: ISignalServiceGetSignalsParams): Promise<ISignal[] | null> {
+	}: ISignalServiceGetSignalsParams): Promise<ISignalResponse[] | null> {
 		try {
 			const query: any = {};
 
@@ -105,13 +106,13 @@ export class SignalService {
 			// Apply pagination
 			const paginatedSignals = signals.slice((page - 1) * rowsPerPage, page * rowsPerPage);
 
-			return paginatedSignals;
+			return paginatedSignals as unknown as ISignalResponse[];
 		} catch (error: any) {
 			throw new Error(error.message);
 		}
 	}
 
-	public async getSignalById(id: string): Promise<ISignal | null> {
+	public async getSignalById(id: string): Promise<ISignalResponse | null> {
 		try {
 			const signal = await Signal.findById(id)
 				.populate(["supportedExchanges", "asset", "baseCurrency"])
@@ -120,7 +121,7 @@ export class SignalService {
 			if (!signal) {
 				return null;
 			}
-			return signal;
+			return signal as unknown as ISignalResponse;
 		} catch (error: any) {
 			throw new Error(error.message);
 		}

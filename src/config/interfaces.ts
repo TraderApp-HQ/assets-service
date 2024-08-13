@@ -1,4 +1,4 @@
-import mongoose, { PopulateOptions } from "mongoose";
+import { PopulateOptions } from "mongoose";
 import { Candlestick, SignalRisk, SignalStatus, UserRoles } from "./enums";
 
 export interface IAccessToken {
@@ -33,7 +33,6 @@ export interface IExchange {
 }
 
 export interface ISignalServiceCreateSignalProps {
-	id: string;
 	targetProfits: ISignalMilestone[];
 	stopLoss: ISignalMilestone;
 	entryPrice: number;
@@ -69,6 +68,25 @@ export interface ISignalServiceUpdateSignalByIdProps {
 	status: SignalStatus;
 }
 
-export interface ISignal extends ISignalServiceCreateSignalProps, Document {
-	_id?: mongoose.Types.ObjectId;
+export interface ISignal extends ISignalServiceCreateSignalProps, Document {}
+
+export interface ISignalResponse extends Document {
+	id: string;
+	asset: ISignalAsset;
+	baseCurrency: ISignalAsset;
+	targetProfits: ISignalMilestone[];
+	stopLoss: ISignalMilestone;
+	entryPrice: number;
+	currentPrice?: number;
+	currentChange?: number;
+	tradeNote: string;
+	candlestick: Candlestick;
+	risk: SignalRisk;
+	isSignalTradable: boolean;
+	chartUrl: string;
+	status: SignalStatus;
+	maxGain: number;
+	createdAt: string;
+	endedAt?: string;
+	supportedExchanges: IExchange[];
 }

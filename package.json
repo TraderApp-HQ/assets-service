@@ -22,6 +22,7 @@
 		"migration": "npx prisma migrate deploy"
 	},
 	"dependencies": {
+		"@aws-sdk/client-s3": "^3.627.0",
 		"@aws-sdk/client-secrets-manager": "^3.437.0",
 		"@prisma/client": "^5.7.1",
 		"@traderapp/shared-resources": "^1.0.5",
@@ -36,6 +37,7 @@
 		"prisma": "^4.16.0",
 		"swagger-jsdoc": "^6.2.8",
 		"swagger-ui-express": "^5.0.0",
+		"uuid": "^10.0.0",
 		"winston": "^3.11.0"
 	},
 	"devDependencies": {
@@ -49,6 +51,7 @@
 		"@types/supertest": "^2.0.12",
 		"@types/swagger-jsdoc": "^6.0.4",
 		"@types/swagger-ui-express": "^4.1.6",
+		"@types/uuid": "^10.0.0",
 		"@typescript-eslint/eslint-plugin": "^5.47.0",
 		"concurrently": "^7.6.0",
 		"eslint": "^8.30.0",

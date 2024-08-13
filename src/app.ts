@@ -5,7 +5,7 @@ import cors from "cors";
 import { config } from "dotenv";
 // import initDatabase from "./config/database";
 
-import { CoinRoutes, ExchangeRoutes } from "./routes";
+import { CoinRoutes, ExchangeRoutes, SignalRoutes } from "./routes";
 import secretsJson from "./env.json";
 import { ENVIRONMENTS } from "./config/constants";
 import swaggerUi from "swagger-ui-express";
@@ -64,16 +64,36 @@ const secretNames = ["common-secrets", "assets-service-secrets"];
 
 function startServer() {
 	// cors
-	app.use(
-		cors({
-			origin: "http://localhost:3000",
-			methods: "GET, HEAD, PUT, PATCH, POST, DELETE",
-		})
-	);
+	// Define an array of allowed origins
+	const allowedOrigins = [
+		"http://localhost:3000",
+		"http://localhost:8080",
+		"http://localhost:8788",
+		"https://users-dashboard-dev.traderapp.finance",
+		"https://users-dashboard-staging.traderapp.finance",
+	];
+
+	const corsOptions = {
+		origin: (
+			origin: string | undefined,
+			callback: (error: Error | null, allow?: boolean) => void
+		) => {
+			// Allow requests with no origin (like mobile apps or curl requests)
+			if (!origin) return callback(null, true);
+			if (allowedOrigins.includes(origin)) {
+				return callback(null, true);
+			} else {
+				return callback(new Error(`Not allowed by CORS: ${origin}`));
+			}
+		},
+		methods: "GET, HEAD, PUT, PATCH, POST, DELETE",
+		credentials: true, // Allow credentials
+	};
+	app.use(cors(corsOptions));
 
 	// parse incoming requests
-	app.use(express.urlencoded({ extended: true }));
-	app.use(express.json());
+	app.use(express.urlencoded({ extended: true, limit: "8mb" }));
+	app.use(express.json({ limit: "8mb" }));
 
 	// documentation
 	app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(specs));
@@ -81,6 +101,7 @@ function startServer() {
 	// api routes
 	app.use(`/coins`, CoinRoutes);
 	app.use(`/exchanges`, ExchangeRoutes);
+	app.use(`/signals`, SignalRoutes);
 
 	// health check
 	app.get(`/ping`, (_req, res) => {

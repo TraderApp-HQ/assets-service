@@ -9,6 +9,17 @@ import {
 	updateExchangeInfoById,
 } from "../documentation/exchange";
 import { getCoins, getCoinsParams, getCoinById } from "../documentation/coin";
+import {
+	createSignalParams,
+	getSignalParams,
+	getSignalById,
+	updateSignalById,
+	updateSignalByIdParams,
+	updateSignalByIdBody,
+	createSignal,
+	getSignals,
+} from "../documentation/signal";
+import { SIGNAL_ROUTES } from "../config/constants";
 
 const options: swaggerJsdoc.Options = {
 	swaggerDefinition: {
@@ -31,6 +42,12 @@ const options: swaggerJsdoc.Options = {
 				updateExchangeInfoBody,
 				getCoinsParams,
 				getCoins,
+				createSignalParams,
+				getSignalParams,
+				getSignalById,
+				updateSignalById,
+				updateSignalByIdParams,
+				updateSignalByIdBody,
 			},
 		},
 		security: [
@@ -48,6 +65,12 @@ const options: swaggerJsdoc.Options = {
 			// coins
 			[`/coins/{id}`]: { get: getCoinById },
 			[`/coins/`]: { get: getCoins },
+
+			// signals
+			[`/signals${SIGNAL_ROUTES.post}`]: { post: createSignal },
+			[`/signals${SIGNAL_ROUTES.get}`]: { get: getSignals },
+			[`/signals/{id}`]: { get: getSignalById },
+			[`/signals/update/{id}`]: { patch: updateSignalById },
 		},
 	},
 	apis: ["./src/routes/*.ts", "./src/models/*.ts"], // Point to your route files

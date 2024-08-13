@@ -1,12 +1,12 @@
 import { Request, Response, NextFunction } from "express";
 import Joi from "joi";
-import { checkUser } from "../utils/tokens";
+import { checkUser } from "../helpers/middlewares";
 
 // A function to validate request to get all coins
 export async function validateCoinsRequest(req: Request, res: Response, next: NextFunction) {
 	try {
 		// check accessToken and user role
-		// await checkUser(req);
+		await checkUser(req);
 		next();
 	} catch (err: any) {
 		next(err);

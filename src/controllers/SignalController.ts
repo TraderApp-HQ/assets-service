@@ -94,28 +94,15 @@ export async function getSignalsHandler(req: Request, res: Response, next: NextF
 		const keyword = req.query?.keyword as string;
 		const status = req.query.status as SignalStatus;
 
-		const populateFields = [
-			{
-				path: "supportedExchanges",
-			},
-			{
-				path: "asset",
-			},
-			{
-				path: "baseCurrency",
-			},
-		];
-
 		// Fetch signals using the service method
 		const signals = await signalService.getSignals({
 			rowsPerPage,
 			page,
 			sortBy,
 			sortOrder,
-			startAfterDoc,
 			keyword,
+			startAfterDoc,
 			status,
-			populateFields,
 		});
 
 		if (!signals) {
@@ -141,7 +128,7 @@ export async function getSignalsHandler(req: Request, res: Response, next: NextF
 			page,
 			totalPages,
 			totalRecords,
-			startAfterDoc: signals.length > 0 ? signals[signals.length - 1].id : null,
+			startAfterDoc: signals.length > 0 ? signals[signals.length - 1]._id : null,
 		};
 
 		res.status(HttpStatus.OK).json(

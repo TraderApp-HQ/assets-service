@@ -1,11 +1,13 @@
 import { DEFAULT_PAGE, DEFAULT_ROWS_PER_PAGE } from "../config/constants";
 import { SignalStatus } from "../config/enums";
 import {
+	IExchange,
 	ISignal,
 	ISignalServiceCreateSignalProps,
 	ISignalServiceGetSignalsParams,
 	ISignalServiceUpdateSignalByIdProps,
 } from "../config/interfaces";
+import { getNestedField } from "../controllers/helpers";
 import Signal from "../models/Signal";
 
 export class SignalService {
@@ -42,7 +44,6 @@ export class SignalService {
 		startAfterDoc, // Document to start after, for pagination
 		keyword, // Keyword for filtering by name or other fields
 		status,
-		populateFields,
 	}: ISignalServiceGetSignalsParams): Promise<ISignal[] | null> {
 		try {
 			const query: any = {};
@@ -50,17 +51,6 @@ export class SignalService {
 			// Apply status filter
 			if (status) {
 				query.status = status;
-			}
-
-			// Apply keyword filter (search by multiple fields)
-			if (keyword) {
-				query.$or = [
-					{ "asset.symbol": { $regex: keyword, $options: "i" } },
-					{ "asset.name": { $regex: keyword, $options: "i" } },
-					{ "baseCurrency.symbol": { $regex: keyword, $options: "i" } },
-					{ "baseCurrency.name": { $regex: keyword, $options: "i" } },
-					{ "supportedExchanges.name": { $regex: keyword, $options: "i" } },
-				];
 			}
 
 			// Apply startAfterDoc for pagination
@@ -74,20 +64,48 @@ export class SignalService {
 			// Create the query with the initial conditions
 			let signalQuery = Signal.find(query);
 
-			// Apply population if specified
-			if (populateFields && populateFields.length > 0) {
-				populateFields.forEach((field) => {
-					signalQuery = signalQuery.populate(field);
+			// Populate related fields
+			signalQuery = signalQuery.populate([
+				{ path: "supportedExchanges" },
+				{ path: "asset" },
+				{ path: "baseCurrency" },
+			]);
+
+			// Apply sorting, skipping, and limiting
+			let signals = await signalQuery.exec();
+
+			if (keyword) {
+				signals = signals.filter((signal: any) => {
+					return (
+						signal.asset?.symbol?.match(new RegExp(keyword, "i")) ||
+						signal.asset?.name?.match(new RegExp(keyword, "i")) ||
+						signal.baseCurrency?.symbol?.match(new RegExp(keyword, "i")) ||
+						signal.baseCurrency?.name?.match(new RegExp(keyword, "i")) ||
+						signal.supportedExchanges.some((exchange: IExchange) =>
+							exchange.name.match(new RegExp(keyword, "i"))
+						)
+					);
 				});
 			}
 
-			// Apply sorting, skipping, and limiting
-			const signals = await signalQuery
-				.sort({ [sortBy]: sortOrder === "asc" ? 1 : -1 })
-				.skip((page - 1) * rowsPerPage)
-				.limit(rowsPerPage);
+			// Apply sorting
+			signals.sort((a, b) => {
+				const fieldA = getNestedField(a, sortBy);
+				const fieldB = getNestedField(b, sortBy);
+				if (typeof fieldA === "string" && typeof fieldB === "string") {
+					return sortOrder === "asc"
+						? fieldA.localeCompare(fieldB)
+						: fieldB.localeCompare(fieldA);
+				}
+				return sortOrder === "asc"
+					? Number(fieldA) - Number(fieldB)
+					: Number(fieldB) - Number(fieldA);
+			});
 
-			return signals;
+			// Apply pagination
+			const paginatedSignals = signals.slice((page - 1) * rowsPerPage, page * rowsPerPage);
+
+			return paginatedSignals;
 		} catch (error: any) {
 			throw new Error(error.message);
 		}

@@ -1,4 +1,4 @@
-import { PopulateOptions } from "mongoose";
+import mongoose, { PopulateOptions } from "mongoose";
 import { Candlestick, SignalRisk, SignalStatus, UserRoles } from "./enums";
 
 export interface IAccessToken {
@@ -69,4 +69,6 @@ export interface ISignalServiceUpdateSignalByIdProps {
 	status: SignalStatus;
 }
 
-export interface ISignal extends ISignalServiceCreateSignalProps, Document {}
+export interface ISignal extends ISignalServiceCreateSignalProps, Document {
+	_id?: mongoose.Types.ObjectId;
+}

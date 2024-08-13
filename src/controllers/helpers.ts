@@ -18,3 +18,7 @@ export const capitalizeFirstLetter = (str: string) => {
 // 		},
 // 	};
 // };
+
+export const getNestedField = (obj: any, path: string) => {
+	return path.split(".").reduce((acc, part) => acc?.[part], obj);
+};

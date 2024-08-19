@@ -16,6 +16,11 @@ export const formatSignalResponse = (signal: ISignalResponse) => {
 		isSignalTradable: signal.isSignalTradable,
 		chartUrl: signal.chartUrl,
 		status: signal.status,
+		createdAt: signal.createdAt,
+		endedAt: signal.endedAt,
+		maxGain: signal.maxGain,
+		currentChange: signal.currentChange,
+		currentPrice: signal.currentPrice,
 		asset: {
 			id: signal.asset.id,
 			name: signal.asset.name,

@@ -42,7 +42,9 @@ export interface ICoinServiceGetCoinByIdProps {
 	populateFields?: PopulateOptions[];
 }
 
-export interface IExchangeServiceGetAllExchangesParams extends ICoinServiceGetAllCoinsParams {}
+export interface IExchangeServiceGetAllExchangesParams extends ICoinServiceGetAllCoinsParams {
+	isTradingActive: boolean;
+}
 
 export interface IExchangeServiceUpdateExchangeByIdProps {
 	exchangeId: number;

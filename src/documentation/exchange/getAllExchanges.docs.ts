@@ -17,6 +17,10 @@ const getExchangesParams = {
 			type: "string",
 			enum: ["asc", "desc"],
 		},
+		isTradingActive: {
+			type: "boolean",
+			example: false,
+		},
 	},
 };
 
@@ -48,6 +52,14 @@ const getExchanges = {
 			required: false,
 			schema: {
 				$ref: "#/components/schemas/getExchangesParams/properties/orderBy",
+			},
+		},
+		{
+			in: "query",
+			name: "isTradingActive",
+			required: false,
+			schema: {
+				$ref: "#/components/schemas/getExchangesParams/properties/isTradingActive",
 			},
 		},
 	],

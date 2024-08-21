@@ -11,11 +11,19 @@ export class ExchangeService {
 		page,
 		rowsPerPage,
 		orderBy,
+		isTradingActive,
 	}: IExchangeServiceGetAllExchangesParams): Promise<IExchange[] | null> {
 		try {
 			const offset = (page - 1) * rowsPerPage;
 
-			const exchanges = await ExchangeModel.find({})
+			// Create the query object
+			const query: any = {};
+			if (typeof isTradingActive !== "undefined") {
+				query.isTradingActive = isTradingActive;
+			}
+
+			// Fetch the exchanges based on the query
+			const exchanges = await ExchangeModel.find(query)
 				.sort({ name: orderBy === "asc" ? 1 : -1 })
 				.skip(offset)
 				.limit(rowsPerPage);

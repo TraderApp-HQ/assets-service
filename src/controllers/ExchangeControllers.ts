@@ -22,10 +22,13 @@ export async function getAllExchanges(req: Request, res: Response, next: NextFun
 		);
 		const orderBy: "asc" | "desc" = (req.query.orderBy as "asc" | "desc") || "asc";
 
+		const isTradingActive = req.query.isTradingActive as unknown as boolean;
+
 		const exchanges = await exchangeService.getAllExchanges({
 			page,
 			rowsPerPage,
 			orderBy,
+			isTradingActive,
 		});
 
 		res.status(HttpStatus.OK).json(

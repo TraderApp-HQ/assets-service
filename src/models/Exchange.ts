@@ -1,4 +1,5 @@
 import mongoose, { Schema, Document } from "mongoose";
+import { TradeStatus } from "../config/enums";
 
 export interface IExchange extends Document {
 	_id: number;
@@ -6,7 +7,7 @@ export interface IExchange extends Document {
 	slug: string;
 	logo: string;
 	description?: string;
-	isTradingActive: boolean;
+	isTradingActive: TradeStatus;
 	urls: string;
 	makerFee: number;
 	takerFee: number;
@@ -22,7 +23,7 @@ export const ExchangeSchema = new Schema<IExchangeModel>(
 		slug: { type: String, required: true },
 		logo: { type: String, required: true },
 		description: { type: String },
-		isTradingActive: { type: Boolean, default: false },
+		isTradingActive: { type: String, enum: Object.values(TradeStatus), required: true },
 		urls: { type: String, required: true },
 		makerFee: { type: Number, required: true },
 		takerFee: { type: Number, required: true },

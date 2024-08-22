@@ -1,6 +1,7 @@
 import axios from "axios";
 import { config } from "dotenv";
 import Exchange from "../models/Exchange";
+import { TradeStatus } from "../config/enums";
 // import { PrismaClient } from "@prisma/client";
 
 // load env variables
@@ -54,6 +55,7 @@ export async function getExchanges() {
 				takerFee,
 				urls,
 				dateLaunched,
+				isTradingActive: TradeStatus.inactive,
 			});
 		});
 

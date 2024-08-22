@@ -18,7 +18,7 @@ export class ExchangeService {
 
 			// Create the query object
 			const query: any = {};
-			if (typeof isTradingActive !== "undefined") {
+			if (isTradingActive) {
 				query.isTradingActive = isTradingActive;
 			}
 

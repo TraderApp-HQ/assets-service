@@ -10,6 +10,7 @@ import { ExchangeService } from "../services/ExchangeService";
 import { HttpStatus } from "../utils/httpStatus";
 import Currency from "../models/Currency";
 import Coin from "../models/Coin";
+import { TradeStatus } from "../config/enums";
 
 export async function getAllExchanges(req: Request, res: Response, next: NextFunction) {
 	const exchangeService: ExchangeService = new ExchangeService();
@@ -22,7 +23,7 @@ export async function getAllExchanges(req: Request, res: Response, next: NextFun
 		);
 		const orderBy: "asc" | "desc" = (req.query.orderBy as "asc" | "desc") || "asc";
 
-		const isTradingActive = req.query.isTradingActive as unknown as boolean;
+		const isTradingActive = req.query.isTradingActive as TradeStatus;
 
 		const exchanges = await exchangeService.getAllExchanges({
 			page,

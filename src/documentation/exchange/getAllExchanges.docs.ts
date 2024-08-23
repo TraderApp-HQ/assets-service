@@ -1,4 +1,8 @@
 import { DOC_RESPONSE, RESPONSE_CODES, RESPONSE_TAGS } from "../../config/constants";
+import { TradeStatus } from "../../config/enums";
+
+// Extract the values of the TradeStatus enum
+const tradeStatusValues = Object.values(TradeStatus);
 
 const getExchangesParams = {
 	type: "object",
@@ -17,9 +21,9 @@ const getExchangesParams = {
 			type: "string",
 			enum: ["asc", "desc"],
 		},
-		isTradingActive: {
-			type: "boolean",
-			example: false,
+		status: {
+			type: "string",
+			enum: tradeStatusValues,
 		},
 	},
 };
@@ -56,10 +60,10 @@ const getExchanges = {
 		},
 		{
 			in: "query",
-			name: "isTradingActive",
+			name: "status",
 			required: false,
 			schema: {
-				$ref: "#/components/schemas/getExchangesParams/properties/isTradingActive",
+				$ref: "#/components/schemas/getExchangesParams/properties/status",
 			},
 		},
 	],

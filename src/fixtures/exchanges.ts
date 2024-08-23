@@ -55,7 +55,7 @@ export async function getExchanges() {
 				takerFee,
 				urls,
 				dateLaunched,
-				isTradingActive: TradeStatus.inactive,
+				status: TradeStatus.inactive,
 			});
 		});
 

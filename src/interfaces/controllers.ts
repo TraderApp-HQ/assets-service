@@ -47,7 +47,7 @@ export interface IExchangeServiceGetAllExchangesParams {
 	page: number;
 	rowsPerPage: number;
 	orderBy: "asc" | "desc";
-	isTradingActive?: TradeStatus;
+	status?: TradeStatus;
 }
 
 export interface IExchangeServiceUpdateExchangeByIdProps {
@@ -58,4 +58,8 @@ export interface IExchangeServiceUpdateExchangeByIdProps {
 export interface GetManyExchangeByIdProps {
 	exchangeId: number;
 	populateFields?: PopulateOptions[];
+}
+
+export interface IGetAllExchangesQuery {
+	status?: TradeStatus;
 }

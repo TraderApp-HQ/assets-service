@@ -3,6 +3,7 @@ import {
 	GetManyExchangeByIdProps,
 	IExchangeServiceGetAllExchangesParams,
 	IExchangeServiceUpdateExchangeByIdProps,
+	IGetAllExchangesQuery,
 } from "../interfaces/controllers";
 import ExchangePair, { IExchangePair } from "../models/ExchangePair";
 
@@ -11,15 +12,15 @@ export class ExchangeService {
 		page,
 		rowsPerPage,
 		orderBy,
-		isTradingActive,
+		status,
 	}: IExchangeServiceGetAllExchangesParams): Promise<IExchange[] | null> {
 		try {
 			const offset = (page - 1) * rowsPerPage;
 
 			// Create the query object
-			const query: any = {};
-			if (isTradingActive) {
-				query.isTradingActive = isTradingActive;
+			const query: IGetAllExchangesQuery = {};
+			if (status) {
+				query.status = status;
 			}
 
 			// Fetch the exchanges based on the query

@@ -23,13 +23,13 @@ export async function getAllExchanges(req: Request, res: Response, next: NextFun
 		);
 		const orderBy: "asc" | "desc" = (req.query.orderBy as "asc" | "desc") || "asc";
 
-		const isTradingActive = req.query.isTradingActive as TradeStatus;
+		const status = req.query.status as TradeStatus;
 
 		const exchanges = await exchangeService.getAllExchanges({
 			page,
 			rowsPerPage,
 			orderBy,
-			isTradingActive,
+			status,
 		});
 
 		res.status(HttpStatus.OK).json(
@@ -105,11 +105,11 @@ export async function updateExchangeInfo(req: Request, res: Response, next: Next
 	try {
 		const exchangeId = Number(req.params.exchangeId);
 
-		const { description, isTradingActive, makerFee, takerFee } = req.body;
+		const { description, status, makerFee, takerFee } = req.body;
 
 		const updateData = {
 			description,
-			isTradingActive,
+			status,
 			makerFee,
 			takerFee,
 		};

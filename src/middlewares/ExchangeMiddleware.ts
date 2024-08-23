@@ -18,9 +18,9 @@ export async function validateExchangesRequest(req: Request, _res: Response, nex
 				.label("Row per page"),
 			page: Joi.number().integer().min(1).default(DEFAULT_PAGE).label("Page"),
 			orderBy: Joi.string().label("asc"),
-			isTradingActive: Joi.string()
+			status: Joi.string()
 				.valid(...Object.values(TradeStatus))
-				.label("isTradingActive"),
+				.label("status"),
 		});
 		const { error } = querySchema.validate(req.query, { abortEarly: true });
 
@@ -69,12 +69,14 @@ export async function validateUpdateExchangeInfoRequest(
 
 		const exchangeId = Number(req.params.exchangeId);
 
-		const { description, isTradingActive, makerFee, takerFee } = req.body;
+		const { description, status, makerFee, takerFee } = req.body;
 
 		const schema = Joi.object({
 			exchangeId: Joi.number().required().label("Exchange Id"),
 			description: Joi.string().optional().label("Description"),
-			isTradingActive: Joi.boolean().optional().label("Is Trading Active"),
+			status: Joi.string()
+				.valid(...Object.values(TradeStatus))
+				.label("status"),
 			makerFee: Joi.number().optional().label("Maker Fee"),
 			takerFee: Joi.number().optional().label("Taker Fee"),
 		});
@@ -82,7 +84,7 @@ export async function validateUpdateExchangeInfoRequest(
 		const data = {
 			exchangeId,
 			description,
-			isTradingActive,
+			status,
 			makerFee,
 			takerFee,
 		};

@@ -109,7 +109,7 @@ function startServer() {
 	app.get(`/ping`, (_req, res) => {
 		res.status(200).send(
 			apiResponseHandler({
-				message: `Pong!!! Assets service is running on ${env} environment currently`,
+				message: `Pong!!! Assets service is running on ${env} environment`,
 			})
 		);
 	});

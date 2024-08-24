@@ -1,66 +1,123 @@
-/* eslint-disable @typescript-eslint/restrict-template-expressions */
-/* eslint-disable @typescript-eslint/naming-convention */
 import express, { Application, Request, Response, NextFunction } from "express";
+import mongoose from "mongoose";
 import { apiResponseHandler, initSecrets, logger } from "@traderapp/shared-resources";
 import cors from "cors";
 import { config } from "dotenv";
-import initDatabase from "./config/database";
+// import initDatabase from "./config/database";
 
-import { CoinRoutes, ExchangeRoutes } from "./routes";
+import { CoinRoutes, ExchangeRoutes, SignalRoutes } from "./routes";
 import secretsJson from "./env.json";
 import { ENVIRONMENTS } from "./config/constants";
+import swaggerUi from "swagger-ui-express";
+import specs from "./utils/swagger";
 
 config();
 const app: Application = express();
 
-const env = process.env.NODE_ENV || "development";
-const suffix = ENVIRONMENTS[env] || "dev";
+const env = process.env.NODE_ENV ?? "development";
+const suffix = ENVIRONMENTS[env] ?? "dev";
 const secretNames = ["common-secrets", "assets-service-secrets"];
 
-initSecrets({
-	env: suffix,
-	secretNames,
-	secretsJson,
-})
-	.then(() => {
-		const port = process.env.PORT;
-		app.listen(port, async () => {
-			await initDatabase();
-			startServer();
-			logger.log(`Server listening at port ${port}`);
-		});
-	})
-	.catch((err) => {
-		logger.log(`Error getting secrets. === ${JSON.stringify(err)}`);
-		throw err;
+// initSecrets({
+// 	env: suffix,
+// 	secretNames,
+// 	secretsJson,
+// })
+// 	.then(() => {
+// 		// const port = process.env.PORT as string;
+// 		const port = 8082;
+// 		app.listen(port, async () => {
+// 			await initDatabase();
+// 			startServer();
+// 			logger.log(`Server listening at port ${port}`);
+// 			logger.log(`Docs available at http://localhost:${port}/api-docs`);
+// 		});
+// 	})
+// 	.catch((err) => {
+// 		logger.log(`Error getting secrets. === ${JSON.stringify(err)}`);
+// 		throw err;
+// 	});
+
+(async function () {
+	await initSecrets({
+		env: suffix,
+		secretNames,
+		secretsJson,
 	});
+	const port = process.env.PORT ?? "";
+	// const port = 8082;
+	const dbUrl = process.env.ASSETS_SERVICE_DB_URL ?? "";
+	// connect to mongodb
+	mongoose
+		.connect(dbUrl)
+		.then(() => {
+			app.listen(port, () => {
+				logger.log(`Server listening at port ${port}`);
+				startServer();
+				logger.log(`Docs available at http://localhost:${port}/api-docs`);
+			});
+		})
+		.catch((err) => {
+			logger.error(`Unable to connect to mongodb. Error === ${JSON.stringify(err)}`);
+		});
+})();
 
 function startServer() {
 	// cors
-	app.use(
-		cors({
-			origin: "http://localhost:3000",
-			methods: "GET, HEAD, PUT, PATCH, POST, DELETE",
-		})
-	);
+	// Define an array of allowed origins
+	const allowedOrigins = [
+		"http://localhost:3000",
+		"http://localhost:8080",
+		"http://localhost:8788",
+		"https://users-dashboard-dev.traderapp.finance",
+		"https://web-dashboard-dev.apis-dev.traderapp.finance",
+		"https://web-dashboard-dev.traderapp.finance",
+		"https://web-dashboard-staging.traderapp.finance",
+	];
+
+	const corsOptions = {
+		origin: (
+			origin: string | undefined,
+			callback: (error: Error | null, allow?: boolean) => void
+		) => {
+			// Allow requests with no origin (like mobile apps or curl requests)
+			if (!origin) return callback(null, true);
+			if (allowedOrigins.includes(origin)) {
+				return callback(null, true);
+			} else {
+				return callback(new Error(`Not allowed by CORS: ${origin}`));
+			}
+		},
+		methods: "GET, HEAD, PUT, PATCH, POST, DELETE",
+		credentials: true, // Allow credentials
+	};
+	app.use(cors(corsOptions));
 
 	// parse incoming requests
-	app.use(express.urlencoded({ extended: true }));
-	app.use(express.json());
+	app.use(express.urlencoded({ extended: true, limit: "8mb" }));
+	app.use(express.json({ limit: "8mb" }));
+
+	// documentation
+	app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(specs));
 
 	// api routes
 	app.use(`/coins`, CoinRoutes);
 	app.use(`/exchanges`, ExchangeRoutes);
+	app.use(`/signals`, SignalRoutes);
 
 	// health check
 	app.get(`/ping`, (_req, res) => {
-		res.status(200).send(apiResponseHandler({ message: "pong" }));
+		res.status(200).send(
+			apiResponseHandler({
+				message: `Pong!!! Assets service is running on ${env} environment`,
+			})
+		);
 	});
 
 	// handle errors
 	app.use((err: Error, _req: Request, res: Response, _next: NextFunction) => {
-		const error = err;
-		let error_message = err.message;
+		let errorName = err.name;
+		let errorMessage = err.message;
 		let statusCode;
 
 		if (err.name === "ValidationError") statusCode = 400;
@@ -69,16 +126,20 @@ function startServer() {
 		else if (err.name === "NotFound") statusCode = 404;
 		else {
 			statusCode = 500;
-			error.name = "InternalServerError";
-			error_message = "Something went wrong. Please try again after a while.";
-			console.log("Error name: ", err.name, "Error message: ", err.message);
+			errorName = "InternalServerError";
+			errorMessage = "Something went wrong. Please try again after a while.";
+			logger.error(`Error: , ${err}`);
 		}
 
 		res.status(statusCode).json(
 			apiResponseHandler({
 				type: "error",
-				object: error,
-				message: error_message,
+				object: {
+					statusCode,
+					errorName,
+					errorMessage,
+				},
+				message: errorMessage,
 			})
 		);
 	});

@@ -3,12 +3,14 @@
 /* eslint-disable @typescript-eslint/restrict-template-expressions */
 import axios from "axios";
 import { config } from "dotenv";
-import { PrismaClient } from "@prisma/client";
+import Coin from "../models/Coin";
+import Currency from "../models/Currency";
+// import { PrismaClient } from "@prisma/client";
 
 // load env variables
 config();
 
-const prisma = new PrismaClient();
+// const prisma = new PrismaClient();
 
 const CMC_API_KEY = process.env.CMC_API_KEY as string;
 const limit = 500; // Batch size
@@ -18,7 +20,7 @@ export async function initCoins() {
 	const startPoints: number[] = [];
 
 	// total number of coins to get from cmc
-	const total = 5000;
+	const total = 10000;
 	let last = 1;
 	while (last <= total) {
 		startPoints.push(last);
@@ -95,7 +97,9 @@ async function getCoins(start: number) {
 			};
 
 			// get currencies. USDT etc.
-			if (coin.symbol === "USDT") currencies.push({ coinId: coin.id });
+			if (coin.symbol === "USDT" || coin.symbol === "BTC" || coin.symbol === "ETH") {
+				currencies.push({ _id: coin.id, name: coin.name, symbol: coin.symbol });
+			}
 		});
 
 		const coinsArr = Object.values(coins);
@@ -123,7 +127,7 @@ async function getCoins(start: number) {
 			const dateLaunched = coin.date_launched ? coin.date_launched : coin.date_added;
 
 			data.push({
-				id,
+				_id: id,
 				name,
 				slug,
 				symbol,
@@ -138,13 +142,13 @@ async function getCoins(start: number) {
 
 		// insert records into db
 		if (data.length) {
-			await prisma.coin.createMany({ data });
+			await Coin.insertMany(data, { ordered: false });
 			console.log(`inserted ${data.length} coins from ${start} to ${start + limit}`);
 		}
 
 		// insert currencies
 		if (currencies.length) {
-			await prisma.currency.createMany({ data: currencies });
+			await Currency.insertMany(currencies, { ordered: false });
 			console.log("currencies inserted");
 		}
 	} catch (err: any) {

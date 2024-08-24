@@ -1,7 +1,4 @@
 import { getExchanges } from "../fixtures/exchanges";
+import { runScript } from "./config";
 
-async function initExchanges() {
-	await getExchanges();
-}
-
-void initExchanges();
+runScript({ scriptFunction: getExchanges });

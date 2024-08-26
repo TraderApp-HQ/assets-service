@@ -1,9 +1,4 @@
-import {
-	DEFAULT_PAGE,
-	DEFAULT_ROWS_PER_PAGE,
-	ResponseMessage,
-	ResponseType,
-} from "../config/constants";
+import { DEFAULT_PAGE, DEFAULT_ROWS_PER_PAGE } from "../config/constants";
 import { SignalStatus } from "../config/enums";
 import {
 	IExchange,
@@ -143,9 +138,8 @@ export class SignalService {
 
 		if (!signals) {
 			return {
-				type: ResponseType.SUCCESS,
-				message: ResponseMessage.NO_SIGNAL,
-				object: signals,
+				success: false,
+				response: signals,
 			};
 		}
 
@@ -165,9 +159,8 @@ export class SignalService {
 		};
 
 		return {
-			type: ResponseType.SUCCESS,
-			message: ResponseMessage.GET_SIGNALS,
-			object: response,
+			success: true,
+			response,
 		};
 	}
 

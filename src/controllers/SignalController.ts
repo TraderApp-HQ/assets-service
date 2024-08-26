@@ -149,12 +149,24 @@ export async function getActiveSignalsHandler(req: Request, res: Response, next:
 			req.query as Record<string, string>,
 			SignalStatus.ACTIVE
 		);
-		if (signalsResponse.message === ResponseMessage.NO_SIGNAL) {
-			res.status(HttpStatus.NOT_FOUND).json(apiResponseHandler(signalsResponse));
+		if (!signalsResponse.success) {
+			res.status(HttpStatus.NOT_FOUND).json(
+				apiResponseHandler({
+					type: ResponseType.SUCCESS,
+					message: ResponseMessage.NO_SIGNAL,
+					object: signalsResponse.response,
+				})
+			);
 			return;
 		}
 
-		res.status(HttpStatus.OK).json(apiResponseHandler(signalsResponse));
+		res.status(HttpStatus.OK).json(
+			apiResponseHandler({
+				type: ResponseType.SUCCESS,
+				message: ResponseMessage.GET_SIGNALS,
+				object: signalsResponse.response,
+			})
+		);
 	} catch (err) {
 		console.log(err);
 		next(err);
@@ -168,12 +180,24 @@ export async function getInActiveSignalsHandler(req: Request, res: Response, nex
 			req.query as Record<string, string>,
 			SignalStatus.INACTIVE
 		);
-		if (signalsResponse.message === ResponseMessage.NO_SIGNAL) {
-			res.status(HttpStatus.NOT_FOUND).json(apiResponseHandler(signalsResponse));
+		if (!signalsResponse.success) {
+			res.status(HttpStatus.NOT_FOUND).json(
+				apiResponseHandler({
+					type: ResponseType.SUCCESS,
+					message: ResponseMessage.NO_SIGNAL,
+					object: signalsResponse.response,
+				})
+			);
 			return;
 		}
 
-		res.status(HttpStatus.OK).json(apiResponseHandler(signalsResponse));
+		res.status(HttpStatus.OK).json(
+			apiResponseHandler({
+				type: ResponseType.SUCCESS,
+				message: ResponseMessage.GET_SIGNALS,
+				object: signalsResponse.response,
+			})
+		);
 	} catch (err) {
 		console.log(err);
 		next(err);

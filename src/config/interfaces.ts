@@ -59,7 +59,7 @@ export interface ISignalServiceGetSignalsParams {
 	sortOrder?: "asc" | "desc";
 	startAfterDoc?: string;
 	keyword?: string;
-	status?: SignalStatus;
+	status?: SignalStatus[];
 	populateFields?: PopulateOptions[];
 }
 

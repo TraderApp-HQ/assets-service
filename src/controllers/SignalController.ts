@@ -90,7 +90,7 @@ export async function getSignalsHandler(req: Request, res: Response, next: NextF
 		const sortOrder = (req.query.sortOrder as "asc") ?? "desc";
 		const startAfterDoc = req.query.startAfterDoc as string;
 		const keyword = req.query?.keyword as string;
-		const status = req.query.status as SignalStatus;
+		const status = req.query.status as SignalStatus[];
 
 		// Fetch signals using the service method
 		const signals = await signalService.getSignals({
@@ -134,6 +134,68 @@ export async function getSignalsHandler(req: Request, res: Response, next: NextF
 				type: ResponseType.SUCCESS,
 				message: ResponseMessage.GET_SIGNALS,
 				object: response,
+			})
+		);
+	} catch (err) {
+		console.log(err);
+		next(err);
+	}
+}
+
+export async function getActiveSignalsHandler(req: Request, res: Response, next: NextFunction) {
+	const signalService: SignalService = new SignalService();
+	try {
+		const signalsResponse = await signalService.getPaginatedSignals(
+			req.query as Record<string, string>,
+			[SignalStatus.ACTIVE, SignalStatus.PAUSED]
+		);
+		if (!signalsResponse.success) {
+			res.status(HttpStatus.NOT_FOUND).json(
+				apiResponseHandler({
+					type: ResponseType.SUCCESS,
+					message: ResponseMessage.NO_SIGNAL,
+					object: signalsResponse.response,
+				})
+			);
+			return;
+		}
+
+		res.status(HttpStatus.OK).json(
+			apiResponseHandler({
+				type: ResponseType.SUCCESS,
+				message: ResponseMessage.GET_SIGNALS,
+				object: signalsResponse.response,
+			})
+		);
+	} catch (err) {
+		console.log(err);
+		next(err);
+	}
+}
+
+export async function getInActiveSignalsHandler(req: Request, res: Response, next: NextFunction) {
+	const signalService: SignalService = new SignalService();
+	try {
+		const signalsResponse = await signalService.getPaginatedSignals(
+			req.query as Record<string, string>,
+			[SignalStatus.INACTIVE]
+		);
+		if (!signalsResponse.success) {
+			res.status(HttpStatus.NOT_FOUND).json(
+				apiResponseHandler({
+					type: ResponseType.SUCCESS,
+					message: ResponseMessage.NO_SIGNAL,
+					object: signalsResponse.response,
+				})
+			);
+			return;
+		}
+
+		res.status(HttpStatus.OK).json(
+			apiResponseHandler({
+				type: ResponseType.SUCCESS,
+				message: ResponseMessage.GET_SIGNALS,
+				object: signalsResponse.response,
 			})
 		);
 	} catch (err) {

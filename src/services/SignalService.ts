@@ -8,7 +8,7 @@ import {
 	ISignalServiceGetSignalsParams,
 	ISignalServiceUpdateSignalByIdProps,
 } from "../config/interfaces";
-import { getNestedField } from "../controllers/helpers";
+import { formatSignalResponse, getNestedField } from "../controllers/helpers";
 import Signal from "../models/Signal";
 
 export class SignalService {
@@ -50,8 +50,8 @@ export class SignalService {
 			const query: any = {};
 
 			// Apply status filter
-			if (status) {
-				query.status = status;
+			if (status?.length) {
+				query.status = { $in: status };
 			}
 
 			// Apply startAfterDoc for pagination
@@ -110,6 +110,58 @@ export class SignalService {
 		} catch (error: any) {
 			throw new Error(error.message);
 		}
+	}
+
+	public async getPaginatedSignals(
+		query: Record<string, string | string[]>,
+		status: SignalStatus[]
+	) {
+		const rowsPerPage = query.rowsPerPage
+			? Number.parseInt(query.rowsPerPage as string, 10)
+			: DEFAULT_ROWS_PER_PAGE;
+		const page = query.page ? Number.parseInt(query.page as string, 10) : DEFAULT_PAGE;
+		const sortBy = query.sortBy as string;
+		const sortOrder = (query.sortOrder as "asc") ?? "desc";
+		const startAfterDoc = query.startAfterDoc as string;
+		const keyword = query.keyword as string;
+
+		// Fetch signals using the service method
+		const signals = await this.getSignals({
+			rowsPerPage,
+			page,
+			sortBy,
+			sortOrder,
+			keyword,
+			startAfterDoc,
+			status,
+		});
+
+		if (!signals) {
+			return {
+				success: false,
+				response: signals,
+			};
+		}
+
+		// Calculate total pages
+		const totalRecords: number = await this.getSignalCount();
+		const totalPages = Math.ceil(totalRecords / rowsPerPage);
+
+		// Format the response
+		const signalsObj = signals.map((signals) => formatSignalResponse(signals));
+		const response = {
+			signals: signalsObj,
+			rowsPerPage,
+			page,
+			totalPages,
+			totalRecords,
+			startAfterDoc: signals.length > 0 ? signals[signals.length - 1].id : null,
+		};
+
+		return {
+			success: true,
+			response,
+		};
 	}
 
 	public async getSignalById(id: string): Promise<ISignalResponse | null> {

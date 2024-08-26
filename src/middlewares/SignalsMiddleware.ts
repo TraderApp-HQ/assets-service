@@ -79,7 +79,11 @@ export async function validateCreateSignalRequest(
 	}
 }
 
-export async function validateGetSignalsRequest(req: Request, _res: Response, next: NextFunction) {
+export async function validateGetAllSignalsRequest(
+	req: Request,
+	_res: Response,
+	next: NextFunction
+) {
 	try {
 		// check accessToken and user role
 		await checkUser(req);
@@ -103,6 +107,40 @@ export async function validateGetSignalsRequest(req: Request, _res: Response, ne
 					.filter((status) => validStatuses.includes(status as SignalStatus));
 				return statuses;
 			}, "custom status transformation").label("status"),
+		});
+		const { error, value } = querySchema.validate(req.query, {
+			abortEarly: true,
+		});
+
+		req.query = value;
+
+		if (error) {
+			error.message = error.message.replace(/\"/g, "");
+			next(error);
+			return;
+		}
+
+		next();
+	} catch (err: any) {
+		next(err);
+	}
+}
+
+export async function validateGetSignalsRequest(req: Request, _res: Response, next: NextFunction) {
+	try {
+		// check accessToken and user role
+		await checkUser(req);
+		const querySchema = Joi.object({
+			rowsPerPage: Joi.number()
+				.integer()
+				.min(1)
+				.positive()
+				.default(DEFAULT_ROWS_PER_PAGE)
+				.label("Rows per page"),
+			page: Joi.number().integer().min(1).default(DEFAULT_PAGE).label("next page"),
+			sortBy: Joi.string().label("createdAt"),
+			sortOrder: Joi.string().label("asc"),
+			keyword: Joi.string().lowercase().label("Search keyword"),
 		});
 		const { error, value } = querySchema.validate(req.query, {
 			abortEarly: true,

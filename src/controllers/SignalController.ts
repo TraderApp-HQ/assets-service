@@ -142,6 +142,130 @@ export async function getSignalsHandler(req: Request, res: Response, next: NextF
 	}
 }
 
+export async function getActiveSignalsHandler(req: Request, res: Response, next: NextFunction) {
+	const signalService: SignalService = new SignalService();
+	try {
+		const rowsPerPage = req.query?.rowsPerPage
+			? Number.parseInt(req.query.rowsPerPage as string, 10)
+			: DEFAULT_ROWS_PER_PAGE;
+		const page = req.query?.page ? Number.parseInt(req.query.page as string, 10) : DEFAULT_PAGE;
+		const sortBy = req.query.sortBy as string;
+		const sortOrder = (req.query.sortOrder as "asc") ?? "desc";
+		const startAfterDoc = req.query.startAfterDoc as string;
+		const keyword = req.query?.keyword as string;
+
+		// Fetch signals using the service method
+		const signals = await signalService.getSignals({
+			rowsPerPage,
+			page,
+			sortBy,
+			sortOrder,
+			keyword,
+			startAfterDoc,
+			status: SignalStatus.INACTIVE,
+		});
+
+		if (!signals) {
+			res.status(HttpStatus.NOT_FOUND).json(
+				apiResponseHandler({
+					type: ResponseType.SUCCESS,
+					message: ResponseMessage.NO_SIGNAL,
+					object: signals,
+				})
+			);
+			return;
+		}
+
+		// Calculate total pages
+		const totalRecords: number = await signalService.getSignalCount();
+		const totalPages = Math.ceil(totalRecords / rowsPerPage);
+
+		// Format the response
+		const signalsObj = signals.map((signals) => formatSignalResponse(signals));
+		const response = {
+			signals: signalsObj,
+			rowsPerPage,
+			page,
+			totalPages,
+			totalRecords,
+			startAfterDoc: signals.length > 0 ? signals[signals.length - 1].id : null,
+		};
+
+		res.status(HttpStatus.OK).json(
+			apiResponseHandler({
+				type: ResponseType.SUCCESS,
+				message: ResponseMessage.GET_SIGNALS,
+				object: response,
+			})
+		);
+	} catch (err) {
+		console.log(err);
+		next(err);
+	}
+}
+
+export async function getInActiveSignalsHandler(req: Request, res: Response, next: NextFunction) {
+	const signalService: SignalService = new SignalService();
+	try {
+		const rowsPerPage = req.query?.rowsPerPage
+			? Number.parseInt(req.query.rowsPerPage as string, 10)
+			: DEFAULT_ROWS_PER_PAGE;
+		const page = req.query?.page ? Number.parseInt(req.query.page as string, 10) : DEFAULT_PAGE;
+		const sortBy = req.query.sortBy as string;
+		const sortOrder = (req.query.sortOrder as "asc") ?? "desc";
+		const startAfterDoc = req.query.startAfterDoc as string;
+		const keyword = req.query?.keyword as string;
+
+		// Fetch signals using the service method
+		const signals = await signalService.getSignals({
+			rowsPerPage,
+			page,
+			sortBy,
+			sortOrder,
+			keyword,
+			startAfterDoc,
+			status: SignalStatus.INACTIVE,
+		});
+
+		if (!signals) {
+			res.status(HttpStatus.NOT_FOUND).json(
+				apiResponseHandler({
+					type: ResponseType.SUCCESS,
+					message: ResponseMessage.NO_SIGNAL,
+					object: signals,
+				})
+			);
+			return;
+		}
+
+		// Calculate total pages
+		const totalRecords: number = await signalService.getSignalCount();
+		const totalPages = Math.ceil(totalRecords / rowsPerPage);
+
+		// Format the response
+		const signalsObj = signals.map((signals) => formatSignalResponse(signals));
+		const response = {
+			signals: signalsObj,
+			rowsPerPage,
+			page,
+			totalPages,
+			totalRecords,
+			startAfterDoc: signals.length > 0 ? signals[signals.length - 1].id : null,
+		};
+
+		res.status(HttpStatus.OK).json(
+			apiResponseHandler({
+				type: ResponseType.SUCCESS,
+				message: ResponseMessage.GET_SIGNALS,
+				object: response,
+			})
+		);
+	} catch (err) {
+		console.log(err);
+		next(err);
+	}
+}
+
 export async function getSignalByIdHandler(req: Request, res: Response, next: NextFunction) {
 	const signalService: SignalService = new SignalService();
 	try {

@@ -81,6 +81,8 @@ export const PAGINATION_VALUES = {
 export const SIGNAL_ROUTES = {
 	post: "/create",
 	get: "/",
+	getActive: "/active",
+	getHistory: "/history",
 	getSignalById: "/:id",
 	updateSignalById: "/update/:id",
 };

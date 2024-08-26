@@ -50,8 +50,8 @@ export class SignalService {
 			const query: any = {};
 
 			// Apply status filter
-			if (status) {
-				query.status = status;
+			if (status?.length) {
+				query.status = { $in: status };
 			}
 
 			// Apply startAfterDoc for pagination
@@ -114,7 +114,7 @@ export class SignalService {
 
 	public async getPaginatedSignals(
 		query: Record<string, string | string[]>,
-		status: SignalStatus
+		status: SignalStatus[]
 	) {
 		const rowsPerPage = query.rowsPerPage
 			? Number.parseInt(query.rowsPerPage as string, 10)

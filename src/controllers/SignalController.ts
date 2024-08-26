@@ -90,7 +90,7 @@ export async function getSignalsHandler(req: Request, res: Response, next: NextF
 		const sortOrder = (req.query.sortOrder as "asc") ?? "desc";
 		const startAfterDoc = req.query.startAfterDoc as string;
 		const keyword = req.query?.keyword as string;
-		const status = req.query.status as SignalStatus;
+		const status = req.query.status as SignalStatus[];
 
 		// Fetch signals using the service method
 		const signals = await signalService.getSignals({
@@ -147,7 +147,7 @@ export async function getActiveSignalsHandler(req: Request, res: Response, next:
 	try {
 		const signalsResponse = await signalService.getPaginatedSignals(
 			req.query as Record<string, string>,
-			SignalStatus.ACTIVE
+			[SignalStatus.ACTIVE, SignalStatus.PAUSED]
 		);
 		if (!signalsResponse.success) {
 			res.status(HttpStatus.NOT_FOUND).json(
@@ -178,7 +178,7 @@ export async function getInActiveSignalsHandler(req: Request, res: Response, nex
 	try {
 		const signalsResponse = await signalService.getPaginatedSignals(
 			req.query as Record<string, string>,
-			SignalStatus.INACTIVE
+			[SignalStatus.INACTIVE]
 		);
 		if (!signalsResponse.success) {
 			res.status(HttpStatus.NOT_FOUND).json(

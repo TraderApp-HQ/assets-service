@@ -130,6 +130,7 @@ export async function validateGetSignalsRequest(req: Request, _res: Response, ne
 	try {
 		// check accessToken and user role
 		await checkUser(req);
+
 		const querySchema = Joi.object({
 			rowsPerPage: Joi.number()
 				.integer()

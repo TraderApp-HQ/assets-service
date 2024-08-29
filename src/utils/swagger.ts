@@ -18,6 +18,10 @@ import {
 	updateSignalByIdBody,
 	createSignal,
 	getSignals,
+	getInActiveSignals,
+	getActiveSignals,
+	getActiveSignalParams,
+	getInActiveSignalParams,
 } from "../documentation/signal";
 import { SIGNAL_ROUTES } from "../config/constants";
 
@@ -44,6 +48,8 @@ const options: swaggerJsdoc.Options = {
 				getCoins,
 				createSignalParams,
 				getSignalParams,
+				getActiveSignalParams,
+				getInActiveSignalParams,
 				getSignalById,
 				updateSignalById,
 				updateSignalByIdParams,
@@ -69,6 +75,8 @@ const options: swaggerJsdoc.Options = {
 			// signals
 			[`/signals${SIGNAL_ROUTES.post}`]: { post: createSignal },
 			[`/signals${SIGNAL_ROUTES.get}`]: { get: getSignals },
+			[`/signals${SIGNAL_ROUTES.getActive}`]: { get: getActiveSignals },
+			[`/signals${SIGNAL_ROUTES.getHistory}`]: { get: getInActiveSignals },
 			[`/signals/{id}`]: { get: getSignalById },
 			[`/signals/update/{id}`]: { patch: updateSignalById },
 		},

@@ -1,5 +1,6 @@
 import { PopulateOptions } from "mongoose";
 import { IExchange } from "../models/Exchange";
+import { TradeStatus } from "../config/enums";
 
 export interface ICoin {
 	id: number;
@@ -42,7 +43,12 @@ export interface ICoinServiceGetCoinByIdProps {
 	populateFields?: PopulateOptions[];
 }
 
-export interface IExchangeServiceGetAllExchangesParams extends ICoinServiceGetAllCoinsParams {}
+export interface IExchangeServiceGetAllExchangesParams {
+	page: number;
+	rowsPerPage: number;
+	orderBy: "asc" | "desc";
+	status?: TradeStatus;
+}
 
 export interface IExchangeServiceUpdateExchangeByIdProps {
 	exchangeId: number;
@@ -52,4 +58,8 @@ export interface IExchangeServiceUpdateExchangeByIdProps {
 export interface GetManyExchangeByIdProps {
 	exchangeId: number;
 	populateFields?: PopulateOptions[];
+}
+
+export interface IGetAllExchangesQuery {
+	status?: TradeStatus;
 }

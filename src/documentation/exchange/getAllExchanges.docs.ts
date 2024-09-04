@@ -1,4 +1,8 @@
 import { DOC_RESPONSE, RESPONSE_CODES, RESPONSE_TAGS } from "../../config/constants";
+import { TradeStatus } from "../../config/enums";
+
+// Extract the values of the TradeStatus enum
+const tradeStatusValues = Object.values(TradeStatus);
 
 const getExchangesParams = {
 	type: "object",
@@ -16,6 +20,10 @@ const getExchangesParams = {
 		orderBy: {
 			type: "string",
 			enum: ["asc", "desc"],
+		},
+		status: {
+			type: "string",
+			enum: tradeStatusValues,
 		},
 	},
 };
@@ -48,6 +56,14 @@ const getExchanges = {
 			required: false,
 			schema: {
 				$ref: "#/components/schemas/getExchangesParams/properties/orderBy",
+			},
+		},
+		{
+			in: "query",
+			name: "status",
+			required: false,
+			schema: {
+				$ref: "#/components/schemas/getExchangesParams/properties/status",
 			},
 		},
 	],

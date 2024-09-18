@@ -36,6 +36,7 @@ export interface ICoinServiceGetAllCoinsParams {
 	page: number;
 	rowsPerPage: number;
 	orderBy: "asc" | "desc";
+	sortBy: string;
 }
 
 export interface ICoinServiceGetCoinByIdProps {

@@ -13,12 +13,13 @@ export async function getAllCoins(req: Request, res: Response, next: NextFunctio
 		rowsPerPage = rowsPerPage > 100 ? 100 : rowsPerPage;
 
 		const orderBy: "asc" | "desc" = (req.query.orderBy as "asc" | "desc") || "asc";
-		const sortBy: string = (req.query.sort as string) || "rank";
+		const sortBy: string = (req.query.sortBy as string) || "rank";
 
 		const coinsArr = await coinService.getAllCoins({
 			page,
 			rowsPerPage,
 			orderBy,
+			sortBy,
 		});
 
 		if (!coinsArr) {

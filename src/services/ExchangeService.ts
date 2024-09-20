@@ -2,10 +2,13 @@ import ExchangeModel, { IExchange } from "../models/Exchange";
 import {
 	GetManyExchangeByIdProps,
 	IExchangeServiceGetAllExchangesParams,
+	IExchangeServiceGetSupportedExchangesParams,
 	IExchangeServiceUpdateExchangeByIdProps,
 	IGetAllExchangesQuery,
+	ISupportedExchange,
 } from "../interfaces/controllers";
 import ExchangePair, { IExchangePair } from "../models/ExchangePair";
+import { TradeStatus } from "../config/enums";
 
 export class ExchangeService {
 	public async getAllExchanges({
@@ -80,6 +83,44 @@ export class ExchangeService {
 			}
 
 			return data;
+		} catch (error: any) {
+			throw new Error(error.message);
+		}
+	}
+
+	public async getSupportedExchanges({
+		coinId,
+		currencyId,
+	}: IExchangeServiceGetSupportedExchangesParams): Promise<ISupportedExchange[] | null> {
+		try {
+			// find and return exchanges where assetId and currencyId match
+			const exchanges = await ExchangePair.find({
+				coinId,
+				currencyId,
+			})
+				.populate({
+					path: "exchangeId", // Populate the exchange details using exchangeId
+					match: { status: TradeStatus.active },
+					select: "id name logo",
+				})
+				.sort({ name: 1 });
+
+			// Filter out exchange pairs where exchangeId is null (i.e., inactive exchanges)
+			const activeExchanges = exchanges.filter((exchange) => exchange.exchangeId !== null);
+
+			if (!activeExchanges || activeExchanges.length === 0) {
+				return null;
+			}
+
+			const formattedExchanges: ISupportedExchange[] = activeExchanges.map(
+				(exchange: any) => ({
+					_id: exchange.exchangeId._id,
+					logo: exchange.exchangeId.logo,
+					name: exchange.exchangeId.name,
+				})
+			);
+
+			return formattedExchanges;
 		} catch (error: any) {
 			throw new Error(error.message);
 		}

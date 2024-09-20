@@ -162,3 +162,24 @@ export async function getCurrenciesForExchange(req: Request, res: Response, next
 		next(err);
 	}
 }
+
+export async function getSupportedExchanges(req: Request, res: Response, next: NextFunction) {
+	const exchangeService: ExchangeService = new ExchangeService();
+
+	const coinId = Number(req.query.coinId);
+	const currencyId = Number(req.query.currencyId);
+
+	try {
+		const exchanges = await exchangeService.getSupportedExchanges({ coinId, currencyId });
+
+		res.status(HttpStatus.OK).json(
+			apiResponseHandler({
+				type: ResponseType.SUCCESS,
+				object: exchanges ?? [],
+				message: ResponseMessage.GET_EXCHANGES,
+			})
+		);
+	} catch (error) {
+		next(error);
+	}
+}

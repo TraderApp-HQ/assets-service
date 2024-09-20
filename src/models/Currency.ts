@@ -5,6 +5,7 @@ export interface ICurrency extends Document {
 	name: string;
 	symbol: string;
 	isTradingActive: boolean;
+	logo: string;
 	createdAt: Date;
 	updatedAt: Date;
 }
@@ -17,6 +18,7 @@ export const CurrencySchema = new Schema<ICurrencyModel>(
 		name: { type: String, required: true },
 		symbol: { type: String, required: true },
 		isTradingActive: { type: Boolean, default: true },
+		logo: { type: String, required: true },
 		// coin: { type: mongoose.Types.ObjectId, ref: "Coin", required: true },
 		// exchangePairs: [{ type: mongoose.Types.ObjectId, ref: "ExchangePair" }],
 	},
@@ -25,6 +27,11 @@ export const CurrencySchema = new Schema<ICurrencyModel>(
 
 CurrencySchema.set("toJSON", {
 	virtuals: true,
+	transform: (doc, ret) => {
+		ret.id = ret._id; // Optionally include _id as id
+		delete ret._id; // Remove _id from output
+		return ret;
+	},
 });
 
 export default mongoose.model<ICurrencyModel>("Currency", CurrencySchema);

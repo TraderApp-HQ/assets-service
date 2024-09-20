@@ -186,7 +186,7 @@ export class SignalService {
 		try {
 			const updatedSignal = await Signal.findByIdAndUpdate(
 				id,
-				{ status },
+				{ status, endedAt: new Date().toISOString() },
 				{
 					new: true,
 				}

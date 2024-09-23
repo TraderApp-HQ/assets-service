@@ -95,11 +95,6 @@ async function getCoins(start: number) {
 				rank: coin.rank,
 				isActive: coin.is_active,
 			};
-
-			// get currencies. USDT etc.
-			if (coin.symbol === "USDT" || coin.symbol === "BTC" || coin.symbol === "ETH") {
-				currencies.push({ _id: coin.id, name: coin.name, symbol: coin.symbol });
-			}
 		});
 
 		const coinsArr = Object.values(coins);
@@ -125,6 +120,11 @@ async function getCoins(start: number) {
 			const rank = coins[id].rank;
 			const isCoinActive = coins[id].isActive === 1 ? true : false;
 			const dateLaunched = coin.date_launched ? coin.date_launched : coin.date_added;
+
+			// get currencies. USDT etc.
+			if (coin.symbol === "USDT" || coin.symbol === "BTC" || coin.symbol === "ETH") {
+				currencies.push({ _id: id, name, symbol, logo });
+			}
 
 			data.push({
 				_id: id,

@@ -15,7 +15,7 @@ export async function validateCreateSignalRequest(
 
 		// Joi schema for supportedExchanges as array of ObjectId
 		const supportedExchangesSchema = Joi.array()
-			.items(Joi.string().required().label("Object ID"))
+			.items(Joi.number().required().label("Object ID"))
 			.min(1)
 			.required()
 			.label("Supported Exchanges");

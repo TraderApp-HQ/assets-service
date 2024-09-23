@@ -27,6 +27,7 @@ export const RESPONSE_TAGS = {
 	exchange: "Exchange",
 	coin: "Coin",
 	signal: "Signal",
+	currency: "Currency",
 };
 
 export const ResponseMessage = {
@@ -57,6 +58,7 @@ export const ROUTES = {
 	patchExchangeById: "/update/:exchangeId",
 	getAllAssets: "/exchange/:exchangeId",
 	getByCurrencies: "/currency/:exchangeId",
+	getSupportedExchanges: "/supported/exchanges",
 };
 
 export const DOC_RESPONSE = {

@@ -36,6 +36,7 @@ export interface ICoinServiceGetAllCoinsParams {
 	page: number;
 	rowsPerPage: number;
 	orderBy: "asc" | "desc";
+	sortBy: string;
 }
 
 export interface ICoinServiceGetCoinByIdProps {
@@ -62,4 +63,19 @@ export interface GetManyExchangeByIdProps {
 
 export interface IGetAllExchangesQuery {
 	status?: TradeStatus;
+}
+
+export interface IExchangeServiceGetSupportedExchangesParams {
+	coinId: number;
+	currencyId: number;
+}
+
+export interface ISupportedExchange {
+	_id: string;
+	logo: string;
+	name: string;
+}
+
+export interface ISupportedExchangeData extends Document {
+	exchangeId: ISupportedExchange;
 }

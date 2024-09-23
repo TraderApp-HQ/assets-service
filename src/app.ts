@@ -5,7 +5,7 @@ import cors from "cors";
 import { config } from "dotenv";
 // import initDatabase from "./config/database";
 
-import { CoinRoutes, ExchangeRoutes, SignalRoutes } from "./routes";
+import { CoinRoutes, CurrencyRoutes, ExchangeRoutes, SignalRoutes } from "./routes";
 import secretsJson from "./env.json";
 import { ENVIRONMENTS } from "./config/constants";
 import swaggerUi from "swagger-ui-express";
@@ -102,6 +102,7 @@ function startServer() {
 	app.use(`/coins`, CoinRoutes);
 	app.use(`/exchanges`, ExchangeRoutes);
 	app.use(`/signals`, SignalRoutes);
+	app.use(`/currencies`, CurrencyRoutes);
 
 	// health check
 	app.get(`/ping`, (_req, res) => {

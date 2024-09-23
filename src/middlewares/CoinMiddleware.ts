@@ -7,6 +7,29 @@ export async function validateCoinsRequest(req: Request, res: Response, next: Ne
 	try {
 		// check accessToken and user role
 		await checkUser(req);
+		const querySchema = Joi.object({
+			page: Joi.number().integer().min(1).positive().default(1).label("page"),
+			rowsPerPage: Joi.number()
+				.integer()
+				.min(1)
+				.positive()
+				.default(1000)
+				.label("Rows per page"),
+			sortBy: Joi.string().label("rank"),
+			orderBy: Joi.string().label("asc"),
+		});
+		const { error, value } = querySchema.validate(req.query, {
+			abortEarly: true,
+		});
+
+		req.query = value;
+
+		if (error) {
+			error.message = error.message.replace(/\"/g, "");
+			next(error);
+			return;
+		}
+
 		next();
 	} catch (err: any) {
 		next(err);

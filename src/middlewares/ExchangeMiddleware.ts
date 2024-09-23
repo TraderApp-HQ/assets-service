@@ -101,3 +101,29 @@ export async function validateUpdateExchangeInfoRequest(
 		next(err);
 	}
 }
+
+export async function validateGetSupportedExchangesRequest(
+	req: Request,
+	_res: Response,
+	next: NextFunction
+) {
+	try {
+		// check accessToken and user role
+		await checkAdmin(req);
+
+		const querySchema = Joi.object({
+			currencyId: Joi.number().required().label("currency Id"),
+			coinId: Joi.number().required().label("coin Id"),
+		});
+		const { error } = querySchema.validate(req.query, { abortEarly: true });
+
+		if (error) {
+			error.message = error.message.replace(/\"/g, "");
+			next(error);
+			return;
+		}
+		next();
+	} catch (err: any) {
+		next(err);
+	}
+}

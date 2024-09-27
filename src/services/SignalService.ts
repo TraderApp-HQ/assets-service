@@ -22,7 +22,10 @@ export class SignalService {
 
 			if (existingSignals && existingSignals.length > 0) {
 				// Update all existing signals' status to INACTIVE
-				await Signal.updateMany({ asset: props.asset }, { status: SignalStatus.INACTIVE });
+				await Signal.updateMany(
+					{ asset: props.asset },
+					{ status: SignalStatus.INACTIVE, endedAt: new Date().toISOString() }
+				);
 			}
 
 			// Create a new Signal document using the provided props

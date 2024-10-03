@@ -1,16 +1,17 @@
 import { DOC_RESPONSE, RESPONSE_CODES, RESPONSE_TAGS } from "../../config/constants";
+import { TradeStatus } from "../../config/enums";
 
 const updateExchangeInfoBody = {
 	type: "object",
-	required: ["description", "isTradingActive", "makerFee", "takerFee"],
+	required: ["description", "status", "makerFee", "takerFee"],
 	properties: {
 		description: {
 			type: "string",
 			example: "New exchange description",
 		},
-		isTradingActive: {
-			type: "boolean",
-			example: true,
+		status: {
+			type: "string",
+			example: TradeStatus.active,
 		},
 		makerFee: {
 			type: "number",

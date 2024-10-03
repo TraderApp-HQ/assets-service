@@ -3,18 +3,24 @@ import {
 	ICoinServiceGetAllCoinsParams,
 	ICoinServiceGetCoinByIdProps,
 } from "../interfaces/controllers";
+import { SortOrder } from "mongoose";
 
 export class CoinService {
 	public async getAllCoins({
 		page,
 		rowsPerPage,
 		orderBy,
+		sortBy,
 	}: ICoinServiceGetAllCoinsParams): Promise<ICoin[] | null> {
 		try {
 			const offset = (page - 1) * rowsPerPage;
 
+			// Construct the dynamic sorting object
+			const sortOptions: Record<string, SortOrder> = {};
+			sortOptions[sortBy] = orderBy === "asc" ? 1 : -1;
+
 			const exchanges = await Coin.find({})
-				.sort({ name: orderBy === "asc" ? 1 : -1 })
+				.sort(sortOptions)
 				.skip(offset)
 				.limit(rowsPerPage)
 				.where({ isTradingActive: true, isCoinActive: true })

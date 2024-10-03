@@ -17,6 +17,10 @@ const getCoinsParams = {
 			type: "string",
 			enum: ["asc", "desc"],
 		},
+		sortBy: {
+			type: "string",
+			example: "rank",
+		},
 	},
 };
 
@@ -48,6 +52,14 @@ const getCoins = {
 			required: false,
 			schema: {
 				$ref: "#/components/schemas/getCoinsParams/properties/orderBy",
+			},
+		},
+		{
+			in: "query",
+			name: "sortBy",
+			required: false,
+			schema: {
+				$ref: "#/components/schemas/getCoinsParams/properties/sortBy",
 			},
 		},
 	],

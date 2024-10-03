@@ -1,15 +1,16 @@
 import { Request, Response, NextFunction } from "express";
 import Joi from "joi";
 import { DEFAULT_PAGE, DEFAULT_ROWS_PER_PAGE } from "../config/constants";
-import { checkAdmin } from "../helpers/middlewares";
+import { checkAdmin, checkUser } from "../helpers/middlewares";
+import { TradeStatus } from "../config/enums";
 
 export async function validateExchangesRequest(req: Request, _res: Response, next: NextFunction) {
 	try {
-		// check accessToken and admin role
-		await checkAdmin(req);
+		// check accessToken and user role
+		await checkUser(req);
 
 		const querySchema = Joi.object({
-			rowPerPage: Joi.number()
+			rowsPerPage: Joi.number()
 				.integer()
 				.min(1)
 				.positive()
@@ -17,6 +18,9 @@ export async function validateExchangesRequest(req: Request, _res: Response, nex
 				.label("Row per page"),
 			page: Joi.number().integer().min(1).default(DEFAULT_PAGE).label("Page"),
 			orderBy: Joi.string().label("asc"),
+			status: Joi.string()
+				.valid(...Object.values(TradeStatus))
+				.label("status"),
 		});
 		const { error } = querySchema.validate(req.query, { abortEarly: true });
 
@@ -65,12 +69,14 @@ export async function validateUpdateExchangeInfoRequest(
 
 		const exchangeId = Number(req.params.exchangeId);
 
-		const { description, isTradingActive, makerFee, takerFee } = req.body;
+		const { description, status, makerFee, takerFee } = req.body;
 
 		const schema = Joi.object({
 			exchangeId: Joi.number().required().label("Exchange Id"),
 			description: Joi.string().optional().label("Description"),
-			isTradingActive: Joi.boolean().optional().label("Is Trading Active"),
+			status: Joi.string()
+				.valid(...Object.values(TradeStatus))
+				.label("status"),
 			makerFee: Joi.number().optional().label("Maker Fee"),
 			takerFee: Joi.number().optional().label("Taker Fee"),
 		});
@@ -78,7 +84,7 @@ export async function validateUpdateExchangeInfoRequest(
 		const data = {
 			exchangeId,
 			description,
-			isTradingActive,
+			status,
 			makerFee,
 			takerFee,
 		};
@@ -90,6 +96,32 @@ export async function validateUpdateExchangeInfoRequest(
 			return;
 		}
 
+		next();
+	} catch (err: any) {
+		next(err);
+	}
+}
+
+export async function validateGetSupportedExchangesRequest(
+	req: Request,
+	_res: Response,
+	next: NextFunction
+) {
+	try {
+		// check accessToken and user role
+		await checkAdmin(req);
+
+		const querySchema = Joi.object({
+			currencyId: Joi.number().required().label("currency Id"),
+			coinId: Joi.number().required().label("coin Id"),
+		});
+		const { error } = querySchema.validate(req.query, { abortEarly: true });
+
+		if (error) {
+			error.message = error.message.replace(/\"/g, "");
+			next(error);
+			return;
+		}
 		next();
 	} catch (err: any) {
 		next(err);

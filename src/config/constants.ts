@@ -27,6 +27,7 @@ export const RESPONSE_TAGS = {
 	exchange: "Exchange",
 	coin: "Coin",
 	signal: "Signal",
+	currency: "Currency",
 };
 
 export const ResponseMessage = {
@@ -57,6 +58,7 @@ export const ROUTES = {
 	patchExchangeById: "/update/:exchangeId",
 	getAllAssets: "/exchange/:exchangeId",
 	getByCurrencies: "/currency/:exchangeId",
+	getSupportedExchanges: "/supported/exchanges",
 };
 
 export const DOC_RESPONSE = {
@@ -81,6 +83,8 @@ export const PAGINATION_VALUES = {
 export const SIGNAL_ROUTES = {
 	post: "/create",
 	get: "/",
+	getActive: "/active",
+	getHistory: "/history",
 	getSignalById: "/:id",
 	updateSignalById: "/update/:id",
 };

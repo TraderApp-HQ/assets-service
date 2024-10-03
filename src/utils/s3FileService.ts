@@ -3,10 +3,6 @@ import { v4 as uuidv4 } from "uuid";
 
 const s3Client = new S3Client({
 	region: process.env.AWS_REGION ?? "eu-west-1",
-	credentials: {
-		accessKeyId: process.env.AWS_ACCESS_KEY_ID ?? "",
-		secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY ?? "",
-	},
 });
 
 // A function to upload a file to S3 and return the public URL of the file

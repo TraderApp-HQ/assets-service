@@ -18,8 +18,17 @@ import {
 	updateSignalByIdBody,
 	createSignal,
 	getSignals,
+	getInActiveSignals,
+	getActiveSignals,
+	getActiveSignalParams,
+	getInActiveSignalParams,
 } from "../documentation/signal";
 import { SIGNAL_ROUTES } from "../config/constants";
+import { getCurrencies } from "../documentation/currency";
+import {
+	getSupportedExchanges,
+	getSupportedExchangesParams,
+} from "../documentation/exchange/getSupportedExchanges";
 
 const options: swaggerJsdoc.Options = {
 	swaggerDefinition: {
@@ -39,15 +48,19 @@ const options: swaggerJsdoc.Options = {
 			},
 			schemas: {
 				getExchangesParams,
+				getSupportedExchangesParams,
 				updateExchangeInfoBody,
 				getCoinsParams,
 				getCoins,
 				createSignalParams,
 				getSignalParams,
+				getActiveSignalParams,
+				getInActiveSignalParams,
 				getSignalById,
 				updateSignalById,
 				updateSignalByIdParams,
 				updateSignalByIdBody,
+				getCurrencies,
 			},
 		},
 		security: [
@@ -57,6 +70,7 @@ const options: swaggerJsdoc.Options = {
 		],
 		paths: {
 			[`/exchanges/`]: { get: getExchanges },
+			[`/exchanges/supported/exchanges`]: { get: getSupportedExchanges },
 			[`/exchanges/{id}`]: { get: getExchangeById },
 			[`/exchanges/update/{exchangeId}`]: { patch: updateExchangeInfoById },
 			[`/exchanges/exchange/{exchangeId}`]: { get: getAllAssetsInExchangeById },
@@ -69,8 +83,13 @@ const options: swaggerJsdoc.Options = {
 			// signals
 			[`/signals${SIGNAL_ROUTES.post}`]: { post: createSignal },
 			[`/signals${SIGNAL_ROUTES.get}`]: { get: getSignals },
+			[`/signals${SIGNAL_ROUTES.getActive}`]: { get: getActiveSignals },
+			[`/signals${SIGNAL_ROUTES.getHistory}`]: { get: getInActiveSignals },
 			[`/signals/{id}`]: { get: getSignalById },
 			[`/signals/update/{id}`]: { patch: updateSignalById },
+
+			// currencies
+			[`/currencies/`]: { get: getCurrencies },
 		},
 	},
 	apis: ["./src/routes/*.ts", "./src/models/*.ts"], // Point to your route files

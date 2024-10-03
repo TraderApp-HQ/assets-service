@@ -10,6 +10,7 @@ import { ExchangeService } from "../services/ExchangeService";
 import { HttpStatus } from "../utils/httpStatus";
 import Currency from "../models/Currency";
 import Coin from "../models/Coin";
+import { TradeStatus } from "../config/enums";
 
 export async function getAllExchanges(req: Request, res: Response, next: NextFunction) {
 	const exchangeService: ExchangeService = new ExchangeService();
@@ -22,10 +23,13 @@ export async function getAllExchanges(req: Request, res: Response, next: NextFun
 		);
 		const orderBy: "asc" | "desc" = (req.query.orderBy as "asc" | "desc") || "asc";
 
+		const status = req.query.status as TradeStatus;
+
 		const exchanges = await exchangeService.getAllExchanges({
 			page,
 			rowsPerPage,
 			orderBy,
+			status,
 		});
 
 		res.status(HttpStatus.OK).json(
@@ -101,11 +105,11 @@ export async function updateExchangeInfo(req: Request, res: Response, next: Next
 	try {
 		const exchangeId = Number(req.params.exchangeId);
 
-		const { description, isTradingActive, makerFee, takerFee } = req.body;
+		const { description, status, makerFee, takerFee } = req.body;
 
 		const updateData = {
 			description,
-			isTradingActive,
+			status,
 			makerFee,
 			takerFee,
 		};
@@ -156,5 +160,26 @@ export async function getCurrenciesForExchange(req: Request, res: Response, next
 		);
 	} catch (err) {
 		next(err);
+	}
+}
+
+export async function getSupportedExchanges(req: Request, res: Response, next: NextFunction) {
+	const exchangeService: ExchangeService = new ExchangeService();
+
+	const coinId = Number(req.query.coinId);
+	const currencyId = Number(req.query.currencyId);
+
+	try {
+		const exchanges = await exchangeService.getSupportedExchanges({ coinId, currencyId });
+
+		res.status(HttpStatus.OK).json(
+			apiResponseHandler({
+				type: ResponseType.SUCCESS,
+				object: exchanges ?? [],
+				message: ResponseMessage.GET_EXCHANGES,
+			})
+		);
+	} catch (error) {
+		next(error);
 	}
 }

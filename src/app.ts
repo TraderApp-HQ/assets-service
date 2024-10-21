@@ -18,26 +18,6 @@ const env = process.env.NODE_ENV ?? "development";
 const suffix = ENVIRONMENTS[env] ?? "dev";
 const secretNames = ["common-secrets", "assets-service-secrets"];
 
-// initSecrets({
-// 	env: suffix,
-// 	secretNames,
-// 	secretsJson,
-// })
-// 	.then(() => {
-// 		// const port = process.env.PORT as string;
-// 		const port = 8082;
-// 		app.listen(port, async () => {
-// 			await initDatabase();
-// 			startServer();
-// 			logger.log(`Server listening at port ${port}`);
-// 			logger.log(`Docs available at http://localhost:${port}/api-docs`);
-// 		});
-// 	})
-// 	.catch((err) => {
-// 		logger.log(`Error getting secrets. === ${JSON.stringify(err)}`);
-// 		throw err;
-// 	});
-
 (async function () {
 	await initSecrets({
 		env: suffix,

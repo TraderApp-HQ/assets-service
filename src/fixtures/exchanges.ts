@@ -1,7 +1,7 @@
 import axios from "axios";
 import { config } from "dotenv";
 import Exchange from "../models/Exchange";
-import { TradeStatus } from "../config/enums";
+import { Category, ConnectionType, TradeStatus } from "../config/enums";
 // import { PrismaClient } from "@prisma/client";
 
 // load env variables
@@ -56,6 +56,15 @@ export async function getExchanges() {
 				urls,
 				dateLaunched,
 				status: TradeStatus.inactive,
+				category: Category.CRYPTO,
+				connectionTypes:
+					name === "Binance"
+						? [ConnectionType.MANUAL, ConnectionType.FAST]
+						: [ConnectionType.MANUAL],
+				isIpAddressWhitelistRequired: name === "Binance",
+				isSpotTradingSupported: true,
+				isFuturesTradingSupported: true,
+				IsMarginTradingSupported: true,
 			});
 		});
 

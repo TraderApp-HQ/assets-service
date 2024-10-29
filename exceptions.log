@@ -1876,3 +1876,35 @@ CredentialsProviderError: Could not load credentials from any providers
     at /Users/superuser/work/traderapp/assets-service/node_modules/@aws-sdk/credential-provider-node/dist-cjs/defaultProvider.js:13:11
     at /Users/superuser/work/traderapp/assets-service/node_modules/@smithy/property-provider/dist-cjs/chain.js:12:39
     at processTicksAndRejections (node:internal/process/task_queues:95:5) [unkown-service] development 2024-05-27T10:28:04.969Z
+[31merror[39m: uncaughtException: listen EADDRINUSE: address already in use :::8080
+Error: listen EADDRINUSE: address already in use :::8080
+    at Server.setupListenHandle [as _listen2] (node:net:1751:16)
+    at listenInCluster (node:net:1799:12)
+    at Server.listen (node:net:1887:7)
+    at Function.listen (/Users/i/Documents/TraderApp codes/assets-service/node_modules/express/lib/application.js:635:24)
+    at /Users/i/Documents/TraderApp codes/assets-service/src/app.ts:54:8
+    at processTicksAndRejections (node:internal/process/task_queues:95:5) [assets-service] development 2024-10-21 07:34:31
+error: uncaughtException: listen EADDRINUSE: address already in use :::8080
+Error: listen EADDRINUSE: address already in use :::8080
+    at Server.setupListenHandle [as _listen2] (node:net:1751:16)
+    at listenInCluster (node:net:1799:12)
+    at Server.listen (node:net:1887:7)
+    at Function.listen (/Users/i/Documents/TraderApp codes/assets-service/node_modules/express/lib/application.js:635:24)
+    at /Users/i/Documents/TraderApp codes/assets-service/src/app.ts:54:8
+    at processTicksAndRejections (node:internal/process/task_queues:95:5) [assets-service] development 2024-10-21T06:34:31.368Z
+[31merror[39m: uncaughtException: listen EADDRINUSE: address already in use :::8080
+Error: listen EADDRINUSE: address already in use :::8080
+    at Server.setupListenHandle [as _listen2] (node:net:1751:16)
+    at listenInCluster (node:net:1799:12)
+    at Server.listen (node:net:1887:7)
+    at Function.listen (/Users/i/Documents/TraderApp codes/assets-service/node_modules/express/lib/application.js:635:24)
+    at /Users/i/Documents/TraderApp codes/assets-service/src/app.ts:34:8
+    at processTicksAndRejections (node:internal/process/task_queues:95:5) [assets-service] development 2024-10-21 07:35:25
+error: uncaughtException: listen EADDRINUSE: address already in use :::8080
+Error: listen EADDRINUSE: address already in use :::8080
+    at Server.setupListenHandle [as _listen2] (node:net:1751:16)
+    at listenInCluster (node:net:1799:12)
+    at Server.listen (node:net:1887:7)
+    at Function.listen (/Users/i/Documents/TraderApp codes/assets-service/node_modules/express/lib/application.js:635:24)
+    at /Users/i/Documents/TraderApp codes/assets-service/src/app.ts:34:8
+    at processTicksAndRejections (node:internal/process/task_queues:95:5) [assets-service] development 2024-10-21T06:35:25.587Z

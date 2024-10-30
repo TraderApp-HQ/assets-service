@@ -50,7 +50,9 @@ function startServer() {
 		"http://localhost:8788",
 		"https://users-dashboard-dev.traderapp.finance",
 		"https://web-dashboard-dev.traderapp.finance",
+		"https://www.web-dashboard-dev.traderapp.finance",
 		"https://web-dashboard-staging.traderapp.finance",
+		"https://www.web-dashboard-staging.traderapp.finance",
 	];
 
 	const corsOptions = {

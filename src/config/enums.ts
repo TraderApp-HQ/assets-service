@@ -32,3 +32,13 @@ export enum TradeStatus {
 	active = "ACTIVE",
 	inactive = "INACTIVE",
 }
+
+export enum Category {
+	FOREX = "FOREX",
+	CRYPTO = "CRYPTO",
+}
+
+export enum ConnectionType {
+	MANUAL = "MANUAL",
+	FAST = "FAST",
+}

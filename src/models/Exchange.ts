@@ -1,5 +1,5 @@
 import mongoose, { Schema, Document } from "mongoose";
-import { TradeStatus } from "../config/enums";
+import { Category, ConnectionType, TradeStatus } from "../config/enums";
 
 export interface IExchange extends Document {
 	_id: number;
@@ -12,6 +12,12 @@ export interface IExchange extends Document {
 	makerFee: number;
 	takerFee: number;
 	dateLaunched: Date;
+	category: Category;
+	connectionTypes: ConnectionType[];
+	isIpAddressWhitelistRequired: boolean;
+	isSpotTradingSupported: Boolean;
+	isFuturesTradingSupported: Boolean;
+	IsMarginTradingSupported: Boolean;
 }
 
 interface IExchangeModel extends IExchange {}
@@ -28,6 +34,12 @@ export const ExchangeSchema = new Schema<IExchangeModel>(
 		makerFee: { type: Number, required: true },
 		takerFee: { type: Number, required: true },
 		dateLaunched: { type: Date, default: Date.now },
+		category: { type: String, enum: Category, required: true },
+		connectionTypes: [{ type: String, enum: Object.values(ConnectionType) }],
+		isIpAddressWhitelistRequired: { type: Boolean, required: true },
+		isSpotTradingSupported: { type: Boolean, required: true },
+		isFuturesTradingSupported: { type: Boolean, required: true },
+		IsMarginTradingSupported: { type: Boolean, required: true },
 		// exchangePairs: [{ type: mongoose.Types.ObjectId, ref: "ExchangePair" }],
 		// coinsUnknown: [{ type: mongoose.Types.ObjectId, ref: "CoinsUnknown" }],
 	},

@@ -1,7 +1,7 @@
 import axios from "axios";
 import { config } from "dotenv";
 import Exchange from "../models/Exchange";
-import { TradeStatus } from "../config/enums";
+import { Category, ConnectionType, TradeStatus } from "../config/enums";
 // import { PrismaClient } from "@prisma/client";
 
 // load env variables
@@ -11,13 +11,36 @@ config();
 
 const CMC_API_KEY = process.env.CMC_API_KEY as string;
 const exchanges = ["binance", "kucoin"];
-let url = `https://pro-api.coinmarketcap.com/v1/exchange/info?slug=${exchanges[0]}`;
+const url = `https://pro-api.coinmarketcap.com/v1/exchange/info?slug=${exchanges.join(",")}`;
 const data: any[] = [];
 
-// attach the rest of exchange items to url string
-for (let i = 1; i < exchanges.length; i++) {
-	url += `,${exchanges[i]}`;
-}
+// Configuration for exchanges with specific settings
+const exchangeConfig: Record<
+	string,
+	{
+		connectionTypes: ConnectionType[];
+		isIpAddressWhitelistRequired: boolean;
+		isSpotTradingSupported: boolean;
+		isFuturesTradingSupported: boolean;
+		isMarginTradingSupported: boolean;
+	}
+> = {
+	binance: {
+		connectionTypes: [ConnectionType.MANUAL, ConnectionType.FAST],
+		isIpAddressWhitelistRequired: true,
+		isSpotTradingSupported: true,
+		isFuturesTradingSupported: true,
+		isMarginTradingSupported: true,
+	},
+	kucoin: {
+		connectionTypes: [ConnectionType.MANUAL],
+		isIpAddressWhitelistRequired: false,
+		isSpotTradingSupported: true,
+		isFuturesTradingSupported: true,
+		isMarginTradingSupported: true,
+	},
+	// Add other exchanges as needed
+};
 
 export async function getExchanges() {
 	try {
@@ -33,17 +56,27 @@ export async function getExchanges() {
 
 		const result = res.data;
 
-		// get returned values
 		Object.values(result.data).forEach((exchange: any) => {
-			const id = exchange.id;
-			const name = exchange.name;
-			const slug = exchange.slug;
-			const description = exchange.description;
-			const logo = exchange.logo;
-			const makerFee = exchange.maker_fee;
-			const takerFee = exchange.taker_fee;
-			const urls = JSON.stringify(exchange.urls);
-			const dateLaunched = exchange.date_launched;
+			const {
+				id,
+				name,
+				slug,
+				description,
+				logo,
+				maker_fee: makerFee,
+				taker_fee: takerFee,
+				urls,
+				date_launched: dateLaunched,
+			} = exchange;
+
+			// Get specific configuration or apply defaults if not configured
+			const config = exchangeConfig[slug.toLowerCase()] || {
+				connectionTypes: [ConnectionType.MANUAL],
+				isIpAddressWhitelistRequired: false,
+				isSpotTradingSupported: true,
+				isFuturesTradingSupported: false,
+				isMarginTradingSupported: false,
+			};
 
 			data.push({
 				_id: id,
@@ -53,16 +86,18 @@ export async function getExchanges() {
 				logo,
 				makerFee,
 				takerFee,
-				urls,
+				urls: JSON.stringify(urls),
 				dateLaunched,
 				status: TradeStatus.inactive,
+				category: Category.CRYPTO,
+				...config,
 			});
 		});
 
-		// insert records into db
+		// Insert records into db
 		const ex = await Exchange.insertMany(data, { ordered: false });
-		console.log("records inserted: ", ex);
+		console.log("Records inserted:", ex);
 	} catch (err: any) {
-		console.log("Error getting exchanges: ", err.message);
+		console.log("Error getting exchanges:", err.message);
 	}
 }

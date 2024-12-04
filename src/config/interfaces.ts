@@ -49,7 +49,9 @@ export interface ISignalServiceCreateSignalProps {
 	endedAt?: string;
 	supportedExchanges: number[];
 	asset: number;
+	assetName: string;
 	baseCurrency: number;
+	baseCurrencyName: string;
 }
 
 export interface ISignalServiceGetSignalsParams {

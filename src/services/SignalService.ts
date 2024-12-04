@@ -13,6 +13,7 @@ import Signal from "../models/Signal";
 
 export class SignalService {
 	public async createSignal(props: ISignalServiceCreateSignalProps): Promise<ISignal | null> {
+		console.log("=== new signal (signalservice - 16) ===", props);
 		try {
 			// Find existing signals with the same asset ID
 			const existingSignals = await Signal.find({
@@ -108,6 +109,8 @@ export class SignalService {
 
 			// Apply pagination
 			const paginatedSignals = signals.slice((page - 1) * rowsPerPage, page * rowsPerPage);
+
+			console.log("--- Get paginated signals result (signalservice-113) ---", signals);
 
 			return paginatedSignals as unknown as ISignalResponse[];
 		} catch (error: any) {

@@ -92,3 +92,8 @@ export interface ISignalResponse extends Document {
 	endedAt?: string;
 	supportedExchanges: IExchange[];
 }
+
+export interface IAssetPrice {
+	asset: string;
+	price: number;
+}

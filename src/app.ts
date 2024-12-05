@@ -10,6 +10,7 @@ import secretsJson from "./env.json";
 import { ENVIRONMENTS } from "./config/constants";
 import swaggerUi from "swagger-ui-express";
 import specs from "./utils/swagger";
+import runAllJobs from "./jobs";
 
 config();
 const app: Application = express();
@@ -94,6 +95,9 @@ function startServer() {
 			})
 		);
 	});
+
+	// Start cron jobs
+	runAllJobs();
 
 	// handle errors
 	app.use((err: Error, _req: Request, res: Response, _next: NextFunction) => {

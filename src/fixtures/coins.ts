@@ -156,15 +156,3 @@ async function getCoins(start: number) {
 		console.log(`Error inserting coins from ${start} to ${start + limit}`);
 	}
 }
-
-export async function getCoinsLatestPrice(coins: string, apiKey: string) {
-	const url = `https://pro-api.coinmarketcap.com/v1/cryptocurrency/quotes/latest?symbol=${coins}&convert=USD&CMC_PRO_API_KEY=${apiKey}`;
-
-	try {
-		const res = await axios.get(url);
-		return res.data;
-	} catch (error: any) {
-		console.log(`Error getting coins meta data: ${error.message}`);
-		throw error;
-	}
-}

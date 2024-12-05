@@ -1,6 +1,7 @@
 import { DEFAULT_PAGE, DEFAULT_ROWS_PER_PAGE } from "../config/constants";
 import { SignalStatus } from "../config/enums";
 import {
+	IAssetPrice,
 	IExchange,
 	ISignal,
 	ISignalResponse,
@@ -13,7 +14,6 @@ import Signal from "../models/Signal";
 
 export class SignalService {
 	public async createSignal(props: ISignalServiceCreateSignalProps): Promise<ISignal | null> {
-		console.log("=== new signal (signalservice - 16) ===", props);
 		try {
 			// Find existing signals with the same asset ID
 			const existingSignals = await Signal.find({
@@ -109,8 +109,6 @@ export class SignalService {
 
 			// Apply pagination
 			const paginatedSignals = signals.slice((page - 1) * rowsPerPage, page * rowsPerPage);
-
-			console.log("--- Get paginated signals result (signalservice-113) ---", signals);
 
 			return paginatedSignals as unknown as ISignalResponse[];
 		} catch (error: any) {
@@ -211,6 +209,33 @@ export class SignalService {
 		try {
 			const totalSignal = await Signal.countDocuments();
 			return totalSignal;
+		} catch (error: any) {
+			throw new Error(error.message);
+		}
+	}
+
+	public async getActiveSignalsAssetID(): Promise<string[]> {
+		try {
+			const activeSignals = await Signal.find({ status: SignalStatus.ACTIVE }).select(
+				"assetName -_id"
+			);
+
+			const activeSignalsId = activeSignals.map((Signal) => Signal.assetName);
+
+			return activeSignalsId;
+		} catch (error: any) {
+			throw new Error(error.message);
+		}
+	}
+
+	public async updateActiveSignalsPrices(priceArray: IAssetPrice[]) {
+		try {
+			for (const price of priceArray) {
+				await Signal.updateMany(
+					{ status: SignalStatus.ACTIVE, assetName: price.asset },
+					{ currentPrice: price.price }
+				);
+			}
 		} catch (error: any) {
 			throw new Error(error.message);
 		}

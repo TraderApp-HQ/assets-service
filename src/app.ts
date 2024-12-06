@@ -10,6 +10,7 @@ import secretsJson from "./env.json";
 import { ENVIRONMENTS } from "./config/constants";
 import swaggerUi from "swagger-ui-express";
 import specs from "./utils/swagger";
+import runAllJobs from "./jobs";
 
 config();
 const app: Application = express();
@@ -25,7 +26,6 @@ const secretNames = ["common-secrets", "assets-service-secrets"];
 		secretsJson,
 	});
 	const port = process.env.PORT ?? "";
-	// const port = 8082;
 	const dbUrl = process.env.ASSETS_SERVICE_DB_URL ?? "";
 	// connect to mongodb
 	mongoose
@@ -94,6 +94,9 @@ function startServer() {
 			})
 		);
 	});
+
+	// Start cron jobs
+	runAllJobs();
 
 	// handle errors
 	app.use((err: Error, _req: Request, res: Response, _next: NextFunction) => {

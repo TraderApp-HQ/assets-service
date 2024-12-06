@@ -1,6 +1,7 @@
 import { DEFAULT_PAGE, DEFAULT_ROWS_PER_PAGE } from "../config/constants";
 import { SignalStatus } from "../config/enums";
 import {
+	IAssetPrice,
 	IExchange,
 	ISignal,
 	ISignalResponse,
@@ -208,6 +209,33 @@ export class SignalService {
 		try {
 			const totalSignal = await Signal.countDocuments();
 			return totalSignal;
+		} catch (error: any) {
+			throw new Error(error.message);
+		}
+	}
+
+	public async getActiveSignalsAssetName(): Promise<string[]> {
+		try {
+			const activeSignals = await Signal.find({ status: SignalStatus.ACTIVE }).select(
+				"assetName -_id"
+			);
+
+			const activeSignalsAssetName = activeSignals.map((Signal) => Signal.assetName);
+
+			return activeSignalsAssetName;
+		} catch (error: any) {
+			throw new Error(error.message);
+		}
+	}
+
+	public async updateActiveSignalsPrices(priceArray: IAssetPrice[]) {
+		try {
+			for (const price of priceArray) {
+				await Signal.updateMany(
+					{ status: SignalStatus.ACTIVE, assetName: price.asset },
+					{ currentPrice: price.price }
+				);
+			}
 		} catch (error: any) {
 			throw new Error(error.message);
 		}

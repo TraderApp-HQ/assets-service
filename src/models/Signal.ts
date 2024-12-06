@@ -30,7 +30,9 @@ const SignalSchema = new Schema<ISignal>(
 		endedAt: { type: String },
 		supportedExchanges: [{ type: Number, ref: "Exchange", required: true }],
 		asset: { type: Number, ref: "Coin", required: true },
+		assetName: { type: String, required: true },
 		baseCurrency: { type: Number, ref: "Coin", required: true },
+		baseCurrencyName: { type: String, required: true },
 	},
 	{
 		versionKey: false,

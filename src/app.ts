@@ -25,8 +25,7 @@ const secretNames = ["common-secrets", "assets-service-secrets"];
 		secretNames,
 		secretsJson,
 	});
-	// const port = process.env.PORT ?? "";
-	const port = 8082;
+	const port = process.env.PORT ?? "";
 	const dbUrl = process.env.ASSETS_SERVICE_DB_URL ?? "";
 	// connect to mongodb
 	mongoose

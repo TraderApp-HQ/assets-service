@@ -214,15 +214,15 @@ export class SignalService {
 		}
 	}
 
-	public async getActiveSignalsAssetID(): Promise<string[]> {
+	public async getActiveSignalsAssetName(): Promise<string[]> {
 		try {
 			const activeSignals = await Signal.find({ status: SignalStatus.ACTIVE }).select(
 				"assetName -_id"
 			);
 
-			const activeSignalsId = activeSignals.map((Signal) => Signal.assetName);
+			const activeSignalsAssetName = activeSignals.map((Signal) => Signal.assetName);
 
-			return activeSignalsId;
+			return activeSignalsAssetName;
 		} catch (error: any) {
 			throw new Error(error.message);
 		}

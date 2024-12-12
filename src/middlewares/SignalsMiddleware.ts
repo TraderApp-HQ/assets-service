@@ -2,7 +2,14 @@ import { Request, Response, NextFunction } from "express";
 import Joi from "joi";
 import { DEFAULT_PAGE, DEFAULT_ROWS_PER_PAGE } from "../config/constants";
 import { checkAdmin, checkUser } from "../helpers/middlewares";
-import { Candlestick, SignalRisk, SignalStatus } from "../config/enums";
+import {
+	Candlestick,
+	Category,
+	SignalRisk,
+	SignalStatus,
+	TradeSide,
+	TradeType,
+} from "../config/enums";
 
 export async function validateCreateSignalRequest(
 	req: Request,
@@ -59,6 +66,18 @@ export async function validateCreateSignalRequest(
 			isSignalTradable: Joi.boolean().required(),
 			chart: Joi.string().label("Chart"),
 			// chart: Joi.string().base64().required().label("Chart"),
+			category: Joi.string()
+				.valid(...Object.values(Category))
+				.required()
+				.label("Category"),
+			tradeType: Joi.string()
+				.valid(...Object.values(TradeType))
+				.required()
+				.label("Trade type"),
+			tradeSide: Joi.string()
+				.valid(...Object.values(TradeSide))
+				.required()
+				.label("Trade side"),
 		});
 
 		/* Validate request body.

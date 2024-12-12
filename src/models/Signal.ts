@@ -1,5 +1,12 @@
 import mongoose, { Schema } from "mongoose";
-import { Candlestick, SignalRisk, SignalStatus } from "../config/enums";
+import {
+	Candlestick,
+	Category,
+	SignalRisk,
+	SignalStatus,
+	TradeSide,
+	TradeType,
+} from "../config/enums";
 import { ISignal } from "../config/interfaces";
 
 const SignalSchema = new Schema<ISignal>(
@@ -31,6 +38,9 @@ const SignalSchema = new Schema<ISignal>(
 		supportedExchanges: [{ type: Number, ref: "Exchange", required: true }],
 		asset: { type: Number, ref: "Coin", required: true },
 		baseCurrency: { type: Number, ref: "Coin", required: true },
+		category: { type: String, required: true, enum: Object.values(Category) },
+		tradeType: { type: String, required: true, enum: Object.values(TradeType) },
+		tradeSide: { type: String, required: true, enum: Object.values(TradeSide) },
 	},
 	{
 		versionKey: false,

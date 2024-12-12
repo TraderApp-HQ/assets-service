@@ -1,5 +1,13 @@
 import { PopulateOptions } from "mongoose";
-import { Candlestick, SignalRisk, SignalStatus, UserRoles } from "./enums";
+import {
+	Candlestick,
+	Category,
+	SignalRisk,
+	SignalStatus,
+	TradeSide,
+	TradeType,
+	UserRoles,
+} from "./enums";
 
 export interface IAccessToken {
 	id: string;
@@ -50,6 +58,9 @@ export interface ISignalServiceCreateSignalProps {
 	supportedExchanges: number[];
 	asset: number;
 	baseCurrency: number;
+	category: Category;
+	tradeType: TradeType;
+	tradeSide: TradeSide;
 }
 
 export interface ISignalServiceGetSignalsParams {
@@ -69,6 +80,12 @@ export interface ISignalServiceUpdateSignalByIdProps {
 }
 
 export interface ISignal extends ISignalServiceCreateSignalProps, Document {}
+/*
+1. category enum with crypto AND forex
+2. Trade Type - category options of spot and futures (CFD for FOREX).
+3. IF(FUTURES), choose leverage.
+4. Trade side - LONG || SHORT
+*/
 
 export interface ISignalResponse extends Document {
 	id: string;

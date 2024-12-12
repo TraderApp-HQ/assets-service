@@ -38,6 +38,17 @@ export enum Category {
 	CRYPTO = "CRYPTO",
 }
 
+export enum TradeType {
+	SPOT = "SPOT",
+	FUTURES = "FUTURES",
+	CFD = "CFD",
+}
+
+export enum TradeSide {
+	SHORT = "SHORT",
+	LONG = "LONG",
+}
+
 export enum ConnectionType {
 	MANUAL = "MANUAL",
 	FAST = "FAST",

@@ -28,7 +28,6 @@ export async function createSignalHandler(req: Request, res: Response, next: Nex
 		baseCurrency,
 		supportedExchanges,
 		category,
-		tradeType,
 		tradeSide,
 	} = req.body as ISignal;
 
@@ -61,7 +60,6 @@ export async function createSignalHandler(req: Request, res: Response, next: Nex
 			supportedExchanges,
 			createdAt: new Date().toISOString(),
 			category,
-			tradeType,
 			tradeSide,
 		};
 

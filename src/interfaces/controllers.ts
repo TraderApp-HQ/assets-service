@@ -1,6 +1,6 @@
 import { PopulateOptions } from "mongoose";
 import { IExchange } from "../models/Exchange";
-import { TradeStatus } from "../config/enums";
+import { Category, TradeStatus } from "../config/enums";
 
 export interface ICoin {
 	id: number;
@@ -37,6 +37,7 @@ export interface ICoinServiceGetAllCoinsParams {
 	rowsPerPage: number;
 	orderBy: "asc" | "desc";
 	sortBy: string;
+	category: Category;
 }
 
 export interface ICoinServiceGetCoinByIdProps {

@@ -1,5 +1,13 @@
 import { PopulateOptions } from "mongoose";
-import { Candlestick, Category, SignalRisk, SignalStatus, TradeSide, UserRoles } from "./enums";
+import {
+	Candlestick,
+	Category,
+	SignalRisk,
+	SignalStatus,
+	TradeSide,
+	TradeType,
+	UserRoles,
+} from "./enums";
 
 export interface IAccessToken {
 	id: string;
@@ -51,7 +59,7 @@ export interface ISignalServiceCreateSignalProps {
 	asset: number;
 	baseCurrency: number;
 	category: Category;
-	// tradeType: TradeType;
+	tradeType?: TradeType;
 	tradeSide?: TradeSide;
 	leverage?: number;
 }

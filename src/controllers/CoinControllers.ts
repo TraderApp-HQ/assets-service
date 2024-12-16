@@ -4,10 +4,12 @@ import { ResponseMessage, ResponseType } from "../config/constants";
 import { HttpStatus } from "../utils/httpStatus";
 import { CoinService } from "../services/CoinService";
 import { ICoin, IPagedResultData } from "../interfaces/controllers";
+import { Category } from "../config/enums";
 
 export async function getAllCoins(req: Request, res: Response, next: NextFunction) {
 	const coinService: CoinService = new CoinService();
 	try {
+		const category = req.query.category as Category;
 		const page: number = parseInt(req.query.page as string, 10) || 1;
 		let rowsPerPage: number = parseInt(req.query.rowsPerPage as string, 10) || 10;
 		rowsPerPage = rowsPerPage > 100 ? 100 : rowsPerPage;
@@ -15,7 +17,14 @@ export async function getAllCoins(req: Request, res: Response, next: NextFunctio
 		const orderBy: "asc" | "desc" = (req.query.orderBy as "asc" | "desc") || "asc";
 		const sortBy: string = (req.query.sortBy as string) || "rank";
 
+		if (!category) {
+			return res
+				.status(400)
+				.json(apiResponseHandler({ message: "No coin category defined." }));
+		}
+
 		const coinsArr = await coinService.getAllCoins({
+			category,
 			page,
 			rowsPerPage,
 			orderBy,

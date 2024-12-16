@@ -1,4 +1,5 @@
 import mongoose, { Schema, Document } from "mongoose";
+import { Category } from "../config/enums";
 
 export interface ICoin extends Document {
 	_id: number;
@@ -12,6 +13,7 @@ export interface ICoin extends Document {
 	isCoinActive: boolean;
 	isTradingActive: boolean;
 	dateLaunched: Date;
+	category: Category;
 	// currency: mongoose.Types.ObjectId
 	// exchangePairs: mongoose.Types.ObjectId[];
 }
@@ -31,6 +33,7 @@ export const CoinSchema = new Schema<ICoinModel>(
 		isCoinActive: { type: Boolean, required: true },
 		isTradingActive: { type: Boolean, default: true },
 		dateLaunched: { type: Date, default: Date.now },
+		category: { type: String, required: true, enum: Object.values(Category) },
 		// currency: { type: mongoose.Types.ObjectId, ref: "Currency" },
 		// exchangePairs: [{ type: mongoose.Types.ObjectId, ref: "ExchangePair" }],
 	},

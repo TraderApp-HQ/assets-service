@@ -5,6 +5,7 @@ import axios from "axios";
 import { config } from "dotenv";
 import Coin from "../models/Coin";
 import Currency from "../models/Currency";
+import { Category } from "../config/enums";
 // import { PrismaClient } from "@prisma/client";
 
 // load env variables
@@ -120,6 +121,7 @@ async function getCoins(start: number) {
 			const rank = coins[id].rank;
 			const isCoinActive = coins[id].isActive === 1 ? true : false;
 			const dateLaunched = coin.date_launched ? coin.date_launched : coin.date_added;
+			const category = Category.CRYPTO;
 
 			// get currencies. USDT etc.
 			if (coin.symbol === "USDT" || coin.symbol === "BTC" || coin.symbol === "ETH") {
@@ -137,6 +139,7 @@ async function getCoins(start: number) {
 				dateLaunched,
 				isCoinActive,
 				rank,
+				category,
 			});
 		});
 
@@ -156,3 +159,11 @@ async function getCoins(start: number) {
 		console.log(`Error inserting coins from ${start} to ${start + limit}`);
 	}
 }
+
+export const updateCoinsCategory = async () => {
+	try {
+		await Coin.updateMany({}, { $set: { category: Category.CRYPTO } });
+	} catch (err: any) {
+		console.log("Error updating coins category: ", err.code, err.message);
+	}
+};

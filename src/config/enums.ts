@@ -41,7 +41,6 @@ export enum Category {
 export enum TradeType {
 	SPOT = "SPOT",
 	FUTURES = "FUTURES",
-	CFD = "CFD",
 }
 
 export enum TradeSide {

@@ -17,12 +17,6 @@ export async function getAllCoins(req: Request, res: Response, next: NextFunctio
 		const orderBy: "asc" | "desc" = (req.query.orderBy as "asc" | "desc") || "asc";
 		const sortBy: string = (req.query.sortBy as string) || "rank";
 
-		if (!category) {
-			return res
-				.status(400)
-				.json(apiResponseHandler({ message: "No coin category defined." }));
-		}
-
 		const coinsArr = await coinService.getAllCoins({
 			category,
 			page,

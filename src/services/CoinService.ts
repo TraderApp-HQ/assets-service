@@ -35,7 +35,7 @@ export class CoinService {
 					urls: 1,
 				});
 
-			if (!exchanges || exchanges.length === 0) {
+			if (!exchanges) {
 				return null;
 			}
 

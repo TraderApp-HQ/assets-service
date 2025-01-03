@@ -17,6 +17,7 @@
 		"init-exchanges-transfer": "npx ts-node src/scripts/transfer-exchanges-collection-script",
 		"init-currencies-transfer": "npx ts-node src/scripts/transfer-currencies-collection-script",
 		"init-exchangepair-transfer": "npx ts-node src/scripts/transfer-exchangepair-unknown-coin.script",
+		"init-coins-category-update": "npx ts-node src/scripts/update-coins-category-script",
 		"prepare": "husky install",
 		"codegen": "npx prisma generate",
 		"migration": "npx prisma migrate deploy"

@@ -212,4 +212,35 @@ export class SignalService {
 			throw new Error(error.message);
 		}
 	}
+
+	public async getActiveSignalsAssetNameAndExchange(): Promise<
+		Array<{ assetName: string; exchanges: string[] }>
+	> {
+		try {
+			const activeSignals = await Signal.find({ status: SignalStatus.ACTIVE })
+				.populate([
+					{ path: "supportedExchanges", select: "slug -_id" },
+					{ path: "asset", select: "symbol -_id" },
+					{ path: "baseCurrency", select: "symbol -_id" },
+				])
+				.select("asset baseCurrency supportedExchanges -_id")
+				.exec();
+
+			// Extracting asset name and exchanges only
+			const signalAndExchanges = activeSignals.map((signal: any) => {
+				const assetName = `${signal.asset?.symbol ?? ""}${
+					signal.baseCurrency?.symbol ?? ""
+				}`.toLowerCase();
+				const exchanges: string[] = signal.supportedExchanges.map(
+					(exchange: any) => exchange.slug
+				);
+
+				return { assetName, exchanges };
+			});
+
+			return signalAndExchanges;
+		} catch (error: any) {
+			throw new Error(error.message);
+		}
+	}
 }

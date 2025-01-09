@@ -2,6 +2,7 @@ import { DEFAULT_PAGE, DEFAULT_ROWS_PER_PAGE } from "../config/constants";
 import { SignalStatus } from "../config/enums";
 import {
 	IExchange,
+	IGetExchangeActiveSignalsReturn,
 	ISignal,
 	ISignalResponse,
 	ISignalServiceCreateSignalProps,
@@ -213,30 +214,33 @@ export class SignalService {
 		}
 	}
 
-	public async getActiveSignalsAssetNameAndExchange(): Promise<
-		Array<{ assetName: string; exchanges: string[] }>
-	> {
+	public async getExchangeActiveSignals(
+		exchange?: string
+	): Promise<IGetExchangeActiveSignalsReturn[]> {
 		try {
+			const filterCondition = exchange ? { slug: exchange } : {};
+
 			const activeSignals = await Signal.find({ status: SignalStatus.ACTIVE })
 				.populate([
-					{ path: "supportedExchanges", select: "slug -_id" },
-					{ path: "asset", select: "symbol -_id" },
-					{ path: "baseCurrency", select: "symbol -_id" },
+					{ path: "supportedExchanges", select: "slug -_id", match: filterCondition },
 				])
-				.select("asset baseCurrency supportedExchanges -_id")
+				.select(
+					"assetName baseCurrencyName targetProfits stopLoss entryPrice isSignalTradable supportedExchanges"
+				)
 				.exec();
 
-			// Extracting asset name and exchanges only
-			const signalAndExchanges = activeSignals.map((signal: any) => {
-				const assetName = `${signal.asset?.symbol ?? ""}${
-					signal.baseCurrency?.symbol ?? ""
-				}`.toLowerCase();
-				const exchanges: string[] = signal.supportedExchanges.map(
-					(exchange: any) => exchange.slug
-				);
+			// Extracting assets exchange
+			const signalAndExchanges = activeSignals
+				.filter((signal) => signal.supportedExchanges.length > 0)
+				.map((signal: any) => {
+					const assetName = `${signal.assetName}${signal.baseCurrencyName}`.toLowerCase();
+					const exchanges: string[] = signal.supportedExchanges.map(
+						(exchange: any) => exchange.slug
+					);
+					const { _id, supportedExchanges, ...restSignal } = signal.toObject();
 
-				return { assetName, exchanges };
-			});
+					return { ...restSignal, asset: assetName, exchanges, id: _id.toString() };
+				});
 
 			return signalAndExchanges;
 		} catch (error: any) {

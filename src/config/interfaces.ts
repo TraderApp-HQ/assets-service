@@ -1,4 +1,5 @@
 import { PopulateOptions } from "mongoose";
+import * as WebSocketType from "ws";
 import {
 	Candlestick,
 	Category,
@@ -57,7 +58,9 @@ export interface ISignalServiceCreateSignalProps {
 	endedAt?: string;
 	supportedExchanges: number[];
 	asset: number;
+	assetName: string;
 	baseCurrency: number;
+	baseCurrencyName: string;
 	category: Category;
 	tradeType?: TradeType;
 	tradeSide?: TradeSide;
@@ -101,4 +104,54 @@ export interface ISignalResponse extends Document {
 	createdAt: string;
 	endedAt?: string;
 	supportedExchanges: IExchange[];
+}
+
+export interface IRedisClient {
+	redisEndpoint: string;
+	env: string;
+}
+
+export interface IAddClient {
+	userId: string;
+	channel: string;
+	ws: WebSocketType;
+}
+
+export interface IGetClientsReturn {
+	userId: string;
+	ws: WebSocketType;
+}
+
+export interface IClient {
+	userId: string;
+	channel: string;
+}
+
+export interface IGetExchangeActiveSignalsReturn {
+	stopLoss: ISignalMilestone;
+	targetProfits: ISignalMilestone[];
+	entryPrice: number;
+	isSignalTradable: boolean;
+	assetName: string;
+	baseCurrencyName: string;
+	asset: string;
+	exchanges: string[];
+	id: string;
+}
+
+export interface ICacheAsset {
+	assetName: string;
+	assetPrice: any;
+	assetOrderBook: any;
+}
+
+export interface ICacheSignl {
+	assetId: string;
+	exchange: string;
+	assetData: ICacheAsset;
+}
+
+export interface IRemoveCacheSignal {
+	assetId: string;
+	exchange: string;
 }

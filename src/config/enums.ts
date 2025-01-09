@@ -52,3 +52,8 @@ export enum ConnectionType {
 	MANUAL = "MANUAL",
 	FAST = "FAST",
 }
+
+export enum CacheKey {
+	clientKey = "ws",
+	assetKey = "asset",
+}

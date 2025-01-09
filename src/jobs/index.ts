@@ -1,7 +1,7 @@
-import { signalsRealTimePriceUpdateCronJob } from "./signalsPriceUpdate";
+import { BinanceSignalsPriceUpdateJob } from "./BinanceSignalsPriceUpdate";
 
 const runAllJobs = () => {
-	signalsRealTimePriceUpdateCronJob();
+	BinanceSignalsPriceUpdateJob();
 };
 
 export default runAllJobs;

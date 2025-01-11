@@ -28,7 +28,7 @@ export const openBinanceWebSocketConnection = async (symbol: string) => {
 		const message = JSON.parse(data.toString());
 		const assetPrice = parseFloat(message.c);
 
-		// Save price to redis cache
+		// Save price to redis cache (To be clarified)
 		console.log(`Price for ${symbol}`, assetPrice);
 	});
 
@@ -51,7 +51,7 @@ export const openBinanceWebSocketConnection = async (symbol: string) => {
 	orderBookWs.on("message", (data: WebSocket.Data) => {
 		const message = JSON.parse(data.toString());
 
-		// Save order book to redis cache
+		// Save order book to redis cache (To be clarified)
 		console.log(`Order book for ${symbol}`, message);
 	});
 

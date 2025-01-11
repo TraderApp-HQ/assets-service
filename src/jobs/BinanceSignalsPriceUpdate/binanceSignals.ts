@@ -5,7 +5,7 @@ import { RedisClient } from "../../services/RedisService";
 import { SignalService } from "../../services/SignalService";
 import { openBinanceWebSocketConnection } from "../../websockets/binanceWebSockets";
 
-export const binanceSignalsPrices = async () => {
+export const binanceSignals = async () => {
 	const env = process.env.NODE_ENV as string;
 	const redisEndpoint = "";
 	const signalService = new SignalService();

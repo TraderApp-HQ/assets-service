@@ -1,7 +1,7 @@
 import cronjob from "node-cron";
-import { binanceSignalsPrices } from "./BinanceSignalsPrices";
+import { binanceSignals } from "./binanceSignals";
 
 export const BinanceSignalsPriceUpdateJob = () => {
 	// cron job that runs every 1 minute
-	cronjob.schedule("* * * * *", async () => binanceSignalsPrices());
+	cronjob.schedule("* * * * *", async () => binanceSignals());
 };

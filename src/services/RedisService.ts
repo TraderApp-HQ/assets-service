@@ -2,13 +2,13 @@ import Redis from "ioredis";
 import * as WebSocketType from "ws";
 import {
 	IAddClient,
-	ICacheSignl,
+	ICacheSignal,
 	IClient,
 	IGetClientsReturn,
 	IRedisClient,
 	IRemoveCacheSignal,
 } from "../config/interfaces";
-import { CacheKey } from "../config/enums";
+import { CacheKey, Exchange } from "../config/enums";
 
 export class RedisClient {
 	private readonly client: Redis;
@@ -59,12 +59,12 @@ export class RedisClient {
     -------------------
     */
 
-	async addSignal({ assetId, exchange, assetData }: ICacheSignl) {
+	async addSignal({ assetId, exchange, assetData }: ICacheSignal) {
 		const wsKey = `${this.env}_${CacheKey.assetKey}_${exchange}_${assetId}`;
 		await this.client.set(wsKey, JSON.stringify(assetData));
 	}
 
-	async getAllSignals(exchange?: string): Promise<ICacheSignl[]> {
+	async getAllSignals(exchange?: string): Promise<ICacheSignal[]> {
 		const filteredKey = exchange
 			? `${this.env}_${CacheKey.assetKey}_${exchange}_*`
 			: `${this.env}_${CacheKey.assetKey}_*`;
@@ -73,7 +73,7 @@ export class RedisClient {
 		const signals = await Promise.all(
 			keys.map(async (key) => {
 				const assetId = key.split("_")[-1];
-				const exchange = key.split("_")[-2];
+				const exchange = key.split("_")[-2] as Exchange;
 				const assetValue = (await this.client.get(key)) as string;
 				return { assetId, exchange, assetData: JSON.parse(assetValue) };
 			})

@@ -57,3 +57,8 @@ export enum CacheKey {
 	clientKey = "ws",
 	assetKey = "asset",
 }
+
+export enum Exchange {
+	binance = "binance",
+	kucoin = "kucoin",
+}

@@ -3,6 +3,7 @@ import * as WebSocketType from "ws";
 import {
 	Candlestick,
 	Category,
+	Exchange,
 	SignalRisk,
 	SignalStatus,
 	TradeSide,
@@ -135,23 +136,29 @@ export interface IGetExchangeActiveSignalsReturn {
 	assetName: string;
 	baseCurrencyName: string;
 	asset: string;
-	exchanges: string[];
-	id: string;
+	exchanges: Exchange[];
+	assetId: string;
+}
+
+export interface IAssetOrderBook {
+	lastUpdatedId: number;
+	bids: Array<[string, string]>;
+	asks: Array<[string, string]>;
 }
 
 export interface ICacheAsset {
-	assetName: string;
-	assetPrice: any;
-	assetOrderBook: any;
+	asset: IGetExchangeActiveSignalsReturn;
+	assetPrice: number;
+	assetOrderBook: IAssetOrderBook;
 }
 
-export interface ICacheSignl {
+export interface ICacheSignal {
 	assetId: string;
-	exchange: string;
+	exchange: Exchange;
 	assetData: ICacheAsset;
 }
 
 export interface IRemoveCacheSignal {
 	assetId: string;
-	exchange: string;
+	exchange: Exchange;
 }

@@ -239,7 +239,7 @@ export class SignalService {
 					);
 					const { _id, supportedExchanges, ...restSignal } = signal.toObject();
 
-					return { ...restSignal, asset: assetName, exchanges, id: _id.toString() };
+					return { ...restSignal, asset: assetName, exchanges, assetId: _id.toString() };
 				});
 
 			return signalAndExchanges;

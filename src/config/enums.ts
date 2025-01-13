@@ -62,3 +62,8 @@ export enum Exchange {
 	binance = "binance",
 	kucoin = "kucoin",
 }
+
+export enum AssetData {
+	price = "price",
+	order_book = "order_book",
+}

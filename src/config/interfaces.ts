@@ -135,7 +135,7 @@ export interface IGetExchangeActiveSignalsReturn {
 	isSignalTradable: boolean;
 	assetName: string;
 	baseCurrencyName: string;
-	asset: string;
+	assetPair: string;
 	exchanges: Exchange[];
 	assetId: string;
 }
@@ -146,16 +146,28 @@ export interface IAssetOrderBook {
 	asks: Array<[string, string]>;
 }
 
-export interface ICacheAsset {
+export interface ICacheAssetPrice {
 	asset: IGetExchangeActiveSignalsReturn;
 	assetPrice: number;
-	assetOrderBook: IAssetOrderBook;
+	priceWs: WebSocketType.WebSocket;
 }
 
-export interface ICacheSignal {
+export interface ICacheAssetOrderBook {
+	assetOrderBook: IAssetOrderBook;
+	totalSellQuantityInRange: number;
+	orderBookWs: WebSocketType.WebSocket;
+}
+
+export interface ICacheSignalPrice {
 	assetId: string;
 	exchange: Exchange;
-	assetData: ICacheAsset;
+	assetData: ICacheAssetPrice;
+}
+
+export interface ICacheSignalOrderBook {
+	assetId: string;
+	exchange: Exchange;
+	assetData: ICacheAssetOrderBook;
 }
 
 export interface IRemoveCacheSignal {

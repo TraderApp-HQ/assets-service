@@ -1,14 +1,15 @@
 import Redis from "ioredis";
 import * as WebSocketType from "ws";
+import { AssetData, CacheKey, Exchange } from "../config/enums";
 import {
 	IAddClient,
-	ICacheSignal,
+	ICacheSignalOrderBook,
+	ICacheSignalPrice,
 	IClient,
 	IGetClientsReturn,
 	IRedisClient,
 	IRemoveCacheSignal,
 } from "../config/interfaces";
-import { CacheKey, Exchange } from "../config/enums";
 
 export class RedisClient {
 	private readonly client: Redis;
@@ -59,15 +60,20 @@ export class RedisClient {
     -------------------
     */
 
-	async addSignal({ assetId, exchange, assetData }: ICacheSignal) {
-		const wsKey = `${this.env}_${CacheKey.assetKey}_${exchange}_${assetId}`;
+	async addSignalPrice({ assetId, exchange, assetData }: ICacheSignalPrice) {
+		const wsKey = `${this.env}_${CacheKey.assetKey}_${AssetData.price}_${exchange}_${assetId}`;
 		await this.client.set(wsKey, JSON.stringify(assetData));
 	}
 
-	async getAllSignals(exchange?: string): Promise<ICacheSignal[]> {
+	async addSignalOrderBook({ assetId, exchange, assetData }: ICacheSignalOrderBook) {
+		const wsKey = `${this.env}_${CacheKey.assetKey}_${AssetData.order_book}_${exchange}_${assetId}`;
+		await this.client.set(wsKey, JSON.stringify(assetData));
+	}
+
+	async getAllSignalsPrices(exchange?: string): Promise<ICacheSignalPrice[]> {
 		const filteredKey = exchange
-			? `${this.env}_${CacheKey.assetKey}_${exchange}_*`
-			: `${this.env}_${CacheKey.assetKey}_*`;
+			? `${this.env}_${CacheKey.assetKey}_${AssetData.price}_${exchange}_*`
+			: `${this.env}_${CacheKey.assetKey}_${AssetData.price}_*`;
 
 		const keys = await this.client.keys(filteredKey);
 		const signals = await Promise.all(
@@ -82,8 +88,31 @@ export class RedisClient {
 		return signals;
 	}
 
-	async removeSignal({ assetId, exchange }: IRemoveCacheSignal): Promise<void> {
-		const wsKey = `${this.env}_${CacheKey.assetKey}_${exchange}_${assetId}`;
+	async getAllSignalsOrderBooks(exchange?: string): Promise<ICacheSignalOrderBook[]> {
+		const filteredKey = exchange
+			? `${this.env}_${CacheKey.assetKey}_${AssetData.order_book}_${exchange}_*`
+			: `${this.env}_${CacheKey.assetKey}_${AssetData.order_book}_*`;
+
+		const keys = await this.client.keys(filteredKey);
+		const signals = await Promise.all(
+			keys.map(async (key) => {
+				const assetId = key.split("_")[-1];
+				const exchange = key.split("_")[-2] as Exchange;
+				const assetValue = (await this.client.get(key)) as string;
+				return { assetId, exchange, assetData: JSON.parse(assetValue) };
+			})
+		);
+
+		return signals;
+	}
+
+	async removeSignalPrice({ assetId, exchange }: IRemoveCacheSignal): Promise<void> {
+		const wsKey = `${this.env}_${CacheKey.assetKey}_${AssetData.price}_${exchange}_${assetId}`;
+		await this.client.del(wsKey);
+	}
+
+	async removeSignalOrderBook({ assetId, exchange }: IRemoveCacheSignal): Promise<void> {
+		const wsKey = `${this.env}_${CacheKey.assetKey}_${AssetData.order_book}_${exchange}_${assetId}`;
 		await this.client.del(wsKey);
 	}
 

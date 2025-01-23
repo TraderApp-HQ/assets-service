@@ -1,5 +1,5 @@
 import { PopulateOptions } from "mongoose";
-import * as WebSocketType from "ws";
+import WebSocket from "ws";
 import {
 	Candlestick,
 	Category,
@@ -107,28 +107,8 @@ export interface ISignalResponse extends Document {
 	supportedExchanges: IExchange[];
 }
 
-export interface IRedisClient {
-	redisEndpoint: string;
-	env: string;
-}
-
-export interface IAddClient {
-	userId: string;
-	channel: string;
-	ws: WebSocketType;
-}
-
-export interface IGetClientsReturn {
-	userId: string;
-	ws: WebSocketType;
-}
-
-export interface IClient {
-	userId: string;
-	channel: string;
-}
-
-export interface IGetExchangeActiveSignalsReturn {
+export interface IActiveSignalsData {
+	signalId: string;
 	stopLoss: ISignalMilestone;
 	targetProfits: ISignalMilestone[];
 	entryPrice: number;
@@ -137,40 +117,43 @@ export interface IGetExchangeActiveSignalsReturn {
 	baseCurrencyName: string;
 	assetPair: string;
 	exchanges: Exchange[];
-	assetId: string;
 }
 
-export interface IAssetOrderBook {
+export interface ISignalOrderBookData {
 	lastUpdatedId: number;
 	bids: Array<[string, string]>;
 	asks: Array<[string, string]>;
 }
 
-export interface ICacheAssetPrice {
-	asset: IGetExchangeActiveSignalsReturn;
+export interface ISignalPriceData {
+	asset: IActiveSignalsData;
 	assetPrice: number;
-	priceWs: WebSocketType.WebSocket;
+	priceWs: WebSocket;
 }
 
-export interface ICacheAssetOrderBook {
-	assetOrderBook: IAssetOrderBook;
+// IExchangeAssetOrderBook
+// Store price lower bound and upper bound here
+// Take out order Book from cache
+//
+export interface IExchangeSignalOrderBook {
+	assetOrderBook: ISignalOrderBookData;
 	totalSellQuantityInRange: number;
-	orderBookWs: WebSocketType.WebSocket;
+	orderBookWs: WebSocket;
 }
 
-export interface ICacheSignalPrice {
-	assetId: string;
+export interface ISignalPrice {
+	signalId: string;
 	exchange: Exchange;
-	assetData: ICacheAssetPrice;
+	signalData: ISignalPriceData;
 }
 
-export interface ICacheSignalOrderBook {
-	assetId: string;
+export interface ISignalOrderBook {
+	signalId: string;
 	exchange: Exchange;
-	assetData: ICacheAssetOrderBook;
+	signalData: IExchangeSignalOrderBook;
 }
 
-export interface IRemoveCacheSignal {
-	assetId: string;
+export interface IRemoveSignal {
+	signalId: string;
 	exchange: Exchange;
 }

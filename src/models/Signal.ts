@@ -32,7 +32,7 @@ const SignalSchema = new Schema<ISignal>(
 		isSignalTradable: { type: Boolean, required: true },
 		chartUrl: { type: String, required: true },
 		status: { type: String, enum: Object.values(SignalStatus), required: true },
-		maxGain: { type: Number, required: true },
+		maxGain: { type: Number },
 		createdAt: { type: String, required: true },
 		endedAt: { type: String },
 		supportedExchanges: [{ type: Number, ref: "Exchange", required: true }],

@@ -1,23 +1,18 @@
 import Redis from "ioredis";
+import { AssetData, Exchange, WSChannel } from "../config/enums";
+import { IRemoveSignal, ISignalOrderBook, ISignalPrice } from "../config/interfaces";
 import * as WebSocketType from "ws";
-import { AssetData, CacheKey, Exchange } from "../config/enums";
-import {
-	IAddClient,
-	ICacheSignalOrderBook,
-	ICacheSignalPrice,
-	IClient,
-	IGetClientsReturn,
-	IRedisClient,
-	IRemoveCacheSignal,
-} from "../config/interfaces";
 
 export class RedisClient {
 	private readonly client: Redis;
 	private readonly env: string;
 
-	constructor({ redisEndpoint, env }: IRedisClient) {
-		this.client = new Redis(redisEndpoint);
-		this.env = env;
+	constructor() {
+		this.client = new Redis({
+			host: process.env.REDIS_URL,
+			port: Number(process.env.REDIS_PORT),
+		});
+		this.env = process.env.NODE_ENV as string;
 	}
 
 	/*
@@ -25,33 +20,34 @@ export class RedisClient {
     ACTIVE USERS
     -------------------
     */
-	async addChannelClient({ userId, channel, ws }: IAddClient): Promise<void> {
-		const wsKey = `${this.env}_${channel}_${CacheKey.clientKey}_${userId}`;
-		await this.client.set(wsKey, JSON.stringify(ws));
+
+	async addChannelClient({ userId, ws }: { userId: string; ws: string }): Promise<void> {
+		const wsKey = `${this.env}_${WSChannel.usersWs}_${userId}`;
+		this.client.set(wsKey, ws);
 	}
 
-	async getChannelClients(channel: string): Promise<IGetClientsReturn[]> {
-		const keys = await this.client.keys(`${this.env}_${channel}_${CacheKey.clientKey}_*`);
+	async getChannelClients(): Promise<WebSocketType[]> {
+		const keys = await this.client.keys(`${this.env}_${WSChannel.usersWs}_*`);
+		// const keys = Array.from(this.webSocketMap.keys());
 		const clients = await Promise.all(
 			keys.map(async (key) => {
-				const userId = key.replace(`${this.env}_${channel}_${CacheKey.clientKey}_`, "");
-				const client = (await this.client.get(key)) as string;
-				return { userId, ws: JSON.parse(client) as WebSocketType };
+				const client = await this.client.get(key);
+				return JSON.parse(client ?? "") as WebSocketType;
 			})
 		);
 
 		return clients;
 	}
 
-	async getChannelClient({ userId, channel }: IClient): Promise<WebSocketType | null> {
-		const wsKey = `${this.env}_${channel}_${CacheKey.clientKey}_${userId}`;
+	async getChannelClient(userId: string): Promise<WebSocket | null> {
+		const wsKey = `${this.env}_${WSChannel.usersWs}_${userId}`;
 		const client = await this.client.get(wsKey);
-		return client ? JSON.parse(client) : null;
+		return client ? JSON.parse(client ?? "") : null;
 	}
 
-	async removeChannelClient({ userId, channel }: IClient): Promise<void> {
-		const wsKey = `${this.env}_${channel}_${CacheKey.clientKey}_${userId}`;
-		await this.client.del(wsKey);
+	async removeChannelClient(userId: string): Promise<void> {
+		const wsKey = `${this.env}_${WSChannel.usersWs}_${userId}`;
+		this.client.del(wsKey);
 	}
 
 	/*
@@ -60,61 +56,84 @@ export class RedisClient {
     -------------------
     */
 
-	async addSignalPrice({ assetId, exchange, assetData }: ICacheSignalPrice) {
-		const wsKey = `${this.env}_${CacheKey.assetKey}_${AssetData.price}_${exchange}_${assetId}`;
-		await this.client.set(wsKey, JSON.stringify(assetData));
+	async addSignalPrice({ signalId, exchange, signalData }: ISignalPrice) {
+		const wsKey = `${this.env}_${WSChannel.assetsUpdateWs}_${AssetData.price}_${signalId}_${exchange}`;
+		await this.client.set(wsKey, JSON.stringify(signalData));
 	}
 
-	async addSignalOrderBook({ assetId, exchange, assetData }: ICacheSignalOrderBook) {
-		const wsKey = `${this.env}_${CacheKey.assetKey}_${AssetData.order_book}_${exchange}_${assetId}`;
-		await this.client.set(wsKey, JSON.stringify(assetData));
+	async addSignalOrderBook({ signalId, exchange, signalData }: ISignalOrderBook) {
+		const wsKey = `${this.env}_${WSChannel.assetsUpdateWs}_${AssetData.orderBook}_${signalId}_${exchange}`;
+		await this.client.set(wsKey, JSON.stringify(signalData));
 	}
 
-	async getAllSignalsPrices(exchange?: string): Promise<ICacheSignalPrice[]> {
+	async getAllSignalsPrices(exchange?: string): Promise<ISignalPrice[]> {
 		const filteredKey = exchange
-			? `${this.env}_${CacheKey.assetKey}_${AssetData.price}_${exchange}_*`
-			: `${this.env}_${CacheKey.assetKey}_${AssetData.price}_*`;
+			? `${this.env}_${WSChannel.assetsUpdateWs}_${AssetData.price}_*_${exchange}`
+			: `${this.env}_${WSChannel.assetsUpdateWs}_${AssetData.price}_*`;
 
 		const keys = await this.client.keys(filteredKey);
 		const signals = await Promise.all(
 			keys.map(async (key) => {
-				const assetId = key.split("_")[-1];
-				const exchange = key.split("_")[-2] as Exchange;
+				const keyArray = key.split("_");
+				const signalId = keyArray[keyArray.length - 2];
+				const exchange = keyArray[keyArray.length - 1] as Exchange;
 				const assetValue = (await this.client.get(key)) as string;
-				return { assetId, exchange, assetData: JSON.parse(assetValue) };
+
+				return { signalId, exchange, signalData: JSON.parse(assetValue) };
 			})
 		);
 
 		return signals;
 	}
 
-	async getAllSignalsOrderBooks(exchange?: string): Promise<ICacheSignalOrderBook[]> {
+	async getAllSignalsOrderBooks(exchange?: string): Promise<ISignalOrderBook[]> {
 		const filteredKey = exchange
-			? `${this.env}_${CacheKey.assetKey}_${AssetData.order_book}_${exchange}_*`
-			: `${this.env}_${CacheKey.assetKey}_${AssetData.order_book}_*`;
+			? `${this.env}_${WSChannel.assetsUpdateWs}_${AssetData.orderBook}_*_${exchange}`
+			: `${this.env}_${WSChannel.assetsUpdateWs}_${AssetData.orderBook}_*`;
 
 		const keys = await this.client.keys(filteredKey);
 		const signals = await Promise.all(
 			keys.map(async (key) => {
-				const assetId = key.split("_")[-1];
-				const exchange = key.split("_")[-2] as Exchange;
+				const keyArray = key.split("_");
+				const signalId = keyArray[keyArray.length - 2];
+				const exchange = keyArray[keyArray.length - 1] as Exchange;
 				const assetValue = (await this.client.get(key)) as string;
-				return { assetId, exchange, assetData: JSON.parse(assetValue) };
+				return { signalId, exchange, signalData: JSON.parse(assetValue) };
 			})
 		);
 
 		return signals;
 	}
 
-	async removeSignalPrice({ assetId, exchange }: IRemoveCacheSignal): Promise<void> {
-		const wsKey = `${this.env}_${CacheKey.assetKey}_${AssetData.price}_${exchange}_${assetId}`;
+	async removeSignalPrice({ signalId, exchange }: IRemoveSignal): Promise<void> {
+		const wsKey = `${this.env}_${WSChannel.assetsUpdateWs}_${AssetData.price}_${signalId}_${exchange}`;
 		await this.client.del(wsKey);
 	}
 
-	async removeSignalOrderBook({ assetId, exchange }: IRemoveCacheSignal): Promise<void> {
-		const wsKey = `${this.env}_${CacheKey.assetKey}_${AssetData.order_book}_${exchange}_${assetId}`;
+	async removeSignalOrderBook({ signalId, exchange }: IRemoveSignal): Promise<void> {
+		const wsKey = `${this.env}_${WSChannel.assetsUpdateWs}_${AssetData.orderBook}_${signalId}_${exchange}`;
 		await this.client.del(wsKey);
 	}
+
+	// ======================================================================
+	// This is for developement purpose, code is not meant for prod
+	// Deletes all record from cache
+	async deleteAllCacheRecord() {
+		const priceFilteredKey = `${this.env}_${WSChannel.assetsUpdateWs}_${AssetData.price}_*`;
+		const orderBookFilteredKey = `${this.env}_${WSChannel.assetsUpdateWs}_${AssetData.orderBook}_*`;
+
+		const priceKeys = await this.client.keys(priceFilteredKey);
+		const orderBookKeys = await this.client.keys(orderBookFilteredKey);
+
+		// eslint-disable-next-line @typescript-eslint/promise-function-async
+		const delPrice = priceKeys.map((price) => this.client.del(price));
+		// eslint-disable-next-line @typescript-eslint/promise-function-async
+		const delOrderBook = orderBookKeys.map((order) => this.client.del(order));
+
+		await Promise.all([...delPrice, ...delOrderBook]);
+		console.log("============= All cache records deleted");
+	}
+	// ======================================================================
 
 	closeConnection(): void {
 		this.client.disconnect();

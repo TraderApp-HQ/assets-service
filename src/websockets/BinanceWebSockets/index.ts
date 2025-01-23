@@ -1,12 +1,12 @@
 /* eslint-disable @typescript-eslint/no-base-to-string */
 import WebSocket from "ws";
+import { Exchange } from "../../config/enums";
 import {
-	ICacheAssetOrderBook,
-	ICacheAssetPrice,
-	IGetExchangeActiveSignalsReturn,
+	IActiveSignalsData,
+	IExchangeSignalOrderBook,
+	ISignalPriceData,
 } from "../../config/interfaces";
 import { RedisClient } from "../../services/RedisService";
-import { Exchange } from "../../config/enums";
 
 const wsOptions = {
 	handshakeTimeout: 30000,
@@ -15,21 +15,19 @@ const wsOptions = {
 const orderBookDepth = 20;
 
 // A function to open websocket connections and monitor orderBook and price for asset pair
-export const openBinanceWebSocketConnection = async (signal: IGetExchangeActiveSignalsReturn) => {
+export const openBinanceWebSocketConnection = async (signal: IActiveSignalsData) => {
 	// Initialise redis
-	const env = process.env.NODE_ENV as string;
-	const redisEndpoint = process.env.REDIS_ENDPOINT as string;
-	const redisCache = new RedisClient({ redisEndpoint, env });
+	const redisCache = new RedisClient();
 
 	// order book connection object
 	const orderBookWs = new WebSocket(
-		`wss://stream.binance.com:9443/ws/${signal.assetPair}@depth${orderBookDepth}@10000ms`,
+		`wss://stream.binance.com:9443/ws/${signal.assetPair}@depth${orderBookDepth}@1000ms`,
 		wsOptions
 	);
 
 	// price connection object
 	const priceWs = new WebSocket(
-		`wss://stream.binance.com:9443/ws/${signal.assetPair}@ticker@10000ms`,
+		`wss://stream.binance.com:9443/ws/${signal.assetPair}@ticker@1000ms`,
 		wsOptions
 	);
 
@@ -43,16 +41,16 @@ export const openBinanceWebSocketConnection = async (signal: IGetExchangeActiveS
 		const message = JSON.parse(data.toString());
 		const assetPrice = parseFloat(message.c);
 
-		const assetId = signal.assetId;
+		const signalId = signal.signalId;
 		const exchange = Exchange.binance;
-		const assetData: ICacheAssetPrice = {
+		const signalData: ISignalPriceData = {
 			asset: signal,
 			assetPrice,
 			priceWs,
 		};
 
 		// Add asset price to redis cache
-		redisCache.addSignalPrice({ assetId, exchange, assetData });
+		redisCache.addSignalPrice({ signalId, exchange, signalData });
 	});
 
 	priceWs.on("error", (error: Error) => {
@@ -79,15 +77,15 @@ export const openBinanceWebSocketConnection = async (signal: IGetExchangeActiveS
 		const message = JSON.parse(data.toString());
 		const assetOrderBook = message;
 
-		const assetId = signal.assetId;
+		const signalId = signal.signalId;
 		const exchange = Exchange.binance;
-		const assetData: ICacheAssetOrderBook = {
+		const signalData: IExchangeSignalOrderBook = {
 			assetOrderBook,
 			orderBookWs,
 			totalSellQuantityInRange: 0,
 		};
 
-		redisCache.addSignalOrderBook({ assetId, exchange, assetData });
+		redisCache.addSignalOrderBook({ signalId, exchange, signalData });
 	});
 
 	orderBookWs.on("error", (error: Error) => {

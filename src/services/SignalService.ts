@@ -1,8 +1,8 @@
 import { DEFAULT_PAGE, DEFAULT_ROWS_PER_PAGE } from "../config/constants";
 import { SignalStatus } from "../config/enums";
 import {
+	IActiveSignalsData,
 	IExchange,
-	IGetExchangeActiveSignalsReturn,
 	ISignal,
 	ISignalResponse,
 	ISignalServiceCreateSignalProps,
@@ -214,9 +214,7 @@ export class SignalService {
 		}
 	}
 
-	public async getExchangeActiveSignals(
-		exchange?: string
-	): Promise<IGetExchangeActiveSignalsReturn[]> {
+	public async getExchangeActiveSignals(exchange?: string): Promise<IActiveSignalsData[]> {
 		try {
 			const filterCondition = exchange ? { slug: exchange } : {};
 
@@ -239,7 +237,12 @@ export class SignalService {
 					);
 					const { _id, supportedExchanges, ...restSignal } = signal.toObject();
 
-					return { ...restSignal, asset: assetName, exchanges, assetId: _id.toString() };
+					return {
+						...restSignal,
+						assetPair: assetName,
+						exchanges,
+						signalId: _id.toString(),
+					};
 				});
 
 			return signalAndExchanges;

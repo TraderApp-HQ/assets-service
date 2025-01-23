@@ -53,9 +53,9 @@ export enum ConnectionType {
 	FAST = "FAST",
 }
 
-export enum CacheKey {
-	clientKey = "ws",
-	assetKey = "asset",
+export enum WSChannel {
+	usersWs = "users-ws",
+	assetsUpdateWs = "assets-update-ws",
 }
 
 export enum Exchange {
@@ -65,5 +65,5 @@ export enum Exchange {
 
 export enum AssetData {
 	price = "price",
-	order_book = "order_book",
+	orderBook = "order book",
 }

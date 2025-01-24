@@ -4,6 +4,7 @@ import {
 	IActiveSignalsData,
 	IExchange,
 	ISignal,
+	ISignalPrice,
 	ISignalResponse,
 	ISignalServiceCreateSignalProps,
 	ISignalServiceGetSignalsParams,
@@ -246,6 +247,35 @@ export class SignalService {
 				});
 
 			return signalAndExchanges;
+		} catch (error: any) {
+			throw new Error(error.message);
+		}
+	}
+
+	public async updateSignalsPrices(signals: ISignalPrice[]) {
+		try {
+			// Update operation
+			const bulkPriceUpdate = signals.map((signal) => {
+				const signalId = signal.signalId;
+				const signalPrice = signal.signalData.assetPrice;
+				const entryPrice = signal.signalData.asset.entryPrice;
+				const priceChange = (((signalPrice - entryPrice) / entryPrice) * 100).toFixed(2);
+
+				return {
+					updateOne: {
+						filter: { _id: signalId },
+						update: {
+							$set: {
+								currentPrice: signalPrice,
+								currentChange: priceChange,
+							},
+						},
+					},
+				};
+			});
+
+			// Execute bulk write update operation
+			await Signal.bulkWrite(bulkPriceUpdate);
 		} catch (error: any) {
 			throw new Error(error.message);
 		}

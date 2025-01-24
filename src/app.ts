@@ -12,7 +12,7 @@ import secretsJson from "./env.json";
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { CoinRoutes, CurrencyRoutes, ExchangeRoutes, SignalRoutes, StreamsRoutes } from "./routes";
 import specs from "./utils/swagger";
-// import runAllJobs from "./jobs";
+import runAllJobs from "./jobs";
 
 config();
 const app: Application = express();
@@ -101,7 +101,7 @@ function startServer() {
 	});
 
 	// Start cron jobs
-	// runAllJobs();
+	runAllJobs();
 
 	// handle errors
 	app.use((err: Error, _req: Request, res: Response, _next: NextFunction) => {

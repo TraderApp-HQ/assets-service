@@ -1,6 +1,7 @@
 import { RedisClient } from "../services/RedisService";
 import { BinanceSignalsPriceUpdateJob } from "./BinanceSignalsPriceUpdate";
-import { ClientSignalsPriceUpdateJob } from "./ClientSignalsPriceUpdate";
+import { DbPriceUpdateJob } from "./DbPriceUpdate";
+// import { ClientSignalsPriceUpdateJob } from "./ClientSignalsPriceUpdate";
 
 const runAllJobs = async () => {
 	const redisCache = new RedisClient();
@@ -13,7 +14,8 @@ const runAllJobs = async () => {
 	// ======================================================================
 
 	BinanceSignalsPriceUpdateJob();
-	ClientSignalsPriceUpdateJob();
+	DbPriceUpdateJob();
+	// ClientSignalsPriceUpdateJob();
 };
 
 export default runAllJobs;

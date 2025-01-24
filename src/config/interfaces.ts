@@ -1,5 +1,5 @@
 import { PopulateOptions } from "mongoose";
-import WebSocket from "ws";
+// import WebSocket from "ws";
 import {
 	Candlestick,
 	Category,
@@ -128,7 +128,7 @@ export interface ISignalOrderBookData {
 export interface ISignalPriceData {
 	asset: IActiveSignalsData;
 	assetPrice: number;
-	priceWs: WebSocket;
+	// priceWs: WebSocket;
 }
 
 // IExchangeAssetOrderBook
@@ -138,7 +138,7 @@ export interface ISignalPriceData {
 export interface IExchangeSignalOrderBook {
 	assetOrderBook: ISignalOrderBookData;
 	totalSellQuantityInRange: number;
-	orderBookWs: WebSocket;
+	// orderBookWs: WebSocket;
 }
 
 export interface ISignalPrice {

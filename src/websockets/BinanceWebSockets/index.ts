@@ -46,7 +46,7 @@ export const openBinanceWebSocketConnection = async (signal: IActiveSignalsData)
 		const signalData: ISignalPriceData = {
 			asset: signal,
 			assetPrice,
-			priceWs,
+			// priceWs,
 		};
 
 		// Add asset price to redis cache
@@ -81,7 +81,7 @@ export const openBinanceWebSocketConnection = async (signal: IActiveSignalsData)
 		const exchange = Exchange.binance;
 		const signalData: IExchangeSignalOrderBook = {
 			assetOrderBook,
-			orderBookWs,
+			// orderBookWs,
 			totalSellQuantityInRange: 0,
 		};
 

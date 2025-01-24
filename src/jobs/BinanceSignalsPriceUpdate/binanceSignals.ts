@@ -76,18 +76,18 @@ export const binanceSignals = async () => {
 
 		// Delete stale signals price and order book from cache
 		// eslint-disable-next-line @typescript-eslint/promise-function-async
-		const pricePromises = staleSignalsPrice.map(({ signalId, exchange, signalData }) => {
+		const pricePromises = staleSignalsPrice.map(({ signalId, exchange }) => {
 			// close asset price websocket before deleting from cache
-			signalData.priceWs.close();
+			// signalData.priceWs.close();
 
 			return redisCache.removeSignalPrice({ signalId, exchange });
 		});
 
 		const orderBookPromises = staleSignalsOrderBook.map(
 			// eslint-disable-next-line @typescript-eslint/promise-function-async
-			({ signalId, exchange, signalData }) => {
+			({ signalId, exchange }) => {
 				// close asset orderbook websocket before deleting from cache
-				signalData.orderBookWs.close();
+				// signalData.orderBookWs.close();
 
 				return redisCache.removeSignalOrderBook({ signalId, exchange });
 			}

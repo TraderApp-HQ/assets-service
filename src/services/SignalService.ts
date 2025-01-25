@@ -224,7 +224,7 @@ export class SignalService {
 					{ path: "supportedExchanges", select: "slug -_id", match: filterCondition },
 				])
 				.select(
-					"assetName baseCurrencyName targetProfits stopLoss entryPrice isSignalTradable supportedExchanges"
+					"assetName baseCurrencyName targetProfits stopLoss entryPrice isSignalTradable supportedExchanges upperBound lowerBound tradeSide"
 				)
 				.exec();
 

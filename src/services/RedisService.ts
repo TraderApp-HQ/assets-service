@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/promise-function-async */
 import Redis from "ioredis";
 import { AssetData, Exchange, WSChannel } from "../config/enums";
 import { IRemoveSignal, ISignalOrderBook, ISignalPrice } from "../config/interfaces";
@@ -28,7 +29,6 @@ export class RedisClient {
 
 	async getChannelClients(): Promise<WebSocketType[]> {
 		const keys = await this.client.keys(`${this.env}_${WSChannel.usersWs}_*`);
-		// const keys = Array.from(this.webSocketMap.keys());
 		const clients = await Promise.all(
 			keys.map(async (key) => {
 				const client = await this.client.get(key);
@@ -61,9 +61,9 @@ export class RedisClient {
 		await this.client.set(wsKey, JSON.stringify(signalData));
 	}
 
-	async addSignalOrderBook({ signalId, exchange, signalData }: ISignalOrderBook) {
+	async addSignalOrderBook({ signalId, exchange, totalSellQuantityInRange }: ISignalOrderBook) {
 		const wsKey = `${this.env}_${WSChannel.assetsUpdateWs}_${AssetData.orderBook}_${signalId}_${exchange}`;
-		await this.client.set(wsKey, JSON.stringify(signalData));
+		await this.client.set(wsKey, JSON.stringify(totalSellQuantityInRange));
 	}
 
 	async getAllSignalsPrices(exchange?: string): Promise<ISignalPrice[]> {
@@ -98,7 +98,7 @@ export class RedisClient {
 				const signalId = keyArray[keyArray.length - 2];
 				const exchange = keyArray[keyArray.length - 1] as Exchange;
 				const assetValue = (await this.client.get(key)) as string;
-				return { signalId, exchange, signalData: JSON.parse(assetValue) };
+				return { signalId, exchange, totalSellQuantityInRange: JSON.parse(assetValue) };
 			})
 		);
 
@@ -115,9 +115,6 @@ export class RedisClient {
 		await this.client.del(wsKey);
 	}
 
-	// ======================================================================
-	// This is for developement purpose, code is not meant for prod
-	// Deletes all record from cache
 	async deleteAllCacheRecord() {
 		const priceFilteredKey = `${this.env}_${WSChannel.assetsUpdateWs}_${AssetData.price}_*`;
 		const orderBookFilteredKey = `${this.env}_${WSChannel.assetsUpdateWs}_${AssetData.orderBook}_*`;
@@ -125,15 +122,11 @@ export class RedisClient {
 		const priceKeys = await this.client.keys(priceFilteredKey);
 		const orderBookKeys = await this.client.keys(orderBookFilteredKey);
 
-		// eslint-disable-next-line @typescript-eslint/promise-function-async
 		const delPrice = priceKeys.map((price) => this.client.del(price));
-		// eslint-disable-next-line @typescript-eslint/promise-function-async
 		const delOrderBook = orderBookKeys.map((order) => this.client.del(order));
 
 		await Promise.all([...delPrice, ...delOrderBook]);
-		console.log("============= All cache records deleted");
 	}
-	// ======================================================================
 
 	closeConnection(): void {
 		this.client.disconnect();

@@ -24,6 +24,8 @@ const SignalSchema = new Schema<ISignal>(
 			isReached: { type: Boolean, required: true },
 		},
 		entryPrice: { type: Number, required: true },
+		lowerBound: { type: Number, required: true },
+		upperBound: { type: Number, required: true },
 		currentPrice: { type: Number },
 		currentChange: { type: Number },
 		tradeNote: { type: String, required: true },

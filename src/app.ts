@@ -2,15 +2,14 @@ import { apiResponseHandler, initSecrets, logger } from "@traderapp/shared-resou
 import cors from "cors";
 import { config } from "dotenv";
 import express, { Application, NextFunction, Request, Response } from "express";
-import mongoose from "mongoose";
 import expressWs from "express-ws";
+import mongoose from "mongoose";
 // import initDatabase from "./config/database";
 
 import swaggerUi from "swagger-ui-express";
 import { ENVIRONMENTS } from "./config/constants";
 import secretsJson from "./env.json";
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-import { CoinRoutes, CurrencyRoutes, ExchangeRoutes, SignalRoutes, StreamsRoutes } from "./routes";
+import { CoinRoutes, CurrencyRoutes, ExchangeRoutes, SignalRoutes } from "./routes";
 import specs from "./utils/swagger";
 import runAllJobs from "./jobs";
 

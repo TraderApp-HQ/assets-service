@@ -1,5 +1,7 @@
+/* eslint-disable @typescript-eslint/promise-function-async */
 import { Exchange } from "../../config/enums";
 import { IActiveSignalsData, ISignalOrderBook, ISignalPrice } from "../../config/interfaces";
+import { BinanceWebSocket } from "../../services/BinanceWebSocketService";
 import { RedisClient } from "../../services/RedisService";
 import { SignalService } from "../../services/SignalService";
 import { openBinanceWebSocketConnection } from "../../websockets/BinanceWebSockets";
@@ -7,6 +9,7 @@ import { openBinanceWebSocketConnection } from "../../websockets/BinanceWebSocke
 export const binanceSignals = async () => {
 	const signalService = new SignalService();
 	const redisCache = new RedisClient();
+	const binanceSocketCache = BinanceWebSocket.getInstance();
 
 	try {
 		// Initialiase redords for active, cached and stale signals
@@ -74,26 +77,22 @@ export const binanceSignals = async () => {
 			openBinanceWebSocketConnection(signal);
 		});
 
-		// Delete stale signals price and order book from cache
-		// eslint-disable-next-line @typescript-eslint/promise-function-async
+		// Delete stale signals price and order book from redis cache
 		const pricePromises = staleSignalsPrice.map(({ signalId, exchange }) => {
-			// close asset price websocket before deleting from cache
-			// signalData.priceWs.close();
+			// Close stale signal's price web sockets
+			binanceSocketCache.closePriceSocket(signalId);
 
 			return redisCache.removeSignalPrice({ signalId, exchange });
 		});
 
-		const orderBookPromises = staleSignalsOrderBook.map(
-			// eslint-disable-next-line @typescript-eslint/promise-function-async
-			({ signalId, exchange }) => {
-				// close asset orderbook websocket before deleting from cache
-				// signalData.orderBookWs.close();
+		const orderBookPromises = staleSignalsOrderBook.map(({ signalId, exchange }) => {
+			// Close stale signal's order book web sockets
+			binanceSocketCache.closeOrderBookSocket(signalId);
 
-				return redisCache.removeSignalOrderBook({ signalId, exchange });
-			}
-		);
+			return redisCache.removeSignalOrderBook({ signalId, exchange });
+		});
 
-		// make batch requests to delete stale signals from cache
+		// make batch requests to delete stale signals from redis cache
 		await Promise.all([...pricePromises, ...orderBookPromises]);
 	} catch (error: any) {
 		console.error(`Error getting asset real time prices: ${error.message}`);

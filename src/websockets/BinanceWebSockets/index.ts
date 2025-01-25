@@ -1,12 +1,9 @@
 /* eslint-disable @typescript-eslint/no-base-to-string */
 import WebSocket from "ws";
 import { Exchange } from "../../config/enums";
-import {
-	IActiveSignalsData,
-	IExchangeSignalOrderBook,
-	ISignalPriceData,
-} from "../../config/interfaces";
+import { IActiveSignalsData, ISignalPriceData } from "../../config/interfaces";
 import { RedisClient } from "../../services/RedisService";
+import { BinanceWebSocket } from "../../services/BinanceWebSocketService";
 
 const wsOptions = {
 	handshakeTimeout: 30000,
@@ -18,6 +15,7 @@ const orderBookDepth = 20;
 export const openBinanceWebSocketConnection = async (signal: IActiveSignalsData) => {
 	// Initialise redis
 	const redisCache = new RedisClient();
+	const binanceSocketCache = BinanceWebSocket.getInstance();
 
 	// order book connection object
 	const orderBookWs = new WebSocket(
@@ -34,6 +32,9 @@ export const openBinanceWebSocketConnection = async (signal: IActiveSignalsData)
 	/* ========================== PRICE =============================== */
 	// read price stream
 	priceWs.on("open", () => {
+		// Add socket connection to in-memory cahce
+		binanceSocketCache.addPriceSocket({ signalId: signal.signalId, ws: priceWs });
+
 		console.log(`WebSocket connected to price stream for ${signal.assetPair}`);
 	});
 
@@ -46,7 +47,6 @@ export const openBinanceWebSocketConnection = async (signal: IActiveSignalsData)
 		const signalData: ISignalPriceData = {
 			asset: signal,
 			assetPrice,
-			// priceWs,
 		};
 
 		// Add asset price to redis cache
@@ -68,6 +68,9 @@ export const openBinanceWebSocketConnection = async (signal: IActiveSignalsData)
 
 	/* ========================== ORDER BOOK =============================== */
 	orderBookWs.on("open", () => {
+		// Add socket connection to in-memory cahce
+		binanceSocketCache.addOrderBookSocket({ signalId: signal.signalId, ws: orderBookWs });
+
 		console.log(
 			`WebSocket connected to order book stream for ${signal.assetPair} (sell side only)`
 		);
@@ -75,17 +78,22 @@ export const openBinanceWebSocketConnection = async (signal: IActiveSignalsData)
 
 	orderBookWs.on("message", (data: WebSocket.Data) => {
 		const message = JSON.parse(data.toString());
-		const assetOrderBook = message;
+
+		// Calculate the total quantity of sell orders within a price range
+		let totalSellQuantityInRange = 0;
+		for (const update of message.asks) {
+			const price = parseFloat(update[0]);
+			const quantity = parseFloat(update[1]);
+
+			if (price >= signal.lowerBound && price <= signal.upperBound) {
+				totalSellQuantityInRange += price * quantity;
+			}
+		}
 
 		const signalId = signal.signalId;
 		const exchange = Exchange.binance;
-		const signalData: IExchangeSignalOrderBook = {
-			assetOrderBook,
-			// orderBookWs,
-			totalSellQuantityInRange: 0,
-		};
 
-		redisCache.addSignalOrderBook({ signalId, exchange, signalData });
+		redisCache.addSignalOrderBook({ signalId, exchange, totalSellQuantityInRange });
 	});
 
 	orderBookWs.on("error", (error: Error) => {

@@ -50,6 +50,8 @@ export async function validateCreateSignalRequest(
 			supportedExchanges: supportedExchangesSchema,
 			// entry: Joi.object().keys(entry).required().label("Entry"),
 			entryPrice: Joi.number().required().label("Entry price"),
+			lowerBound: Joi.number().required().label("Lower bound"),
+			upperBound: Joi.number().required().label("Upper bound"),
 			stopLoss: Joi.object().keys(stopLoss).required().label("Stop loss"),
 			targetProfits: Joi.array()
 				.items(targetProfitSchema)

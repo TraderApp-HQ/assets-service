@@ -1,5 +1,4 @@
 import { PopulateOptions } from "mongoose";
-// import WebSocket from "ws";
 import {
 	Candlestick,
 	Category,
@@ -46,6 +45,8 @@ export interface ISignalServiceCreateSignalProps {
 	targetProfits: ISignalMilestone[];
 	stopLoss: ISignalMilestone;
 	entryPrice: number;
+	lowerBound: number;
+	upperBound: number;
 	currentPrice?: number;
 	currentChange?: number;
 	tradeNote: string;
@@ -117,28 +118,14 @@ export interface IActiveSignalsData {
 	baseCurrencyName: string;
 	assetPair: string;
 	exchanges: Exchange[];
-}
-
-export interface ISignalOrderBookData {
-	lastUpdatedId: number;
-	bids: Array<[string, string]>;
-	asks: Array<[string, string]>;
+	upperBound: number;
+	lowerBound: number;
+	tradeSide: TradeSide;
 }
 
 export interface ISignalPriceData {
 	asset: IActiveSignalsData;
 	assetPrice: number;
-	// priceWs: WebSocket;
-}
-
-// IExchangeAssetOrderBook
-// Store price lower bound and upper bound here
-// Take out order Book from cache
-//
-export interface IExchangeSignalOrderBook {
-	assetOrderBook: ISignalOrderBookData;
-	totalSellQuantityInRange: number;
-	// orderBookWs: WebSocket;
 }
 
 export interface ISignalPrice {
@@ -150,7 +137,7 @@ export interface ISignalPrice {
 export interface ISignalOrderBook {
 	signalId: string;
 	exchange: Exchange;
-	signalData: IExchangeSignalOrderBook;
+	totalSellQuantityInRange: number;
 }
 
 export interface IRemoveSignal {

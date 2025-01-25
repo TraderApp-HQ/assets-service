@@ -56,6 +56,7 @@ export enum ConnectionType {
 export enum WSChannel {
 	usersWs = "users-ws",
 	assetsUpdateWs = "assets-update-ws",
+	binanceWs = "binance-ws",
 }
 
 export enum Exchange {

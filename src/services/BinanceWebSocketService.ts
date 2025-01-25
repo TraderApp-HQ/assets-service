@@ -1,0 +1,70 @@
+import { AssetData, WSChannel } from "../config/enums";
+import WebSocket from "ws";
+
+export class BinanceWebSocket {
+	private static instance: BinanceWebSocket;
+	private readonly env: string;
+	private readonly binanceSocketMap: Map<string, WebSocket>;
+
+	private constructor() {
+		this.env = process.env.NODE_ENV as string;
+		this.binanceSocketMap = new Map();
+	}
+
+	public static getInstance(): BinanceWebSocket {
+		if (!BinanceWebSocket.instance) {
+			BinanceWebSocket.instance = new BinanceWebSocket();
+		}
+
+		return BinanceWebSocket.instance;
+	}
+
+	/*
+    ----------------------
+    ACTIVE SIGNALS SOCKETS
+    ----------------------
+    */
+	async addPriceSocket({ signalId, ws }: { signalId: string; ws: WebSocket }): Promise<void> {
+		const wsKey = `${this.env}_${WSChannel.binanceWs}_${AssetData.price}_${signalId}`;
+		this.binanceSocketMap.set(wsKey, ws);
+	}
+
+	async addOrderBookSocket({ signalId, ws }: { signalId: string; ws: WebSocket }): Promise<void> {
+		const wsKey = `${this.env}_${WSChannel.binanceWs}_${AssetData.orderBook}_${signalId}`;
+		this.binanceSocketMap.set(wsKey, ws);
+	}
+
+	async closePriceSocket(signalId: string) {
+		const wsKey = `${this.env}_${WSChannel.binanceWs}_${AssetData.price}_${signalId}`;
+		const client = this.binanceSocketMap.get(wsKey) as WebSocket;
+		// Close socket connection
+		client.close();
+
+		// Delete socket from in-memory
+		this.binanceSocketMap.delete(wsKey);
+	}
+
+	async closeOrderBookSocket(signalId: string) {
+		const wsKey = `${this.env}_${WSChannel.binanceWs}_${AssetData.orderBook}_${signalId}`;
+		const client = this.binanceSocketMap.get(wsKey) as WebSocket;
+		// Close socket connection
+		client.close();
+
+		// Delete socket from in-memory
+		this.binanceSocketMap.delete(wsKey);
+	}
+
+	async closeAllSockects() {
+		const keys = Array.from(this.binanceSocketMap.keys());
+
+		await Promise.all(
+			keys.map(async (key) => {
+				// Close socket
+				(this.binanceSocketMap.get(key) as WebSocket).close();
+
+				// Delete socket
+				this.binanceSocketMap.delete(key);
+			})
+		);
+	}
+}

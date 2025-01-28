@@ -1,5 +1,5 @@
 import { DEFAULT_PAGE, DEFAULT_ROWS_PER_PAGE } from "../config/constants";
-import { SignalStatus } from "../config/enums";
+import { SignalStatus, TradeSide } from "../config/enums";
 import {
 	IActiveSignalsData,
 	IExchange,
@@ -224,7 +224,7 @@ export class SignalService {
 					{ path: "supportedExchanges", select: "slug -_id", match: filterCondition },
 				])
 				.select(
-					"assetName baseCurrencyName targetProfits stopLoss entryPrice isSignalTradable supportedExchanges upperBound lowerBound tradeSide"
+					"assetName baseCurrencyName targetProfits stopLoss entryPrice isSignalTradable supportedExchanges entryPriceUpperBound entryPriceLowerBound tradeSide"
 				)
 				.exec();
 
@@ -259,7 +259,11 @@ export class SignalService {
 				const signalId = signal.signalId;
 				const signalPrice = signal.signalData.assetPrice;
 				const entryPrice = signal.signalData.asset.entryPrice;
-				const priceChange = (((signalPrice - entryPrice) / entryPrice) * 100).toFixed(2);
+				const priceChange = (
+					signal.signalData.asset.tradeSide === TradeSide.LONG
+						? ((signalPrice - entryPrice) / entryPrice) * 100
+						: ((entryPrice - signalPrice) / entryPrice) * 100
+				).toFixed(2);
 
 				return {
 					updateOne: {

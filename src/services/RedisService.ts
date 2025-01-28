@@ -61,9 +61,18 @@ export class RedisClient {
 		await this.client.set(wsKey, JSON.stringify(signalData));
 	}
 
-	async addSignalOrderBook({ signalId, exchange, totalSellQuantityInRange }: ISignalOrderBook) {
+	async addSignalOrderBook({
+		signalId,
+		exchange,
+		totalSellQuantityInRange,
+		totalBuyQuantityInRange,
+	}: ISignalOrderBook) {
 		const wsKey = `${this.env}_${WSChannel.assetsUpdateWs}_${AssetData.orderBook}_${signalId}_${exchange}`;
-		await this.client.set(wsKey, JSON.stringify(totalSellQuantityInRange));
+		const data = {
+			totalBuyQuantityInRange,
+			totalSellQuantityInRange,
+		};
+		await this.client.set(wsKey, JSON.stringify(data));
 	}
 
 	async getAllSignalsPrices(exchange?: string): Promise<ISignalPrice[]> {
@@ -98,7 +107,9 @@ export class RedisClient {
 				const signalId = keyArray[keyArray.length - 2];
 				const exchange = keyArray[keyArray.length - 1] as Exchange;
 				const assetValue = (await this.client.get(key)) as string;
-				return { signalId, exchange, totalSellQuantityInRange: JSON.parse(assetValue) };
+				const { totalBuyQuantityInRange, totalSellQuantityInRange } =
+					JSON.parse(assetValue);
+				return { signalId, exchange, totalSellQuantityInRange, totalBuyQuantityInRange };
 			})
 		);
 

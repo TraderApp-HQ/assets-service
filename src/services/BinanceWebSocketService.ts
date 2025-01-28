@@ -38,7 +38,9 @@ export class BinanceWebSocket {
 		const wsKey = `${this.env}_${WSChannel.binanceWs}_${AssetData.price}_${signalId}`;
 		const client = this.binanceSocketMap.get(wsKey) as WebSocket;
 		// Close socket connection
-		client.close();
+		if (client instanceof WebSocket && client.readyState === WebSocket.OPEN) {
+			client.close();
+		}
 
 		// Delete socket from in-memory
 		this.binanceSocketMap.delete(wsKey);
@@ -48,7 +50,9 @@ export class BinanceWebSocket {
 		const wsKey = `${this.env}_${WSChannel.binanceWs}_${AssetData.orderBook}_${signalId}`;
 		const client = this.binanceSocketMap.get(wsKey) as WebSocket;
 		// Close socket connection
-		client.close();
+		if (client instanceof WebSocket && client.readyState === WebSocket.OPEN) {
+			client.close();
+		}
 
 		// Delete socket from in-memory
 		this.binanceSocketMap.delete(wsKey);

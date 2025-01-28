@@ -85,15 +85,31 @@ export const openBinanceWebSocketConnection = async (signal: IActiveSignalsData)
 			const price = parseFloat(update[0]);
 			const quantity = parseFloat(update[1]);
 
-			if (price >= signal.lowerBound && price <= signal.upperBound) {
+			if (price >= signal.entryPriceLowerBound && price <= signal.entryPriceUpperBound) {
 				totalSellQuantityInRange += price * quantity;
+			}
+		}
+
+		// Calculate the total quantity of buy orders within a price range
+		let totalBuyQuantityInRange = 0;
+		for (const update of message.bids) {
+			const price = parseFloat(update[0]);
+			const quantity = parseFloat(update[1]);
+
+			if (price >= signal.entryPriceUpperBound && price <= signal.entryPriceLowerBound) {
+				totalBuyQuantityInRange += price * quantity;
 			}
 		}
 
 		const signalId = signal.signalId;
 		const exchange = Exchange.binance;
 
-		redisCache.addSignalOrderBook({ signalId, exchange, totalSellQuantityInRange });
+		redisCache.addSignalOrderBook({
+			signalId,
+			exchange,
+			totalSellQuantityInRange,
+			totalBuyQuantityInRange,
+		});
 	});
 
 	orderBookWs.on("error", (error: Error) => {

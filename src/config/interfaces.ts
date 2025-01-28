@@ -45,8 +45,8 @@ export interface ISignalServiceCreateSignalProps {
 	targetProfits: ISignalMilestone[];
 	stopLoss: ISignalMilestone;
 	entryPrice: number;
-	lowerBound: number;
-	upperBound: number;
+	entryPriceLowerBound: number;
+	entryPriceUpperBound: number;
 	currentPrice?: number;
 	currentChange?: number;
 	tradeNote: string;
@@ -118,8 +118,8 @@ export interface IActiveSignalsData {
 	baseCurrencyName: string;
 	assetPair: string;
 	exchanges: Exchange[];
-	upperBound: number;
-	lowerBound: number;
+	entryPriceUpperBound: number;
+	entryPriceLowerBound: number;
 	tradeSide: TradeSide;
 }
 
@@ -138,6 +138,7 @@ export interface ISignalOrderBook {
 	signalId: string;
 	exchange: Exchange;
 	totalSellQuantityInRange: number;
+	totalBuyQuantityInRange: number;
 }
 
 export interface IRemoveSignal {

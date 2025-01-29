@@ -77,6 +77,17 @@ export const binanceSignals = async () => {
 			openBinanceWebSocketConnection(signal);
 		});
 
+		// Update redis cache with updated signal data from db
+		const updatedSignalDataPromises = activeSignals.map((signal) => {
+			const data = cachedSignalsPriceTable[signal.signalId];
+
+			if (!data) return null;
+
+			const { signalId, exchange, assetPrice } = data;
+
+			return redisCache.addSignalPrice({ signalId, exchange, assetPrice, asset: signal });
+		});
+
 		// Delete stale signals price and order book from redis cache
 		const pricePromises = staleSignalsPrice.map(({ signalId, exchange }) => {
 			// Close stale signal's price web sockets
@@ -93,7 +104,7 @@ export const binanceSignals = async () => {
 		});
 
 		// make batch requests to delete stale signals from redis cache
-		await Promise.all([...pricePromises, ...orderBookPromises]);
+		await Promise.all([...updatedSignalDataPromises, ...pricePromises, ...orderBookPromises]);
 	} catch (error: any) {
 		console.error(`Error getting asset real time prices: ${error.message}`);
 	} finally {

@@ -224,7 +224,7 @@ export class SignalService {
 					{ path: "supportedExchanges", select: "slug -_id", match: filterCondition },
 				])
 				.select(
-					"assetName baseCurrencyName targetProfits stopLoss entryPrice isSignalTradable supportedExchanges entryPriceUpperBound entryPriceLowerBound tradeSide"
+					"assetName baseCurrencyName targetProfits stopLoss entryPrice isSignalTradable supportedExchanges entryPriceUpperBound entryPriceLowerBound tradeSide maxGain"
 				)
 				.exec();
 
@@ -252,18 +252,61 @@ export class SignalService {
 		}
 	}
 
-	public async updateSignalsPrices(signals: ISignalPrice[]) {
+	public async updateSignalsDataInDB(signals: ISignalPrice[]) {
 		try {
 			// Update operation
 			const bulkPriceUpdate = signals.map((signal) => {
 				const signalId = signal.signalId;
-				const signalPrice = signal.signalData.assetPrice;
-				const entryPrice = signal.signalData.asset.entryPrice;
-				const priceChange = (
-					signal.signalData.asset.tradeSide === TradeSide.LONG
+				const signalPrice = signal.assetPrice;
+				const entryPrice = signal.asset.entryPrice;
+				const tradeSide = signal.asset.tradeSide;
+				const targetProfits = signal.asset.targetProfits;
+				const stopLoss = signal.asset.stopLoss;
+				const entryPriceUpperBound = signal.asset.entryPriceUpperBound;
+				const entryPriceLowerBound = signal.asset.entryPriceLowerBound;
+
+				// Calculate price percentage change
+				const priceChange = parseFloat(
+					(tradeSide === TradeSide.LONG
 						? ((signalPrice - entryPrice) / entryPrice) * 100
 						: ((entryPrice - signalPrice) / entryPrice) * 100
-				).toFixed(2);
+					).toFixed(2)
+				);
+
+				// Update target profits
+				const calcTargetProfits = targetProfits.map((target) => ({
+					...target,
+					isReached: target.isReached // Only tries to update when value is false
+						? true
+						: tradeSide === TradeSide.LONG
+						? signalPrice >= target.price
+						: signalPrice <= target.price,
+				}));
+
+				// Update stop loss
+				const calcStopLoss = {
+					...stopLoss,
+					isReached: stopLoss.isReached // Only tries to update when value is false
+						? true
+						: tradeSide === TradeSide.LONG
+						? signalPrice <= stopLoss.price
+						: signalPrice >= stopLoss.price,
+				};
+
+				// Update max gain
+				const calcMaxGain = Math.max(
+					tradeSide === TradeSide.LONG
+						? signalPrice - entryPrice
+						: entryPrice - signalPrice,
+					signal.asset.maxGain
+				);
+
+				// Check if signal is tradable
+				const isSignalTradable =
+					tradeSide === TradeSide.LONG
+						? signalPrice >= entryPriceUpperBound && signalPrice <= entryPriceLowerBound
+						: signalPrice >= entryPriceLowerBound &&
+						  signalPrice <= entryPriceUpperBound;
 
 				return {
 					updateOne: {
@@ -272,6 +315,10 @@ export class SignalService {
 							$set: {
 								currentPrice: signalPrice,
 								currentChange: priceChange,
+								targetProfits: calcTargetProfits,
+								stopLoss: calcStopLoss,
+								maxGain: calcMaxGain,
+								isSignalTradable,
 							},
 						},
 					},

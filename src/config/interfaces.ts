@@ -121,17 +121,14 @@ export interface IActiveSignalsData {
 	entryPriceUpperBound: number;
 	entryPriceLowerBound: number;
 	tradeSide: TradeSide;
-}
-
-export interface ISignalPriceData {
-	asset: IActiveSignalsData;
-	assetPrice: number;
+	maxGain: number;
 }
 
 export interface ISignalPrice {
 	signalId: string;
 	exchange: Exchange;
-	signalData: ISignalPriceData;
+	asset: IActiveSignalsData;
+	assetPrice: number;
 }
 
 export interface ISignalOrderBook {

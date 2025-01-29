@@ -19,7 +19,7 @@ export const dbPrice = async () => {
 		}
 
 		// Send updated price to database
-		await signalService.updateSignalsPrices(signalsPrice);
+		await signalService.updateSignalsDataInDB(signalsPrice);
 	} catch (error: any) {
 		console.error(`Error updating prices to db: ${error.message}`);
 	} finally {

@@ -56,9 +56,13 @@ export class RedisClient {
     -------------------
     */
 
-	async addSignalPrice({ signalId, exchange, signalData }: ISignalPrice) {
+	async addSignalPrice({ signalId, exchange, asset, assetPrice }: ISignalPrice) {
 		const wsKey = `${this.env}_${WSChannel.assetsUpdateWs}_${AssetData.price}_${signalId}_${exchange}`;
-		await this.client.set(wsKey, JSON.stringify(signalData));
+		const data = {
+			asset,
+			assetPrice,
+		};
+		await this.client.set(wsKey, JSON.stringify(data));
 	}
 
 	async addSignalOrderBook({
@@ -87,8 +91,9 @@ export class RedisClient {
 				const signalId = keyArray[keyArray.length - 2];
 				const exchange = keyArray[keyArray.length - 1] as Exchange;
 				const assetValue = (await this.client.get(key)) as string;
+				const { asset, assetPrice } = JSON.parse(assetValue);
 
-				return { signalId, exchange, signalData: JSON.parse(assetValue) };
+				return { signalId, exchange, asset, assetPrice };
 			})
 		);
 

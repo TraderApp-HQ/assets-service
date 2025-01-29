@@ -1,9 +1,9 @@
 /* eslint-disable @typescript-eslint/no-base-to-string */
 import WebSocket from "ws";
 import { Exchange } from "../../config/enums";
-import { IActiveSignalsData, ISignalPriceData } from "../../config/interfaces";
-import { RedisClient } from "../../services/RedisService";
+import { IActiveSignalsData } from "../../config/interfaces";
 import { BinanceWebSocket } from "../../services/BinanceWebSocketService";
+import { RedisClient } from "../../services/RedisService";
 
 const wsOptions = {
 	handshakeTimeout: 30000,
@@ -44,13 +44,9 @@ export const openBinanceWebSocketConnection = async (signal: IActiveSignalsData)
 
 		const signalId = signal.signalId;
 		const exchange = Exchange.binance;
-		const signalData: ISignalPriceData = {
-			asset: signal,
-			assetPrice,
-		};
 
 		// Add asset price to redis cache
-		redisCache.addSignalPrice({ signalId, exchange, signalData });
+		redisCache.addSignalPrice({ signalId, exchange, asset: signal, assetPrice });
 	});
 
 	priceWs.on("error", (error: Error) => {
@@ -96,7 +92,7 @@ export const openBinanceWebSocketConnection = async (signal: IActiveSignalsData)
 			const price = parseFloat(update[0]);
 			const quantity = parseFloat(update[1]);
 
-			if (price >= signal.entryPriceUpperBound && price <= signal.entryPriceLowerBound) {
+			if (price >= signal.entryPriceLowerBound && price <= signal.entryPriceUpperBound) {
 				totalBuyQuantityInRange += price * quantity;
 			}
 		}

@@ -257,7 +257,7 @@ export class SignalService {
 			// Update operation
 			const bulkPriceUpdate = signals.map((signal) => {
 				const signalId = signal.signalId;
-				const signalPrice = signal.assetPrice;
+				const currentPrice = signal.assetPrice;
 				const entryPrice = signal.asset.entryPrice;
 				const tradeSide = signal.asset.tradeSide;
 				const targetProfits = signal.asset.targetProfits;
@@ -268,8 +268,8 @@ export class SignalService {
 				// Calculate price percentage change
 				const priceChange = parseFloat(
 					(tradeSide === TradeSide.LONG
-						? ((signalPrice - entryPrice) / entryPrice) * 100
-						: ((entryPrice - signalPrice) / entryPrice) * 100
+						? ((currentPrice - entryPrice) / entryPrice) * 100
+						: ((entryPrice - currentPrice) / entryPrice) * 100
 					).toFixed(2)
 				);
 
@@ -279,8 +279,8 @@ export class SignalService {
 					isReached: target.isReached // Only tries to update when value is false
 						? true
 						: tradeSide === TradeSide.LONG
-						? signalPrice >= target.price
-						: signalPrice <= target.price,
+						? currentPrice >= target.price
+						: currentPrice <= target.price,
 				}));
 
 				// Update stop loss
@@ -289,31 +289,33 @@ export class SignalService {
 					isReached: stopLoss.isReached // Only tries to update when value is false
 						? true
 						: tradeSide === TradeSide.LONG
-						? signalPrice <= stopLoss.price
-						: signalPrice >= stopLoss.price,
+						? currentPrice <= stopLoss.price
+						: currentPrice >= stopLoss.price,
 				};
 
 				// Update max gain
 				const calcMaxGain = Math.max(
-					tradeSide === TradeSide.LONG
-						? signalPrice - entryPrice
-						: entryPrice - signalPrice,
+					Math.round(
+						tradeSide === TradeSide.LONG
+							? ((currentPrice - entryPrice) / entryPrice) * 100
+							: ((entryPrice - currentPrice) / entryPrice) * 100
+					),
 					signal.asset.maxGain
 				);
 
 				// Check if signal is tradable
 				const isSignalTradable =
 					tradeSide === TradeSide.LONG
-						? signalPrice >= entryPriceUpperBound && signalPrice <= entryPriceLowerBound
-						: signalPrice >= entryPriceLowerBound &&
-						  signalPrice <= entryPriceUpperBound;
+						? currentPrice > entryPriceUpperBound && currentPrice < entryPriceLowerBound
+						: currentPrice > entryPriceLowerBound &&
+						  currentPrice < entryPriceUpperBound;
 
 				return {
 					updateOne: {
 						filter: { _id: signalId },
 						update: {
 							$set: {
-								currentPrice: signalPrice,
+								currentPrice,
 								currentChange: priceChange,
 								targetProfits: calcTargetProfits,
 								stopLoss: calcStopLoss,

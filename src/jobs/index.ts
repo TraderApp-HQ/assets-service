@@ -1,18 +1,20 @@
-import { BinanceWebSocket } from "../services/BinanceWebSocketService";
+import { BinanceWebSocketService } from "../services/BinanceWebSocketService";
 import { RedisClient } from "../services/RedisService";
 import { BinanceSignalsPriceUpdateJob } from "./BinanceSignalsPriceUpdate";
 import { DbPriceUpdateJob } from "./DbPriceUpdate";
 
 const runAllJobs = async () => {
 	// Deletes all record from in-memory and redis cache
-	const binanceCache = BinanceWebSocket.getInstance();
-	binanceCache.closeAllSockects();
-	console.log("============= All in-memory records deleted");
+	try {
+		const binanceCache = BinanceWebSocketService.getInstance();
+		binanceCache.closeAllSockects();
 
-	const redisCache = new RedisClient();
-	await redisCache.deleteAllCacheRecord();
-	redisCache.closeConnection();
-	console.log("============= All redis cache records deleted");
+		const redisCache = new RedisClient();
+		await redisCache.deleteAllCacheRecord();
+		console.log("============= All cache records deleted");
+	} catch (error) {
+		console.log("============= Error clearing cache", error);
+	}
 
 	BinanceSignalsPriceUpdateJob();
 	DbPriceUpdateJob();

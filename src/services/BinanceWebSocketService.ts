@@ -1,8 +1,8 @@
 import { AssetData, WSChannel } from "../config/enums";
 import WebSocket from "ws";
 
-export class BinanceWebSocket {
-	private static instance: BinanceWebSocket;
+export class BinanceWebSocketService {
+	private static instance: BinanceWebSocketService;
 	private readonly env: string;
 	private readonly binanceSocketMap: Map<string, WebSocket>;
 
@@ -11,12 +11,12 @@ export class BinanceWebSocket {
 		this.binanceSocketMap = new Map();
 	}
 
-	public static getInstance(): BinanceWebSocket {
-		if (!BinanceWebSocket.instance) {
-			BinanceWebSocket.instance = new BinanceWebSocket();
+	public static getInstance(): BinanceWebSocketService {
+		if (!BinanceWebSocketService.instance) {
+			BinanceWebSocketService.instance = new BinanceWebSocketService();
 		}
 
-		return BinanceWebSocket.instance;
+		return BinanceWebSocketService.instance;
 	}
 
 	/*

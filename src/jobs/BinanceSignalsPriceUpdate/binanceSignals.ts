@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/promise-function-async */
 import { Exchange } from "../../config/enums";
 import { IActiveSignalsData, ISignalOrderBook, ISignalPrice } from "../../config/interfaces";
-import { BinanceWebSocket } from "../../services/BinanceWebSocketService";
+import { BinanceWebSocketService } from "../../services/BinanceWebSocketService";
 import { RedisClient } from "../../services/RedisService";
 import { SignalService } from "../../services/SignalService";
 import { openBinanceWebSocketConnection } from "../../websockets/BinanceWebSockets";
@@ -9,7 +9,7 @@ import { openBinanceWebSocketConnection } from "../../websockets/BinanceWebSocke
 export const binanceSignals = async () => {
 	const signalService = new SignalService();
 	const redisCache = new RedisClient();
-	const binanceSocketCache = BinanceWebSocket.getInstance();
+	const binanceSocketCache = BinanceWebSocketService.getInstance();
 
 	try {
 		// Initialiase redords for active, cached and stale signals

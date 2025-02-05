@@ -2,7 +2,7 @@
 import WebSocket from "ws";
 import { Exchange } from "../../config/enums";
 import { IActiveSignalsData } from "../../config/interfaces";
-import { BinanceWebSocket } from "../../services/BinanceWebSocketService";
+import { BinanceWebSocketService } from "../../services/BinanceWebSocketService";
 import { RedisClient } from "../../services/RedisService";
 
 const wsOptions = {
@@ -15,7 +15,7 @@ const orderBookDepth = 20;
 export const openBinanceWebSocketConnection = async (signal: IActiveSignalsData) => {
 	// Initialise redis
 	const redisCache = new RedisClient();
-	const binanceSocketCache = BinanceWebSocket.getInstance();
+	const binanceSocketCache = BinanceWebSocketService.getInstance();
 
 	// order book connection object
 	const orderBookWs = new WebSocket(

@@ -11,7 +11,6 @@ const runAllJobs = async () => {
 
 		const redisCache = new RedisClient();
 		await redisCache.deleteAllCacheRecord();
-		console.log("============= All cache records deleted");
 	} catch (error) {
 		console.log("============= Error clearing cache", error);
 	}

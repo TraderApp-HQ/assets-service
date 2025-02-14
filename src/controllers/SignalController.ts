@@ -18,7 +18,10 @@ export async function createSignalHandler(req: Request, res: Response, next: Nex
 	const signalService: SignalService = new SignalService();
 	const {
 		asset,
+		assetName,
 		entryPrice,
+		entryPriceLowerBound,
+		entryPriceUpperBound,
 		targetProfits,
 		stopLoss,
 		isSignalTradable,
@@ -26,6 +29,7 @@ export async function createSignalHandler(req: Request, res: Response, next: Nex
 		candlestick,
 		risk,
 		baseCurrency,
+		baseCurrencyName,
 		supportedExchanges,
 		category,
 		tradeSide,
@@ -48,8 +52,12 @@ export async function createSignalHandler(req: Request, res: Response, next: Nex
 		// Data to be set in the document
 		const newSignal: ISignalServiceCreateSignalProps = {
 			asset,
+			assetName,
 			baseCurrency,
+			baseCurrencyName,
 			entryPrice,
+			entryPriceLowerBound,
+			entryPriceUpperBound,
 			targetProfits,
 			stopLoss,
 			risk,

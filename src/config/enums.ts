@@ -52,3 +52,19 @@ export enum ConnectionType {
 	MANUAL = "MANUAL",
 	FAST = "FAST",
 }
+
+export enum WSChannel {
+	usersWs = "users-ws",
+	assetsUpdateWs = "assets-update-ws",
+	binanceWs = "binance-ws",
+}
+
+export enum Exchange {
+	binance = "binance",
+	kucoin = "kucoin",
+}
+
+export enum AssetData {
+	price = "price",
+	orderBook = "order book",
+}

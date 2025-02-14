@@ -2,6 +2,7 @@ import { PopulateOptions } from "mongoose";
 import {
 	Candlestick,
 	Category,
+	Exchange,
 	SignalRisk,
 	SignalStatus,
 	TradeSide,
@@ -44,6 +45,8 @@ export interface ISignalServiceCreateSignalProps {
 	targetProfits: ISignalMilestone[];
 	stopLoss: ISignalMilestone;
 	entryPrice: number;
+	entryPriceLowerBound: number;
+	entryPriceUpperBound: number;
 	currentPrice?: number;
 	currentChange?: number;
 	tradeNote: string;
@@ -57,7 +60,9 @@ export interface ISignalServiceCreateSignalProps {
 	endedAt?: string;
 	supportedExchanges: number[];
 	asset: number;
+	assetName: string;
 	baseCurrency: number;
+	baseCurrencyName: string;
 	category: Category;
 	tradeType?: TradeType;
 	tradeSide?: TradeSide;
@@ -101,4 +106,39 @@ export interface ISignalResponse extends Document {
 	createdAt: string;
 	endedAt?: string;
 	supportedExchanges: IExchange[];
+}
+
+export interface IActiveSignalsData {
+	signalId: string;
+	stopLoss: ISignalMilestone;
+	targetProfits: ISignalMilestone[];
+	entryPrice: number;
+	isSignalTradable: boolean;
+	assetName: string;
+	baseCurrencyName: string;
+	assetPair: string;
+	exchanges: Exchange[];
+	entryPriceUpperBound: number;
+	entryPriceLowerBound: number;
+	tradeSide: TradeSide;
+	maxGain: number;
+}
+
+export interface ISignalPrice {
+	signalId: string;
+	exchange: Exchange;
+	asset: IActiveSignalsData;
+	assetPrice: number;
+}
+
+export interface ISignalOrderBook {
+	signalId: string;
+	exchange: Exchange;
+	totalSellQuantityInRange: number;
+	totalBuyQuantityInRange: number;
+}
+
+export interface IRemoveSignal {
+	signalId: string;
+	exchange: Exchange;
 }

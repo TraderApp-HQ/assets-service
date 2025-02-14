@@ -1,8 +1,10 @@
 import { DEFAULT_PAGE, DEFAULT_ROWS_PER_PAGE } from "../config/constants";
-import { SignalStatus } from "../config/enums";
+import { SignalStatus, TradeSide } from "../config/enums";
 import {
+	IActiveSignalsData,
 	IExchange,
 	ISignal,
+	ISignalPrice,
 	ISignalResponse,
 	ISignalServiceCreateSignalProps,
 	ISignalServiceGetSignalsParams,
@@ -208,6 +210,125 @@ export class SignalService {
 		try {
 			const totalSignal = await Signal.countDocuments();
 			return totalSignal;
+		} catch (error: any) {
+			throw new Error(error.message);
+		}
+	}
+
+	public async getExchangeActiveSignals(exchange?: string): Promise<IActiveSignalsData[]> {
+		try {
+			const filterCondition = exchange ? { slug: exchange } : {};
+
+			const activeSignals = await Signal.find({ status: SignalStatus.ACTIVE })
+				.populate([
+					{ path: "supportedExchanges", select: "slug -_id", match: filterCondition },
+				])
+				.select(
+					"assetName baseCurrencyName targetProfits stopLoss entryPrice isSignalTradable supportedExchanges entryPriceUpperBound entryPriceLowerBound tradeSide maxGain"
+				)
+				.exec();
+
+			// Extracting assets exchange
+			const signalAndExchanges = activeSignals
+				.filter((signal) => signal.supportedExchanges.length > 0)
+				.map((signal: any) => {
+					const assetName = `${signal.assetName}${signal.baseCurrencyName}`.toLowerCase();
+					const exchanges: string[] = signal.supportedExchanges.map(
+						(exchange: any) => exchange.slug
+					);
+					const { _id, supportedExchanges, ...restSignal } = signal.toObject();
+
+					return {
+						...restSignal,
+						assetPair: assetName,
+						exchanges,
+						signalId: _id.toString(),
+					};
+				});
+
+			return signalAndExchanges;
+		} catch (error: any) {
+			throw new Error(error.message);
+		}
+	}
+
+	public async updateSignalsDataInDB(signals: ISignalPrice[]) {
+		try {
+			// Update operation
+			const bulkPriceUpdate = signals.map((signal) => {
+				const signalId = signal.signalId;
+				const currentPrice = signal.assetPrice;
+				const entryPrice = signal.asset.entryPrice;
+				const tradeSide = signal.asset.tradeSide;
+				const targetProfits = signal.asset.targetProfits;
+				const stopLoss = signal.asset.stopLoss;
+				const entryPriceUpperBound = signal.asset.entryPriceUpperBound;
+				const entryPriceLowerBound = signal.asset.entryPriceLowerBound;
+
+				// Calculate price percentage change
+				const priceChange = parseFloat(
+					(tradeSide === TradeSide.LONG
+						? ((currentPrice - entryPrice) / entryPrice) * 100
+						: ((entryPrice - currentPrice) / entryPrice) * 100
+					).toFixed(2)
+				);
+
+				// Update target profits
+				const calcTargetProfits = targetProfits.map((target) => ({
+					...target,
+					isReached: target.isReached // Only tries to update when value is false
+						? true
+						: tradeSide === TradeSide.LONG
+						? currentPrice >= target.price
+						: currentPrice <= target.price,
+				}));
+
+				// Update stop loss
+				const calcStopLoss = {
+					...stopLoss,
+					isReached: stopLoss.isReached // Only tries to update when value is false
+						? true
+						: tradeSide === TradeSide.LONG
+						? currentPrice <= stopLoss.price
+						: currentPrice >= stopLoss.price,
+				};
+
+				// Update max gain
+				const calcMaxGain = Math.max(
+					Math.round(
+						tradeSide === TradeSide.LONG
+							? ((currentPrice - entryPrice) / entryPrice) * 100
+							: ((entryPrice - currentPrice) / entryPrice) * 100
+					),
+					signal.asset.maxGain
+				);
+
+				// Check if signal is tradable
+				const isSignalTradable =
+					tradeSide === TradeSide.LONG
+						? currentPrice > entryPriceUpperBound && currentPrice < entryPriceLowerBound
+						: currentPrice > entryPriceLowerBound &&
+						  currentPrice < entryPriceUpperBound;
+
+				return {
+					updateOne: {
+						filter: { _id: signalId },
+						update: {
+							$set: {
+								currentPrice,
+								currentChange: priceChange,
+								targetProfits: calcTargetProfits,
+								stopLoss: calcStopLoss,
+								maxGain: calcMaxGain,
+								isSignalTradable,
+							},
+						},
+					},
+				};
+			});
+
+			// Execute bulk write update operation
+			await Signal.bulkWrite(bulkPriceUpdate);
 		} catch (error: any) {
 			throw new Error(error.message);
 		}

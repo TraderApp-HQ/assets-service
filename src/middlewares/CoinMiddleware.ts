@@ -1,6 +1,7 @@
 import { Request, Response, NextFunction } from "express";
 import Joi from "joi";
 import { checkUser } from "../helpers/middlewares";
+import { Category } from "../config/enums";
 
 // A function to validate request to get all coins
 export async function validateCoinsRequest(req: Request, res: Response, next: NextFunction) {
@@ -8,6 +9,10 @@ export async function validateCoinsRequest(req: Request, res: Response, next: Ne
 		// check accessToken and user role
 		await checkUser(req);
 		const querySchema = Joi.object({
+			category: Joi.string()
+				.valid(...Object.values(Category))
+				.required()
+				.label("Category"),
 			page: Joi.number().integer().min(1).positive().default(1).label("page"),
 			rowsPerPage: Joi.number()
 				.integer()

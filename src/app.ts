@@ -1,18 +1,21 @@
-import express, { Application, Request, Response, NextFunction } from "express";
-import mongoose from "mongoose";
 import { apiResponseHandler, initSecrets, logger } from "@traderapp/shared-resources";
 import cors from "cors";
 import { config } from "dotenv";
+import express, { Application, NextFunction, Request, Response } from "express";
+import expressWs from "express-ws";
+import mongoose from "mongoose";
 // import initDatabase from "./config/database";
 
-import { CoinRoutes, CurrencyRoutes, ExchangeRoutes, SignalRoutes } from "./routes";
-import secretsJson from "./env.json";
-import { ENVIRONMENTS } from "./config/constants";
 import swaggerUi from "swagger-ui-express";
+import { ENVIRONMENTS } from "./config/constants";
+import secretsJson from "./env.json";
+import { CoinRoutes, CurrencyRoutes, ExchangeRoutes, SignalRoutes } from "./routes";
 import specs from "./utils/swagger";
+import runAllJobs from "./jobs";
 
 config();
 const app: Application = express();
+expressWs(app);
 
 const env = process.env.NODE_ENV ?? "development";
 const suffix = ENVIRONMENTS[env] ?? "dev";
@@ -85,6 +88,7 @@ function startServer() {
 	app.use(`/exchanges`, ExchangeRoutes);
 	app.use(`/signals`, SignalRoutes);
 	app.use(`/currencies`, CurrencyRoutes);
+	// app.use("/stream", StreamsRoutes);
 
 	// health check
 	app.get(`/ping`, (_req, res) => {
@@ -94,6 +98,9 @@ function startServer() {
 			})
 		);
 	});
+
+	// Start cron jobs
+	runAllJobs();
 
 	// handle errors
 	app.use((err: Error, _req: Request, res: Response, _next: NextFunction) => {

@@ -2,7 +2,14 @@ import { Request, Response, NextFunction } from "express";
 import Joi from "joi";
 import { DEFAULT_PAGE, DEFAULT_ROWS_PER_PAGE } from "../config/constants";
 import { checkAdmin, checkUser } from "../helpers/middlewares";
-import { Candlestick, SignalRisk, SignalStatus } from "../config/enums";
+import {
+	Candlestick,
+	Category,
+	SignalRisk,
+	SignalStatus,
+	TradeSide,
+	TradeType,
+} from "../config/enums";
 
 export async function validateCreateSignalRequest(
 	req: Request,
@@ -23,28 +30,32 @@ export async function validateCreateSignalRequest(
 		// Joi schema for targetProfits
 		const targetProfitSchema = {
 			price: Joi.number().required().label("Target profit price"),
-			percent: Joi.number().integer().min(1).required().label("Target profit percentage"),
+			percent: Joi.number().required().label("Target profit percentage"),
 			isReached: Joi.boolean().required().label("Target profit flag"),
 		};
 
 		// Joi schema for stop loss
 		const stopLoss = {
 			price: Joi.number().required().label("Stop loss price"),
-			percent: Joi.number().integer().min(1).required().label("Stop loss percentage"),
+			percent: Joi.number().required().label("Stop loss percentage"),
 			isReached: Joi.boolean().required().label("Stop loss flag"),
 		};
 
 		// Joi schema to validate request body
 		const schema = Joi.object({
 			asset: Joi.number().required().label("Asset Id"),
+			assetName: Joi.string().required().label("Asset name"),
 			baseCurrency: Joi.number().required().label("Base Currency ID"),
+			baseCurrencyName: Joi.string().required().label("Base currency name"),
 			supportedExchanges: supportedExchangesSchema,
 			// entry: Joi.object().keys(entry).required().label("Entry"),
 			entryPrice: Joi.number().required().label("Entry price"),
+			entryPriceLowerBound: Joi.number().required().label("Entry price lower bound"),
+			entryPriceUpperBound: Joi.number().required().label("Entry price upper bound"),
 			stopLoss: Joi.object().keys(stopLoss).required().label("Stop loss"),
 			targetProfits: Joi.array()
 				.items(targetProfitSchema)
-				.min(1)
+				.length(4)
 				.required()
 				.label("Target Profits"),
 			tradeNote: Joi.string().required().label("Trade note"),
@@ -59,6 +70,17 @@ export async function validateCreateSignalRequest(
 			isSignalTradable: Joi.boolean().required(),
 			chart: Joi.string().label("Chart"),
 			// chart: Joi.string().base64().required().label("Chart"),
+			category: Joi.string()
+				.valid(...Object.values(Category))
+				.required()
+				.label("Category"),
+			tradeType: Joi.string()
+				.valid(...Object.values(TradeType))
+				.label("Trade type"),
+			tradeSide: Joi.string()
+				.valid(...Object.values(TradeSide))
+				.label("Trade side"),
+			leverage: Joi.number().label("Leverage"),
 		});
 
 		/* Validate request body.

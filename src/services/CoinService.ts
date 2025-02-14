@@ -7,6 +7,7 @@ import { SortOrder } from "mongoose";
 
 export class CoinService {
 	public async getAllCoins({
+		category,
 		page,
 		rowsPerPage,
 		orderBy,
@@ -23,7 +24,7 @@ export class CoinService {
 				.sort(sortOptions)
 				.skip(offset)
 				.limit(rowsPerPage)
-				.where({ isTradingActive: true, isCoinActive: true })
+				.where({ isTradingActive: true, isCoinActive: true, category })
 				.select({
 					id: 1,
 					name: 1,
@@ -34,7 +35,7 @@ export class CoinService {
 					urls: 1,
 				});
 
-			if (!exchanges || exchanges.length === 0) {
+			if (!exchanges) {
 				return null;
 			}
 

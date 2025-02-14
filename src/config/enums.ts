@@ -38,7 +38,33 @@ export enum Category {
 	CRYPTO = "CRYPTO",
 }
 
+export enum TradeType {
+	SPOT = "SPOT",
+	FUTURES = "FUTURES",
+}
+
+export enum TradeSide {
+	SHORT = "SHORT",
+	LONG = "LONG",
+}
+
 export enum ConnectionType {
 	MANUAL = "MANUAL",
 	FAST = "FAST",
+}
+
+export enum WSChannel {
+	usersWs = "users-ws",
+	assetsUpdateWs = "assets-update-ws",
+	binanceWs = "binance-ws",
+}
+
+export enum Exchange {
+	binance = "binance",
+	kucoin = "kucoin",
+}
+
+export enum AssetData {
+	price = "price",
+	orderBook = "order book",
 }

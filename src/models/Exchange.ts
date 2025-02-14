@@ -17,7 +17,8 @@ export interface IExchange extends Document {
 	isIpAddressWhitelistRequired: boolean;
 	isSpotTradingSupported: Boolean;
 	isFuturesTradingSupported: Boolean;
-	IsMarginTradingSupported: Boolean;
+	isMarginTradingSupported: Boolean;
+	isPassphraseRequired?: boolean;
 }
 
 interface IExchangeModel extends IExchange {}
@@ -39,9 +40,8 @@ export const ExchangeSchema = new Schema<IExchangeModel>(
 		isIpAddressWhitelistRequired: { type: Boolean, required: true },
 		isSpotTradingSupported: { type: Boolean, required: true },
 		isFuturesTradingSupported: { type: Boolean, required: true },
-		IsMarginTradingSupported: { type: Boolean, required: true },
-		// exchangePairs: [{ type: mongoose.Types.ObjectId, ref: "ExchangePair" }],
-		// coinsUnknown: [{ type: mongoose.Types.ObjectId, ref: "CoinsUnknown" }],
+		isMarginTradingSupported: { type: Boolean, required: true },
+		isPassphraseRequired: { type: Boolean },
 	},
 	{ versionKey: false, timestamps: false }
 );

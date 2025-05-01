@@ -266,31 +266,32 @@ export class SignalService {
 				const entryPriceLowerBound = signal.asset.entryPriceLowerBound;
 
 				// Calculate price percentage change
-				const priceChange = parseFloat(
-					(tradeSide === TradeSide.LONG
+				const priceChange = Math.round(
+					tradeSide === TradeSide.LONG
 						? ((currentPrice - entryPrice) / entryPrice) * 100
-						: ((entryPrice - currentPrice) / entryPrice) * 100
-					).toFixed(2)
+						: tradeSide === TradeSide.SHORT
+						? ((entryPrice - currentPrice) / entryPrice) * 100
+						: 0
 				);
 
 				// Update target profits
 				const calcTargetProfits = targetProfits.map((target) => ({
 					...target,
-					isReached: target.isReached // Only tries to update when value is false
-						? true
+					isReached: target.isReached
+						? true // Do not update if already true
 						: tradeSide === TradeSide.LONG
 						? currentPrice >= target.price
-						: currentPrice <= target.price,
+						: currentPrice <= target.price, // Only tries to update when value is false
 				}));
 
 				// Update stop loss
 				const calcStopLoss = {
 					...stopLoss,
-					isReached: stopLoss.isReached // Only tries to update when value is false
-						? true
+					isReached: stopLoss.isReached
+						? true // Do not update if already true
 						: tradeSide === TradeSide.LONG
 						? currentPrice <= stopLoss.price
-						: currentPrice >= stopLoss.price,
+						: currentPrice >= stopLoss.price, // Update only when false
 				};
 
 				// Update max gain

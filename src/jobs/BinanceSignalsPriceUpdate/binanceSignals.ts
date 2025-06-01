@@ -8,7 +8,7 @@ import { openBinanceWebSocketConnection } from "../../websockets/BinanceWebSocke
 
 export const binanceSignals = async () => {
 	const signalService = new SignalService();
-	const redisCache = new RedisClient();
+	const redisCache = RedisClient.getInstance();
 	const binanceSocketCache = BinanceWebSocketService.getInstance();
 
 	try {
@@ -26,24 +26,20 @@ export const binanceSignals = async () => {
 		);
 
 		// Fetch all signals prices and order books from redis cache
-		const cacheSignalsPrices: ISignalPrice[] = await redisCache.getAllSignalsPrices(
-			Exchange.binance
-		);
-		const cacheSignalsOrderBooks: ISignalOrderBook[] = await redisCache.getAllSignalsOrderBooks(
-			Exchange.binance
-		);
+		const cacheSignalsPrices = await redisCache.getAllSignalsPrices(Exchange.binance);
+		const cacheSignalsOrderBooks = await redisCache.getAllSignalsOrderBooks(Exchange.binance);
 
-		// List active signals in hash table for active signals
+		// Hash active signals in hash table for active signals
 		activeSignals.forEach(
 			(activeSignal) => (activeSignalsTable[activeSignal.signalId] = activeSignal)
 		);
 
-		// List cache signals prices in hash table for cached signals prices
+		// Hash cache signals prices in hash table for cached signals prices
 		cacheSignalsPrices.forEach(
 			(priceCache) => (cachedSignalsPriceTable[priceCache.signalId] = priceCache)
 		);
 
-		// List cache signals order books in hash table for cached signals order books
+		// Hash cache signals order books in hash table for cached signals order books
 		cacheSignalsOrderBooks.forEach(
 			(orderBookCache) =>
 				(cachedSignalsOrderBookTable[orderBookCache.signalId] = orderBookCache)
@@ -83,9 +79,15 @@ export const binanceSignals = async () => {
 
 			if (!data) return null;
 
-			const { signalId, exchange, assetPrice } = data;
+			const { signalId, exchange, assetPrice, timestamp } = data;
 
-			return redisCache.addSignalPrice({ signalId, exchange, assetPrice, asset: signal });
+			return redisCache.addSignalPrice({
+				signalId,
+				exchange,
+				assetPrice,
+				asset: signal,
+				timestamp,
+			});
 		});
 
 		// Delete stale signals price and order book from redis cache
@@ -107,8 +109,5 @@ export const binanceSignals = async () => {
 		await Promise.all([...updatedSignalDataPromises, ...pricePromises, ...orderBookPromises]);
 	} catch (error: any) {
 		console.error(`Error getting asset real time prices: ${error.message}`);
-	} finally {
-		// Close redis connection
-		redisCache.closeConnection();
 	}
 };

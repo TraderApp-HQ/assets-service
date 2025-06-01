@@ -17,11 +17,11 @@ export const exchangePairAndUnknownCoinTransfer = async ({
 	const ExchangePairModel1 = conn1.model("ExchangePair", ExchangePairSchema, "exchangepairs");
 	const ExchangePairModel2 = conn2.model("ExchangePair", ExchangePairSchema, "exchangepairs");
 
-	const coins = await ExchangePairModel2.find().exec();
+	const coins = await ExchangePairModel1.find().exec();
 	console.log(`Fetched ${coins.length} ExchangePair from db1`);
 
 	if (coins.length > 0) {
-		await ExchangePairModel1.insertMany(coins);
+		await ExchangePairModel2.insertMany(coins);
 		console.log(`Inserted ${coins.length} ExchangePair into db2`);
 	}
 

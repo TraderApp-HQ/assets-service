@@ -49,7 +49,7 @@ const SignalSchema = new Schema<ISignal>(
 	},
 	{
 		versionKey: false,
-		timestamps: false,
+		timestamps: true,
 		toJSON: {
 			virtuals: true,
 			transform: (doc, ret) => {

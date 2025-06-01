@@ -66,5 +66,5 @@ export enum Exchange {
 
 export enum AssetData {
 	price = "price",
-	orderBook = "order book",
+	orderBook = "orderbook",
 }

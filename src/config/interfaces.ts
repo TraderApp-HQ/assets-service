@@ -129,6 +129,7 @@ export interface ISignalPrice {
 	exchange: Exchange;
 	asset: IActiveSignalsData;
 	assetPrice: number;
+	timestamp?: number;
 }
 
 export interface ISignalOrderBook {
@@ -136,6 +137,7 @@ export interface ISignalOrderBook {
 	exchange: Exchange;
 	totalSellQuantityInRange: number;
 	totalBuyQuantityInRange: number;
+	timestamp?: number;
 }
 
 export interface IRemoveSignal {

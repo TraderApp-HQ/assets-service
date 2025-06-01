@@ -26,6 +26,8 @@ export class BinanceWebSocketService {
     */
 	async addPriceSocket({ signalId, ws }: { signalId: string; ws: WebSocket }): Promise<void> {
 		const wsKey = `${this.env}_${WSChannel.binanceWs}_${AssetData.price}_${signalId}`;
+		const client = this.binanceSocketMap.get(wsKey);
+		if (client) this.binanceSocketMap.delete(wsKey);
 		this.binanceSocketMap.set(wsKey, ws);
 	}
 

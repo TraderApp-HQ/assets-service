@@ -5,7 +5,7 @@ import { RedisClient } from "../../services/RedisService";
 import WebSocket, * as WebSocketType from "ws";
 
 export const clientSignals = async () => {
-	const redisCache = new RedisClient();
+	const redisCache = RedisClient.getInstance();
 	const channelClient = ChannelClient.getInstance();
 
 	try {

@@ -4,15 +4,16 @@ import { AssetData, Exchange, WSChannel } from "../config/enums";
 import { IRemoveSignal, ISignalOrderBook, ISignalPrice } from "../config/interfaces";
 
 export class RedisClient {
-	private client: Redis | null = null;
+	private static instance: RedisClient;
+	public client: Redis | null;
 	private readonly env: string;
 
-	constructor() {
+	private constructor() {
 		this.env = process.env.NODE_ENV ?? "development";
 		try {
 			this.client = new Redis({
-				host: process.env.REDIS_URL,
-				port: Number(process.env.REDIS_PORT),
+				host: process.env.REDIS_URL ?? "localhost",
+				port: 6379,
 			});
 
 			this.client.on("ready", () => console.log("Redis connection established ✅✅✅"));
@@ -30,12 +31,22 @@ export class RedisClient {
 		}
 	}
 
-	async addSignalPrice({ signalId, exchange, asset, assetPrice }: ISignalPrice) {
+	public static getInstance(): RedisClient {
+		if (!RedisClient.instance) {
+			RedisClient.instance = new RedisClient();
+		}
+		return RedisClient.instance;
+	}
+
+	async addSignalPrice({ signalId, exchange, asset, assetPrice, timestamp }: ISignalPrice) {
 		try {
 			const wsKey = `${this.env}_${WSChannel.assetsUpdateWs}_${AssetData.price}_${signalId}_${exchange}`;
 			const data = {
+				signalId,
+				exchange,
 				asset,
 				assetPrice,
+				timestamp: timestamp ?? Date.now(),
 			};
 			await this.client?.set(wsKey, JSON.stringify(data));
 		} catch (error) {
@@ -48,12 +59,16 @@ export class RedisClient {
 		exchange,
 		totalSellQuantityInRange,
 		totalBuyQuantityInRange,
+		timestamp,
 	}: ISignalOrderBook) {
 		try {
 			const wsKey = `${this.env}_${WSChannel.assetsUpdateWs}_${AssetData.orderBook}_${signalId}_${exchange}`;
 			const data = {
+				signalId,
+				exchange,
 				totalBuyQuantityInRange,
 				totalSellQuantityInRange,
+				timestamp: timestamp ?? Date.now(),
 			};
 
 			await this.client?.set(wsKey, JSON.stringify(data));
@@ -62,7 +77,7 @@ export class RedisClient {
 		}
 	}
 
-	async getAllSignalsPrices(exchange?: string): Promise<ISignalPrice[]> {
+	async getAllSignalsPrices(exchange?: Exchange): Promise<ISignalPrice[]> {
 		const filteredKey = exchange
 			? `${this.env}_${WSChannel.assetsUpdateWs}_${AssetData.price}_*_${exchange}`
 			: `${this.env}_${WSChannel.assetsUpdateWs}_${AssetData.price}_*`;
@@ -75,9 +90,9 @@ export class RedisClient {
 						const signalId = keyArray[keyArray.length - 2];
 						const exchange = keyArray[keyArray.length - 1] as Exchange;
 						const assetValue = (await this.client?.get(key)) as string;
-						const { asset, assetPrice } = JSON.parse(assetValue);
+						const { asset, assetPrice, timestamp } = JSON.parse(assetValue);
 
-						return { signalId, exchange, asset, assetPrice };
+						return { signalId, exchange, asset, assetPrice, timestamp };
 					})
 			  )
 			: [];
@@ -98,13 +113,14 @@ export class RedisClient {
 						const signalId = keyArray[keyArray.length - 2];
 						const exchange = keyArray[keyArray.length - 1] as Exchange;
 						const assetValue = (await this.client?.get(key)) as string;
-						const { totalBuyQuantityInRange, totalSellQuantityInRange } =
+						const { totalBuyQuantityInRange, totalSellQuantityInRange, timestamp } =
 							JSON.parse(assetValue);
 						return {
 							signalId,
 							exchange,
 							totalSellQuantityInRange,
 							totalBuyQuantityInRange,
+							timestamp,
 						};
 					})
 			  )
@@ -140,7 +156,7 @@ export class RedisClient {
 			await this.client?.unlink(...keys);
 		}
 
-		await this.closeConnection();
+		// await this.closeConnection();
 	}
 
 	async closeConnection(): Promise<void> {

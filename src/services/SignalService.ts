@@ -265,48 +265,59 @@ export class SignalService {
 				const entryPriceUpperBound = signal.asset.entryPriceUpperBound;
 				const entryPriceLowerBound = signal.asset.entryPriceLowerBound;
 
-				// Calculate price percentage change
-				const priceChange = Math.round(
-					tradeSide === TradeSide.LONG
-						? ((currentPrice - entryPrice) / entryPrice) * 100
-						: tradeSide === TradeSide.SHORT
-						? ((entryPrice - currentPrice) / entryPrice) * 100
-						: 0
-				);
+				let priceChange;
+				if (tradeSide) {
+					if (tradeSide === TradeSide.SHORT) {
+						priceChange = ((entryPrice - currentPrice) / entryPrice) * 100;
+					} else {
+						priceChange = ((currentPrice - entryPrice) / entryPrice) * 100;
+					}
+				} else {
+					// for spot trading
+					priceChange = ((currentPrice - entryPrice) / entryPrice) * 100;
+				}
 
 				// Update target profits
-				const calcTargetProfits = targetProfits.map((target) => ({
-					...target,
-					isReached: target.isReached
-						? true // Do not update if already true
-						: tradeSide === TradeSide.LONG
-						? currentPrice >= target.price
-						: currentPrice <= target.price, // Only tries to update when value is false
-				}));
+				const calcTargetProfits = targetProfits.map((target) => {
+					let isReached = target.isReached;
+					if (tradeSide) {
+						if (tradeSide === TradeSide.SHORT) {
+							isReached = currentPrice <= target.price;
+						} else {
+							isReached = currentPrice >= target.price;
+						}
+					} else {
+						isReached = currentPrice >= target.price;
+					}
+					return {
+						...target,
+						isReached: target.isReached ? true : isReached,
+					};
+				});
 
 				// Update stop loss
 				const calcStopLoss = {
 					...stopLoss,
 					isReached: stopLoss.isReached
 						? true // Do not update if already true
-						: tradeSide === TradeSide.LONG
-						? currentPrice <= stopLoss.price
-						: currentPrice >= stopLoss.price, // Update only when false
+						: tradeSide === TradeSide.SHORT
+						? currentPrice >= stopLoss.price
+						: currentPrice <= stopLoss.price,
 				};
 
 				// Update max gain
 				const calcMaxGain = Math.max(
 					Math.round(
-						tradeSide === TradeSide.LONG
-							? ((currentPrice - entryPrice) / entryPrice) * 100
-							: ((entryPrice - currentPrice) / entryPrice) * 100
+						tradeSide === TradeSide.SHORT
+							? ((entryPrice - currentPrice) / entryPrice) * 100
+							: ((currentPrice - entryPrice) / entryPrice) * 100
 					),
 					signal.asset.maxGain
 				);
 
 				// Check if signal is tradable
 				const isSignalTradable =
-					tradeSide === TradeSide.LONG
+					tradeSide === TradeSide.SHORT
 						? currentPrice > entryPriceUpperBound && currentPrice < entryPriceLowerBound
 						: currentPrice > entryPriceLowerBound &&
 						  currentPrice < entryPriceUpperBound;

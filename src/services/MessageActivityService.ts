@@ -1,4 +1,5 @@
 import { AssetData, WSChannel } from "../config/enums";
+import "dotenv/config";
 
 export class MessageActivityService {
 	private static instance: MessageActivityService;

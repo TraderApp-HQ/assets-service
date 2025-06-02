@@ -1,5 +1,6 @@
-import { AssetData, WSChannel } from "../config/enums";
 import WebSocket from "ws";
+import "dotenv/config";
+import { AssetData, WSChannel } from "../config/enums";
 
 export class BinanceWebSocketService {
 	private static instance: BinanceWebSocketService;

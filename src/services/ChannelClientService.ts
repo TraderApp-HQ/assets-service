@@ -1,5 +1,6 @@
-import { WSChannel } from "../config/enums";
 import * as WebSocketType from "ws";
+import "dotenv/config";
+import { WSChannel } from "../config/enums";
 
 export class ChannelClient {
 	private static instance: ChannelClient;

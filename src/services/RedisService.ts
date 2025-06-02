@@ -11,6 +11,7 @@ export class RedisClient {
 	private constructor() {
 		this.env = process.env.NODE_ENV ?? "development";
 		try {
+			console.log("====redis url====", { redisUrl: process.env.REDIS_URL });
 			this.client = new Redis({
 				host: process.env.REDIS_URL ?? "localhost",
 				port: 6379,

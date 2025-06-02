@@ -74,14 +74,12 @@ export const binanceSignals = async () => {
 		});
 
 		// Update redis cache with updated signal data from db
-		const updatedSignalDataPromises = activeSignals.map((signal) => {
+		const updatedSignalDataPromises = activeSignals.map(async (signal) => {
 			const data = cachedSignalsPriceTable[signal.signalId];
-
 			if (!data) return null;
 
 			const { signalId, exchange, assetPrice, timestamp } = data;
-
-			return redisCache.addSignalPrice({
+			await redisCache.addSignalPrice({
 				signalId,
 				exchange,
 				assetPrice,
@@ -91,18 +89,14 @@ export const binanceSignals = async () => {
 		});
 
 		// Delete stale signals price and order book from redis cache
-		const pricePromises = staleSignalsPrice.map(({ signalId, exchange }) => {
-			// Close stale signal's price web sockets
-			binanceSocketCache.closePriceSocket(signalId);
-
-			return redisCache.removeSignalPrice({ signalId, exchange });
+		const pricePromises = staleSignalsPrice.map(async ({ signalId, exchange }) => {
+			await binanceSocketCache.closePriceSocket(signalId);
+			await redisCache.removeSignalPrice({ signalId, exchange });
 		});
 
-		const orderBookPromises = staleSignalsOrderBook.map(({ signalId, exchange }) => {
-			// Close stale signal's order book web sockets
-			binanceSocketCache.closeOrderBookSocket(signalId);
-
-			return redisCache.removeSignalOrderBook({ signalId, exchange });
+		const orderBookPromises = staleSignalsOrderBook.map(async ({ signalId, exchange }) => {
+			await binanceSocketCache.closeOrderBookSocket(signalId);
+			await redisCache.removeSignalOrderBook({ signalId, exchange });
 		});
 
 		// make batch requests to delete stale signals from redis cache

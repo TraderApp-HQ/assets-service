@@ -26,21 +26,21 @@ const orderBookBuffer: Map<
 
 const redisCache = RedisClient.getInstance();
 
-// Flush prices to Redis every minute
-setInterval(() => {
+// Flush prices to Redis every 20 seconds
+setInterval(async () => {
 	for (const [signalId, { asset, assetPrice, exchange }] of priceBuffer.entries()) {
-		redisCache.addSignalPrice({ signalId, exchange, asset, assetPrice });
+		await redisCache.addSignalPrice({ signalId, exchange, asset, assetPrice });
 	}
 	priceBuffer.clear();
-}, 20 * 1000); // 20 secs
+}, 20 * 1000);
 
-// Flush order books to Redis every minute
-setInterval(() => {
+// Flush order books to Redis every 20 seconds
+setInterval(async () => {
 	for (const [
 		signalId,
 		{ exchange, totalSellQuantityInRange, totalBuyQuantityInRange },
 	] of orderBookBuffer.entries()) {
-		redisCache.addSignalOrderBook({
+		await redisCache.addSignalOrderBook({
 			signalId,
 			exchange,
 			totalSellQuantityInRange,
@@ -48,7 +48,7 @@ setInterval(() => {
 		});
 	}
 	orderBookBuffer.clear();
-}, 20 * 1000); // 20 secs
+}, 20 * 1000);
 
 // A function to open websocket connections and monitor orderBook and price for asset pair
 export const openBinanceWebSocketConnection = async (signal: IActiveSignalsData) => {

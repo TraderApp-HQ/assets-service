@@ -41,7 +41,8 @@ export const RedisConnectionHealthCheckJob = () =>
 		console.log("=== Running Redis Connection Health Check ===");
 		const redis = RedisClient.getInstance();
 		try {
-			const pong = await (redis as any).client.ping();
+			const client = await redis.getClient();
+			const pong = await client.ping();
 			if (pong === "PONG") {
 				console.log("[HealthCheck] Redis is healthy.");
 			} else {
@@ -59,44 +60,53 @@ export const BinanceAssetWebSocketHealthCheckJob = () =>
 		const messageActivity = MessageActivityService.getInstance();
 		const socketMap = (binanceSocketCache as any).binanceSocketMap as Map<string, WebSocket>;
 
-		// Get all cached assets from Redis
-		const allPrices = await redisCache.getAllSignalsPrices(Exchange.binance);
-		const assetMap = new Map(allPrices.map((p) => [p.signalId, p.asset]));
+		try {
+			// Get all cached assets from Redis
+			const allPrices = await redisCache.getAllSignalsPrices(Exchange.binance);
+			const assetMap = new Map(allPrices.map((p) => [p.signalId, p.asset]));
 
-		const TWO_MINUTES = 2 * 60 * 1000; // 2 minutes for more responsive checks
+			const TWO_MINUTES = 2 * 60 * 1000;
 
-		const socketsToReopen = [];
-		for (const [key, ws] of socketMap.entries()) {
-			const signalId = key.split("_").pop() ?? "";
-			const asset = assetMap.get(signalId);
-			const type = key.includes(AssetData.price) ? AssetData.price : AssetData.orderBook;
+			const socketsToReopen = [];
+			for (const [key, ws] of socketMap.entries()) {
+				const signalId = key.split("_").pop() ?? "";
+				const asset = assetMap.get(signalId);
+				const type = key.includes(AssetData.price) ? AssetData.price : AssetData.orderBook;
 
-			// Check if messages are stale
-			const messagesStale = messageActivity.isMessageStale(signalId, type, TWO_MINUTES);
-			if (ws.readyState !== WebSocket.OPEN || messagesStale) {
-				if (asset) {
-					socketsToReopen.push({ asset, ws });
-				} else {
-					console.warn(`[HealthCheck] No asset found in Redis for signalId: ${signalId}`);
+				// Check if messages are stale
+				const messagesStale = messageActivity.isMessageStale(signalId, type, TWO_MINUTES);
+				if (ws.readyState !== WebSocket.OPEN || messagesStale) {
+					if (asset) {
+						socketsToReopen.push({ asset, ws });
+					} else {
+						console.warn(
+							`[HealthCheck] No asset found in Redis for signalId: ${signalId}`
+						);
+					}
 				}
 			}
-		}
 
-		for (const item of socketsToReopen) {
-			console.log(
-				`[HealthCheck] Reopening WebSocket for asset: ${item.asset.assetPair} (reason: ${
-					item.ws.readyState !== WebSocket.OPEN ? "closed" : "no messages received"
-				})`
-			);
-			try {
-				await binanceSocketCache.closePriceSocket(item.asset.signalId);
-				await binanceSocketCache.closeOrderBookSocket(item.asset.signalId);
-				openBinanceWebSocketConnection(item.asset);
-			} catch (err) {
-				console.error(
-					`[HealthCheck] Error reopening WebSocket for ${item.asset.assetPair}:`,
-					err
+			// Reopen sockets sequentially to avoid overwhelming the system
+			for (const item of socketsToReopen) {
+				console.log(
+					`[HealthCheck] Reopening WebSocket for asset: ${
+						item.asset.assetPair
+					} (reason: ${
+						item.ws.readyState !== WebSocket.OPEN ? "closed" : "no messages received"
+					})`
 				);
+				try {
+					await binanceSocketCache.closePriceSocket(item.asset.signalId);
+					await binanceSocketCache.closeOrderBookSocket(item.asset.signalId);
+					await openBinanceWebSocketConnection(item.asset);
+				} catch (err) {
+					console.error(
+						`[HealthCheck] Error reopening WebSocket for ${item.asset.assetPair}:`,
+						err
+					);
+				}
 			}
+		} catch (error) {
+			console.error("[HealthCheck] Error in BinanceAssetWebSocketHealthCheckJob:", error);
 		}
 	});

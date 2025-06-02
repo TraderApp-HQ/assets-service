@@ -12,6 +12,7 @@ import secretsJson from "./env.json";
 import { CoinRoutes, CurrencyRoutes, ExchangeRoutes, SignalRoutes } from "./routes";
 import specs from "./utils/swagger";
 import runAllJobs from "./jobs";
+import { RedisClient } from "./services/RedisService";
 
 config();
 const app: Application = express();
@@ -22,28 +23,37 @@ const suffix = ENVIRONMENTS[env] ?? "dev";
 const secretNames = ["common-secrets", "assets-service-secrets"];
 
 (async function () {
-	await initSecrets({
-		env: suffix,
-		secretNames,
-		secretsJson,
-	});
-	const port = process.env.PORT ?? "";
-	// const port = 8082;
-	const dbUrl = process.env.ASSETS_SERVICE_DB_URL ?? "";
-	// const dbUrl = "mongodb://localhost:27017/assets-service-db";
-	// connect to mongodb
-	mongoose
-		.connect(dbUrl)
-		.then(() => {
-			app.listen(port, () => {
-				logger.log(`Server listening at port ${port}`);
-				startServer();
-				logger.log(`Docs available at http://localhost:${port}/api-docs`);
-			});
-		})
-		.catch((err) => {
-			logger.error(`Unable to connect to mongodb. Error === ${JSON.stringify(err)}`);
+	try {
+		// First load environment variables
+		config();
+
+		// Then initialize secrets
+		await initSecrets({
+			env: suffix,
+			secretNames,
+			secretsJson,
 		});
+
+		// Initialize Redis connection
+		const redisClient = RedisClient.getInstance();
+		await redisClient.getClient(); // This will initialize the connection
+
+		const port = process.env.PORT ?? "";
+		const dbUrl = process.env.ASSETS_SERVICE_DB_URL ?? "";
+
+		// Connect to MongoDB
+		await mongoose.connect(dbUrl);
+
+		// Start the server
+		app.listen(port, () => {
+			logger.log(`Server listening at port ${port}`);
+			startServer();
+			logger.log(`Docs available at http://localhost:${port}/api-docs`);
+		});
+	} catch (err) {
+		logger.error(`Server startup failed: ${JSON.stringify(err)}`);
+		process.exit(1);
+	}
 })();
 
 function startServer() {

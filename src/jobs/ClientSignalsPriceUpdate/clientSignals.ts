@@ -1,5 +1,4 @@
 import { Exchange } from "../../config/enums";
-import { ISignalPrice } from "../../config/interfaces";
 import { ChannelClient } from "../../services/ChannelClientService";
 import { RedisClient } from "../../services/RedisService";
 import WebSocket, * as WebSocketType from "ws";
@@ -15,9 +14,7 @@ export const clientSignals = async () => {
 		// const clients = (await redisCache.getChannelClients()) as unknown as WebSocketType[];
 
 		// Get signals current prices
-		const signalsPrice = (await redisCache.getAllSignalsPrices(
-			Exchange.binance
-		)) as unknown as ISignalPrice[];
+		const signalsPrice = await redisCache.getAllSignalsPrices(Exchange.binance);
 
 		// Send prices to clients
 		clients.forEach((client) => {
@@ -31,6 +28,6 @@ export const clientSignals = async () => {
 		console.error(`Error sending real time prices: ${error.message}`);
 	} finally {
 		// Close redis connection
-		redisCache.closeConnection();
+		await redisCache.closeConnection();
 	}
 };

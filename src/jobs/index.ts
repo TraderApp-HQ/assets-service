@@ -18,12 +18,14 @@ const runAllJobs = async () => {
 		await redisCache.deleteAllCacheRecord();
 		console.log("============= Old records cleared from cache ===================");
 
-		BinanceSignalsPriceUpdateJob();
-		DbPriceUpdateJob();
-		BinanceWebSocketsHealthCheckJob();
-		RedisConnectionHealthCheckJob();
-		BinanceAssetWebSocketHealthCheckJob();
-		// ClientSignalsPriceUpdateJob();
+		// Start all jobs
+		await Promise.all([
+			BinanceSignalsPriceUpdateJob(),
+			DbPriceUpdateJob(),
+			BinanceWebSocketsHealthCheckJob(),
+			RedisConnectionHealthCheckJob(),
+			BinanceAssetWebSocketHealthCheckJob(),
+		]);
 	} catch (error) {
 		console.log("============= Error clearing cache or running jobs", error);
 	}

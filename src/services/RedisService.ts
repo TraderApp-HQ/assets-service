@@ -6,31 +6,11 @@ import "dotenv/config";
 
 export class RedisClient {
 	private static instance: RedisClient;
-	public client: Redis | null;
+	private client: Redis | null = null;
 	private readonly env: string;
 
 	private constructor() {
 		this.env = process.env.NODE_ENV ?? "development";
-		try {
-			console.log("====redis url====", { redisUrl: process.env.REDIS_URL });
-			this.client = new Redis({
-				host: process.env.REDIS_URL ?? "localhost",
-				port: 6379,
-			});
-
-			this.client.on("ready", () => console.log("Redis connection established ✅✅✅"));
-
-			// Handles error in redis connection
-			this.client.on("error", async (err) => {
-				console.error("❌ Redis connection error:", err);
-				await this.closeConnection();
-			});
-
-			this.client.on("end", () => console.error("❌ Redis connection closed."));
-		} catch (error) {
-			console.error("⚠️ Failed to initialize Redis:", error);
-			this.client = null;
-		}
 	}
 
 	public static getInstance(): RedisClient {
@@ -40,8 +20,41 @@ export class RedisClient {
 		return RedisClient.instance;
 	}
 
+	private async initializeClient(): Promise<void> {
+		if (this.client) return;
+
+		try {
+			console.log("====redis url====", { redisUrl: process.env.REDIS_URL });
+			this.client = new Redis({
+				host: process.env.REDIS_URL ?? "localhost",
+				port: 6379,
+			});
+
+			this.client.on("ready", () => console.log("Redis connection established ✅✅✅"));
+
+			this.client.on("error", async (err) => {
+				console.error("❌ Redis connection error:", err);
+				await this.closeConnection();
+			});
+
+			this.client.on("end", () => console.error("❌ Redis connection closed."));
+		} catch (error) {
+			console.error("⚠️ Failed to initialize Redis:", error);
+			this.client = null;
+			throw error;
+		}
+	}
+
+	public async getClient(): Promise<Redis> {
+		if (!this.client) {
+			await this.initializeClient();
+		}
+		return this.client as Redis;
+	}
+
 	async addSignalPrice({ signalId, exchange, asset, assetPrice, timestamp }: ISignalPrice) {
 		try {
+			const client = await this.getClient();
 			const wsKey = `${this.env}_${WSChannel.assetsUpdateWs}_${AssetData.price}_${signalId}_${exchange}`;
 			const data = {
 				signalId,
@@ -50,7 +63,7 @@ export class RedisClient {
 				assetPrice,
 				timestamp: timestamp ?? Date.now(),
 			};
-			await this.client?.set(wsKey, JSON.stringify(data));
+			await client.set(wsKey, JSON.stringify(data));
 		} catch (error) {
 			console.error(`Failed to add signal(${asset.assetPair}) price to Redis:`, error);
 		}
@@ -64,6 +77,7 @@ export class RedisClient {
 		timestamp,
 	}: ISignalOrderBook) {
 		try {
+			const client = await this.getClient();
 			const wsKey = `${this.env}_${WSChannel.assetsUpdateWs}_${AssetData.orderBook}_${signalId}_${exchange}`;
 			const data = {
 				signalId,
@@ -73,25 +87,26 @@ export class RedisClient {
 				timestamp: timestamp ?? Date.now(),
 			};
 
-			await this.client?.set(wsKey, JSON.stringify(data));
+			await client.set(wsKey, JSON.stringify(data));
 		} catch (error) {
 			console.error(`Failed to add signal(${signalId}) order book to Redis:`, error);
 		}
 	}
 
 	async getAllSignalsPrices(exchange?: Exchange): Promise<ISignalPrice[]> {
+		const client = await this.getClient();
 		const filteredKey = exchange
 			? `${this.env}_${WSChannel.assetsUpdateWs}_${AssetData.price}_*_${exchange}`
 			: `${this.env}_${WSChannel.assetsUpdateWs}_${AssetData.price}_*`;
 
-		const keys = await this.client?.keys(filteredKey);
+		const keys = await client.keys(filteredKey);
 		const signals = keys
 			? await Promise.all(
 					keys.map(async (key) => {
 						const keyArray = key.split("_");
 						const signalId = keyArray[keyArray.length - 2];
 						const exchange = keyArray[keyArray.length - 1] as Exchange;
-						const assetValue = (await this.client?.get(key)) as string;
+						const assetValue = (await client.get(key)) as string;
 						const { asset, assetPrice, timestamp } = JSON.parse(assetValue);
 
 						return { signalId, exchange, asset, assetPrice, timestamp };
@@ -103,18 +118,19 @@ export class RedisClient {
 	}
 
 	async getAllSignalsOrderBooks(exchange?: string): Promise<ISignalOrderBook[]> {
+		const client = await this.getClient();
 		const filteredKey = exchange
 			? `${this.env}_${WSChannel.assetsUpdateWs}_${AssetData.orderBook}_*_${exchange}`
 			: `${this.env}_${WSChannel.assetsUpdateWs}_${AssetData.orderBook}_*`;
 
-		const keys = await this.client?.keys(filteredKey);
+		const keys = await client.keys(filteredKey);
 		const signals = keys
 			? await Promise.all(
 					keys.map(async (key) => {
 						const keyArray = key.split("_");
 						const signalId = keyArray[keyArray.length - 2];
 						const exchange = keyArray[keyArray.length - 1] as Exchange;
-						const assetValue = (await this.client?.get(key)) as string;
+						const assetValue = (await client.get(key)) as string;
 						const { totalBuyQuantityInRange, totalSellQuantityInRange, timestamp } =
 							JSON.parse(assetValue);
 						return {
@@ -133,8 +149,9 @@ export class RedisClient {
 
 	async removeSignalPrice({ signalId, exchange }: IRemoveSignal): Promise<void> {
 		try {
+			const client = await this.getClient();
 			const wsKey = `${this.env}_${WSChannel.assetsUpdateWs}_${AssetData.price}_${signalId}_${exchange}`;
-			await this.client?.del(wsKey);
+			await client.del(wsKey);
 		} catch (error) {
 			console.error(`Failed to remove signal price from Redis:`, error);
 		}
@@ -142,30 +159,27 @@ export class RedisClient {
 
 	async removeSignalOrderBook({ signalId, exchange }: IRemoveSignal): Promise<void> {
 		try {
+			const client = await this.getClient();
 			const wsKey = `${this.env}_${WSChannel.assetsUpdateWs}_${AssetData.orderBook}_${signalId}_${exchange}`;
-			await this.client?.del(wsKey);
+			await client.del(wsKey);
 		} catch (error) {
 			console.error(`Failed to remove signal order book from Redis:`, error);
 		}
 	}
 
 	async deleteAllCacheRecord(): Promise<void> {
+		const client = await this.getClient();
 		const key = `${this.env}_${WSChannel.assetsUpdateWs}_*`;
-
-		const keys = await this.client?.keys(key);
-
+		const keys = await client.keys(key);
 		if (keys && keys?.length > 0) {
-			await this.client?.unlink(...keys);
+			await client.unlink(...keys);
 		}
-
-		// await this.closeConnection();
 	}
 
 	async closeConnection(): Promise<void> {
-		if (!this.client) return;
-
+		const client = await this.getClient();
 		try {
-			await this.client.quit();
+			await client.quit();
 			this.client = null;
 		} catch (error) {
 			console.error("❌ Error closing Redis connection:", error);

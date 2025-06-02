@@ -20,7 +20,5 @@ export const dbPrice = async () => {
 		await signalService.updateSignalsDataInDB(signalsPrice);
 	} catch (error: any) {
 		console.error(`Error updating prices to db: ${error.message}`);
-	} finally {
-		// redisCache.closeConnection();
 	}
 };

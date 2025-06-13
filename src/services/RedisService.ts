@@ -26,8 +26,10 @@ export class RedisClient {
 		try {
 			console.log("====redis url====", { redisUrl: process.env.REDIS_URL });
 			this.client = new Redis({
-				host: process.env.REDIS_URL ?? "localhost",
+				host: process.env.REDIS_URL,
+				// host: "127.0.0.1",
 				port: 6379,
+				connectTimeout: 90000, // 90 seconds
 			});
 
 			this.client.on("ready", () => console.log("Redis connection established ✅✅✅"));

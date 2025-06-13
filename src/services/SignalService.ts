@@ -265,16 +265,22 @@ export class SignalService {
 				const entryPriceUpperBound = signal.asset.entryPriceUpperBound;
 				const entryPriceLowerBound = signal.asset.entryPriceLowerBound;
 
-				let priceChange;
+				let priceChange: number;
 				if (tradeSide) {
 					if (tradeSide === TradeSide.SHORT) {
-						priceChange = ((entryPrice - currentPrice) / entryPrice) * 100;
+						priceChange = Number(
+							((entryPrice - currentPrice) / entryPrice) * 100
+						).toFixed(2) as unknown as number;
 					} else {
-						priceChange = ((currentPrice - entryPrice) / entryPrice) * 100;
+						priceChange = Number(
+							((currentPrice - entryPrice) / entryPrice) * 100
+						).toFixed(2) as unknown as number;
 					}
 				} else {
 					// for spot trading
-					priceChange = ((currentPrice - entryPrice) / entryPrice) * 100;
+					priceChange = Number(((currentPrice - entryPrice) / entryPrice) * 100).toFixed(
+						2
+					) as unknown as number;
 				}
 
 				// Update target profits

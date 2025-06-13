@@ -40,6 +40,8 @@ const secretNames = ["common-secrets", "assets-service-secrets"];
 
 		const port = process.env.PORT ?? "";
 		const dbUrl = process.env.ASSETS_SERVICE_DB_URL ?? "";
+		// const port = 8082;
+		// const dbUrl = "mongodb://localhost:27017/assets-service-db";
 
 		// Connect to MongoDB
 		await mongoose.connect(dbUrl);

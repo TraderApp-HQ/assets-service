@@ -3,8 +3,9 @@ import Redis from "ioredis";
 import { AssetData, Exchange, WSChannel } from "../config/enums";
 import { IRemoveSignal, ISignalOrderBook, ISignalPrice } from "../config/interfaces";
 import "dotenv/config";
+import { ISignalCache } from "./SignalCacheService";
 
-export class RedisClient {
+export class RedisClient implements ISignalCache {
 	private static instance: RedisClient;
 	private client: Redis | null = null;
 	private readonly env: string;

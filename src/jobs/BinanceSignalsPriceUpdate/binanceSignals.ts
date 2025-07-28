@@ -1,18 +1,19 @@
 /* eslint-disable @typescript-eslint/promise-function-async */
-import { Exchange } from "../../config/enums";
+import { Exchange, SignalStatus } from "../../config/enums";
 import { IActiveSignalsData, ISignalOrderBook, ISignalPrice } from "../../config/interfaces";
 import { BinanceWebSocketService } from "../../services/BinanceWebSocketService";
-import { RedisClient } from "../../services/RedisService";
 import { SignalService } from "../../services/SignalService";
 import { openBinanceWebSocketConnection } from "../../websockets/BinanceWebSockets";
+import { SignalCacheClient } from "../../services/SignalCacheService";
 
 export const binanceSignals = async () => {
 	const signalService = new SignalService();
-	const redisCache = RedisClient.getInstance();
 	const binanceSocketCache = BinanceWebSocketService.getInstance();
+	const signalCacheClient = await SignalCacheClient.getInstance();
+	const signalCache = await signalCacheClient.getSignalCache();
 
 	try {
-		// Initialiase redords for active, cached and stale signals
+		// Initialiase records for active, cached and stale signals
 		const activeSignalsTable: Record<string, IActiveSignalsData> = {};
 		const cachedSignalsPriceTable: Record<string, ISignalPrice> = {};
 		const cachedSignalsOrderBookTable: Record<string, ISignalOrderBook> = {};
@@ -21,13 +22,11 @@ export const binanceSignals = async () => {
 		const staleSignalsOrderBook: ISignalOrderBook[] = [];
 
 		// Fetch active signals from db together with their supported exchanges
-		const activeSignals: IActiveSignalsData[] = await signalService.getExchangeActiveSignals(
-			Exchange.binance
-		);
+		const activeSignals = await signalService.getExchangeActiveSignals(Exchange.binance);
 
 		// Fetch all signals prices and order books from redis cache
-		const cacheSignalsPrices = await redisCache.getAllSignalsPrices(Exchange.binance);
-		const cacheSignalsOrderBooks = await redisCache.getAllSignalsOrderBooks(Exchange.binance);
+		const cacheSignalsPrices = await signalCache.getAllSignalsPrices(Exchange.binance);
+		const cacheSignalsOrderBooks = await signalCache.getAllSignalsOrderBooks(Exchange.binance);
 
 		// Hash active signals in hash table for active signals
 		activeSignals.forEach(
@@ -73,30 +72,38 @@ export const binanceSignals = async () => {
 			openBinanceWebSocketConnection(signal);
 		});
 
-		// Update redis cache with updated signal data from db
+		// Update cache with updated signal data from db
 		const updatedSignalDataPromises = activeSignals.map(async (signal) => {
 			const data = cachedSignalsPriceTable[signal.signalId];
+
 			if (!data) return null;
 
-			const { signalId, exchange, assetPrice, timestamp } = data;
-			await redisCache.addSignalPrice({
-				signalId,
-				exchange,
-				assetPrice,
-				asset: signal,
-				timestamp,
-			});
+			const { signalId, exchange, assetPrice, timestamp, asset } = data;
+
+			// Only update cache with data from db if the trade status from DB is "PAUSED"
+			if (signal.status === SignalStatus.PAUSED) {
+				await signalCache.addSignalPrice({
+					signalId,
+					exchange,
+					assetPrice,
+					asset: {
+						...asset,
+						status: signal.status,
+					},
+					timestamp,
+				});
+			}
 		});
 
 		// Delete stale signals price and order book from redis cache
 		const pricePromises = staleSignalsPrice.map(async ({ signalId, exchange }) => {
-			await binanceSocketCache.closePriceSocket(signalId);
-			await redisCache.removeSignalPrice({ signalId, exchange });
+			binanceSocketCache.closePriceSocket(signalId); // Binanace web socket connection
+			await signalCache.removeSignalPrice({ signalId, exchange });
 		});
 
 		const orderBookPromises = staleSignalsOrderBook.map(async ({ signalId, exchange }) => {
-			await binanceSocketCache.closeOrderBookSocket(signalId);
-			await redisCache.removeSignalOrderBook({ signalId, exchange });
+			binanceSocketCache.closeOrderBookSocket(signalId); // Binanace web socket connection
+			await signalCache.removeSignalOrderBook({ signalId, exchange });
 		});
 
 		// make batch requests to delete stale signals from redis cache

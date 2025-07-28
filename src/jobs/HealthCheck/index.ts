@@ -5,6 +5,7 @@ import WebSocket from "ws";
 import { openBinanceWebSocketConnection } from "../../websockets/BinanceWebSockets";
 import { Exchange, AssetData } from "../../config/enums";
 import { MessageActivityService } from "../../services/MessageActivityService";
+import { SignalCacheClient } from "../../services/SignalCacheService";
 
 // Check Binance WebSockets
 export const BinanceWebSocketsHealthCheckJob = () =>
@@ -38,31 +39,37 @@ export const BinanceWebSocketsHealthCheckJob = () =>
 // Check Redis
 export const RedisConnectionHealthCheckJob = () =>
 	cronjob.schedule("*/10 * * * *", async () => {
-		console.log("=== Running Redis Connection Health Check ===");
-		const redis = RedisClient.getInstance();
-		try {
-			const client = await redis.getClient();
-			const pong = await client.ping();
-			if (pong === "PONG") {
-				console.log("[HealthCheck] Redis is healthy.");
-			} else {
-				console.error("[HealthCheck] Redis ping failed:", pong);
+		// Redis connection health check runs only is redis is enabled
+		const signalCacheClient = await SignalCacheClient.getInstance();
+		const isRedisEnabled = await signalCacheClient.isRedisCacheEnabled();
+		const signalCache = await signalCacheClient.getSignalCache();
+		if (isRedisEnabled && signalCache instanceof RedisClient) {
+			console.log("=== Running Redis Connection Health Check ===");
+			try {
+				const client = await signalCache.getClient();
+				const pong = await client.ping();
+				if (pong === "PONG") {
+					console.log("[HealthCheck] Redis is healthy.");
+				} else {
+					console.error("[HealthCheck] Redis ping failed:", pong);
+				}
+			} catch (err) {
+				console.error("[HealthCheck] Redis error:", err);
 			}
-		} catch (err) {
-			console.error("[HealthCheck] Redis error:", err);
 		}
 	});
 
 export const BinanceAssetWebSocketHealthCheckJob = () =>
 	cronjob.schedule("* * * * *", async () => {
+		const signalCacheClient = await SignalCacheClient.getInstance();
 		const binanceSocketCache = BinanceWebSocketService.getInstance();
-		const redisCache = RedisClient.getInstance();
+		const signalCache = await signalCacheClient.getSignalCache();
 		const messageActivity = MessageActivityService.getInstance();
 		const socketMap = (binanceSocketCache as any).binanceSocketMap as Map<string, WebSocket>;
 
 		try {
 			// Get all cached assets from Redis
-			const allPrices = await redisCache.getAllSignalsPrices(Exchange.binance);
+			const allPrices = await signalCache.getAllSignalsPrices(Exchange.binance);
 			const assetMap = new Map(allPrices.map((p) => [p.signalId, p.asset]));
 
 			const TWO_MINUTES = 2 * 60 * 1000;
@@ -80,7 +87,7 @@ export const BinanceAssetWebSocketHealthCheckJob = () =>
 						socketsToReopen.push({ asset, ws });
 					} else {
 						console.warn(
-							`[HealthCheck] No asset found in Redis for signalId: ${signalId}`
+							`[HealthCheck] No asset found in cache for signalId: ${signalId}`
 						);
 					}
 				}
@@ -96,8 +103,8 @@ export const BinanceAssetWebSocketHealthCheckJob = () =>
 					})`
 				);
 				try {
-					await binanceSocketCache.closePriceSocket(item.asset.signalId);
-					await binanceSocketCache.closeOrderBookSocket(item.asset.signalId);
+					binanceSocketCache.closePriceSocket(item.asset.signalId);
+					binanceSocketCache.closeOrderBookSocket(item.asset.signalId);
 					await openBinanceWebSocketConnection(item.asset);
 				} catch (err) {
 					console.error(

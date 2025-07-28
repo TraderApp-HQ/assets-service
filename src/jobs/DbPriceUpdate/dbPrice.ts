@@ -1,15 +1,15 @@
 import { Exchange } from "../../config/enums";
-// import { ISignalPrice } from "../../config/interfaces";
-import { RedisClient } from "../../services/RedisService";
 import { SignalService } from "../../services/SignalService";
+import { SignalCacheClient } from "../../services/SignalCacheService";
 
 export const dbPrice = async () => {
-	const redisCache = RedisClient.getInstance();
 	const signalService = new SignalService();
+	const signalCacheClient = await SignalCacheClient.getInstance();
+	const signalCache = await signalCacheClient.getSignalCache();
 
 	try {
-		// Get signals current prices from redis
-		const signalsPrice = await redisCache.getAllSignalsPrices(Exchange.binance);
+		// Get signals current prices from redis/In-memory cache
+		const signalsPrice = await signalCache.getAllSignalsPrices(Exchange.binance);
 
 		// Abort functon if no signal price is returned.
 		if (!signalsPrice || signalsPrice.length === 0) {

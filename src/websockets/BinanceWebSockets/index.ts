@@ -3,8 +3,9 @@ import WebSocket from "ws";
 import { AssetData, Exchange } from "../../config/enums";
 import { IActiveSignalsData } from "../../config/interfaces";
 import { BinanceWebSocketService } from "../../services/BinanceWebSocketService";
-import { RedisClient } from "../../services/RedisService";
 import { MessageActivityService } from "../../services/MessageActivityService";
+import { SignalCacheClient } from "../../services/SignalCacheService";
+import { SignalService } from "../../services/SignalService";
 
 const wsOptions = {
 	handshakeTimeout: 30000,
@@ -24,23 +25,29 @@ const orderBookBuffer: Map<
 	{ exchange: Exchange; totalSellQuantityInRange: number; totalBuyQuantityInRange: number }
 > = new Map();
 
-const redisCache = RedisClient.getInstance();
-
-// Flush prices to Redis every 20 seconds
+// Flush prices to cache every 20 seconds
 setInterval(async () => {
+	const signalCache = await (await SignalCacheClient.getInstance()).getSignalCache();
+
 	for (const [signalId, { asset, assetPrice, exchange }] of priceBuffer.entries()) {
-		await redisCache.addSignalPrice({ signalId, exchange, asset, assetPrice });
+		// Update the asset data based on the current price
+		const signalService = new SignalService();
+		const updatedAsset = signalService.computeSignalFlags(asset, assetPrice);
+
+		// Add the updated asset data and price to the cache
+		await signalCache.addSignalPrice({ signalId, exchange, asset: updatedAsset, assetPrice });
 	}
 	priceBuffer.clear();
 }, 20 * 1000);
 
-// Flush order books to Redis every 20 seconds
+// Flush order books to cache every 20 seconds
 setInterval(async () => {
+	const signalCache = await (await SignalCacheClient.getInstance()).getSignalCache();
 	for (const [
 		signalId,
 		{ exchange, totalSellQuantityInRange, totalBuyQuantityInRange },
 	] of orderBookBuffer.entries()) {
-		await redisCache.addSignalOrderBook({
+		await signalCache.addSignalOrderBook({
 			signalId,
 			exchange,
 			totalSellQuantityInRange,
@@ -69,7 +76,7 @@ export const openBinanceWebSocketConnection = async (signal: IActiveSignalsData)
 
 		/* ========================== PRICE =============================== */
 		// Add socket connection to in-memory cahce
-		await binanceSocketCache.addPriceSocket({ signalId: signal.signalId, ws: priceWs });
+		binanceSocketCache.addPriceSocket({ signalId: signal.signalId, ws: priceWs });
 		// read price stream
 		priceWs.on("open", async () => {
 			console.log(`WebSocket connected to price stream for ${signal.assetPair}`);
@@ -124,7 +131,7 @@ export const openBinanceWebSocketConnection = async (signal: IActiveSignalsData)
 				const price = parseFloat(update[0]);
 				const quantity = parseFloat(update[1]);
 
-				if (price >= signal.entryPriceLowerBound && price <= signal.entryPriceUpperBound) {
+				if (price <= signal.entryPriceLowerBound && price >= signal.entryPriceUpperBound) {
 					totalSellQuantityInRange += price * quantity;
 				}
 			}

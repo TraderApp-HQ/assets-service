@@ -25,19 +25,19 @@ export class BinanceWebSocketService {
     ACTIVE SIGNALS SOCKETS
     ----------------------
     */
-	async addPriceSocket({ signalId, ws }: { signalId: string; ws: WebSocket }): Promise<void> {
+	addPriceSocket({ signalId, ws }: { signalId: string; ws: WebSocket }): void {
 		const wsKey = `${this.env}_${WSChannel.binanceWs}_${AssetData.price}_${signalId}`;
 		const client = this.binanceSocketMap.get(wsKey);
 		if (client) this.binanceSocketMap.delete(wsKey);
 		this.binanceSocketMap.set(wsKey, ws);
 	}
 
-	async addOrderBookSocket({ signalId, ws }: { signalId: string; ws: WebSocket }): Promise<void> {
+	addOrderBookSocket({ signalId, ws }: { signalId: string; ws: WebSocket }): void {
 		const wsKey = `${this.env}_${WSChannel.binanceWs}_${AssetData.orderBook}_${signalId}`;
 		this.binanceSocketMap.set(wsKey, ws);
 	}
 
-	async closePriceSocket(signalId: string) {
+	closePriceSocket(signalId: string) {
 		const wsKey = `${this.env}_${WSChannel.binanceWs}_${AssetData.price}_${signalId}`;
 		const client = this.binanceSocketMap.get(wsKey) as WebSocket;
 		// Close socket connection
@@ -49,7 +49,7 @@ export class BinanceWebSocketService {
 		this.binanceSocketMap.delete(wsKey);
 	}
 
-	async closeOrderBookSocket(signalId: string) {
+	closeOrderBookSocket(signalId: string) {
 		const wsKey = `${this.env}_${WSChannel.binanceWs}_${AssetData.orderBook}_${signalId}`;
 		const client = this.binanceSocketMap.get(wsKey) as WebSocket;
 		// Close socket connection

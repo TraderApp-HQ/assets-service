@@ -9,10 +9,11 @@ import mongoose from "mongoose";
 import swaggerUi from "swagger-ui-express";
 import { ENVIRONMENTS } from "./config/constants";
 import secretsJson from "./env.json";
-import { CoinRoutes, CurrencyRoutes, ExchangeRoutes, SignalRoutes } from "./routes";
-import specs from "./utils/swagger";
 import runAllJobs from "./jobs";
+import { CoinRoutes, CurrencyRoutes, ExchangeRoutes, SignalRoutes } from "./routes";
 import { RedisClient } from "./services/RedisService";
+import { SignalCacheClient } from "./services/SignalCacheService";
+import specs from "./utils/swagger";
 
 config();
 const app: Application = express();
@@ -34,9 +35,13 @@ const secretNames = ["common-secrets", "assets-service-secrets"];
 			secretsJson,
 		});
 
-		// Initialize Redis connection
-		const redisClient = RedisClient.getInstance();
-		await redisClient.getClient(); // This will initialize the connection
+		// Initialize Redis connection only is redis is enabled
+		const signalCacheClient = await SignalCacheClient.getInstance();
+		const isRedisEnabled = await signalCacheClient.isRedisCacheEnabled();
+		const signalCache = await signalCacheClient.getSignalCache();
+		if (isRedisEnabled && signalCache instanceof RedisClient) {
+			await signalCache.getClient(); // This will initialize the connection if redis is been used fro caching
+		}
 
 		const port = process.env.PORT ?? "";
 		const dbUrl = process.env.ASSETS_SERVICE_DB_URL ?? "";

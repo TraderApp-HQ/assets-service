@@ -67,7 +67,7 @@ export async function validateCreateSignalRequest(
 				.valid(...Object.values(SignalRisk))
 				.required()
 				.label("Risk"),
-			isSignalTradable: Joi.boolean().required(),
+			isSignalTradable: Joi.boolean(),
 			chart: Joi.string().label("Chart"),
 			// chart: Joi.string().base64().required().label("Chart"),
 			category: Joi.string()

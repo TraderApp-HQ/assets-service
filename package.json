@@ -20,12 +20,19 @@
 		"init-coins-category-update": "npx ts-node src/scripts/update-coins-category-script",
 		"prepare": "husky install",
 		"codegen": "npx prisma generate",
-		"migration": "npx prisma migrate deploy"
+		"migration": "npx prisma migrate deploy",
+		"run-sample-script": "ts-node src/scripts/fixtures/sample-script.ts",
+		"db:migrate-all": "ts-node src/scripts/migrate.ts",
+		"db:migrate-one": "ts-node src/scripts/migrate.ts migrate",
+		"db:migrate-rollback": "ts-node src/scripts/migrate.ts rollback",
+		"db:migrate-rollback-all": "ts-node src/scripts/migrate.ts rollback-all",
+		"db:migration-create": "ts-node src/scripts/migrate-create.ts"
 	},
 	"dependencies": {
 		"@aws-sdk/client-s3": "^3.627.0",
 		"@aws-sdk/client-secrets-manager": "^3.437.0",
 		"@prisma/client": "^5.7.1",
+		"@splitsoftware/splitio": "^11.4.1",
 		"@traderapp/shared-resources": "^1.0.5",
 		"axios": "^1.6.0",
 		"cors": "^2.8.5",

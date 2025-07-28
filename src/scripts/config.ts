@@ -1,14 +1,16 @@
 import mongoose from "mongoose";
+import "dotenv/config";
 
 interface ScriptConfig {
 	scriptFunction: () => Promise<void>;
 }
 
 export const runScript = ({ scriptFunction }: ScriptConfig): void => {
-	const dbUrl = process.env.ASSETS_SERVICE_DB_URL ?? "";
+	const dbUrl = process.env.MONGO_URI ?? "";
+	console.log("db url: ", dbUrl);
 
 	mongoose
-		.connect(dbUrl)
+		.connect(dbUrl, { serverSelectionTimeoutMS: 20000 })
 		.then(async () => {
 			console.log("Connected to db");
 			return scriptFunction();

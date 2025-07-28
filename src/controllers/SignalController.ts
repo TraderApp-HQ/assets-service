@@ -66,7 +66,7 @@ export async function createSignalHandler(req: Request, res: Response, next: Nex
 			chartUrl,
 			maxGain: 0,
 			tradeNote,
-			status: SignalStatus.ACTIVE,
+			status: SignalStatus.PENDING,
 			supportedExchanges,
 			createdAt: new Date().toISOString(),
 			category,

@@ -163,7 +163,7 @@ export async function getActiveSignalsHandler(req: Request, res: Response, next:
 	try {
 		const signalsResponse = await signalService.getPaginatedSignals(
 			req.query as Record<string, string>,
-			[SignalStatus.ACTIVE, SignalStatus.PAUSED]
+			[SignalStatus.PENDING, SignalStatus.ACTIVE, SignalStatus.PAUSED]
 		);
 		if (!signalsResponse.success) {
 			res.status(HttpStatus.NOT_FOUND).json(

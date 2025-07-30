@@ -1,16 +1,15 @@
-/* eslint-disable @typescript-eslint/promise-function-async */
 import { Exchange, SignalStatus } from "../../config/enums";
 import { IActiveSignalsData, ISignalOrderBook, ISignalPrice } from "../../config/interfaces";
 import { BinanceWebSocketService } from "../../services/BinanceWebSocketService";
 import { SignalService } from "../../services/SignalService";
 import { openBinanceWebSocketConnection } from "../../websockets/BinanceWebSockets";
-import { SignalCacheClient } from "../../services/SignalCacheService";
+import { CacheClient } from "../../services/CacheService";
 
 export const binanceSignals = async () => {
 	const signalService = new SignalService();
 	const binanceSocketCache = BinanceWebSocketService.getInstance();
-	const signalCacheClient = await SignalCacheClient.getInstance();
-	const signalCache = await signalCacheClient.getSignalCache();
+	const cacheClient = await CacheClient.getInstance();
+	const cache = await cacheClient.getCache();
 
 	try {
 		// Initialiase records for active, cached and stale signals
@@ -25,8 +24,8 @@ export const binanceSignals = async () => {
 		const activeSignals = await signalService.getExchangeActiveSignals(Exchange.binance);
 
 		// Fetch all signals prices and order books from redis cache
-		const cacheSignalsPrices = await signalCache.getAllSignalsPrices(Exchange.binance);
-		const cacheSignalsOrderBooks = await signalCache.getAllSignalsOrderBooks(Exchange.binance);
+		const cacheSignalsPrices = await cache.getAllSignalsPrices(Exchange.binance);
+		const cacheSignalsOrderBooks = await cache.getAllSignalsOrderBooks(Exchange.binance);
 
 		// Hash active signals in hash table for active signals
 		activeSignals.forEach(
@@ -82,7 +81,7 @@ export const binanceSignals = async () => {
 
 			// Only update cache with data from db if the trade status from DB is "PAUSED"
 			if (signal.status === SignalStatus.PAUSED) {
-				await signalCache.addSignalPrice({
+				await cache.addSignalPrice({
 					signalId,
 					exchange,
 					assetPrice,
@@ -98,12 +97,12 @@ export const binanceSignals = async () => {
 		// Delete stale signals price and order book from redis cache
 		const pricePromises = staleSignalsPrice.map(async ({ signalId, exchange }) => {
 			binanceSocketCache.closePriceSocket(signalId); // Binanace web socket connection
-			await signalCache.removeSignalPrice({ signalId, exchange });
+			await cache.removeSignalPrice({ signalId, exchange });
 		});
 
 		const orderBookPromises = staleSignalsOrderBook.map(async ({ signalId, exchange }) => {
 			binanceSocketCache.closeOrderBookSocket(signalId); // Binanace web socket connection
-			await signalCache.removeSignalOrderBook({ signalId, exchange });
+			await cache.removeSignalOrderBook({ signalId, exchange });
 		});
 
 		// make batch requests to delete stale signals from redis cache

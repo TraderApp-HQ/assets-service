@@ -1,5 +1,5 @@
 import { BinanceWebSocketService } from "../services/BinanceWebSocketService";
-import { SignalCacheClient } from "../services/SignalCacheService";
+import { CacheClient } from "../services/CacheService";
 import { BinanceSignalsPriceUpdateJob } from "./BinanceSignalsPriceUpdate";
 import { DbPriceUpdateJob } from "./DbPriceUpdate";
 import {
@@ -14,9 +14,9 @@ const runAllJobs = async () => {
 		const binanceCache = BinanceWebSocketService.getInstance();
 		binanceCache.closeAllSockects();
 
-		const signalCacheClient = await SignalCacheClient.getInstance();
-		const signalCache = await signalCacheClient.getSignalCache();
-		await signalCache.deleteAllCacheRecord();
+		const cacheClient = await CacheClient.getInstance();
+		const cache = await cacheClient.getCache();
+		await cache.deleteAllCacheRecord();
 		console.log("============= Old records cleared from cache ===================");
 
 		// Start all jobs

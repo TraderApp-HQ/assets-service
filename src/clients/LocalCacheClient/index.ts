@@ -1,10 +1,10 @@
 import "dotenv/config";
-import { IRemoveSignal, ISignalOrderBook, ISignalPrice } from "../config/interfaces";
-import { AssetData, Exchange, WSChannel } from "../config/enums";
-import { ISignalCache } from "./SignalCacheService";
+import { IRemoveSignal, ISignalOrderBook, ISignalPrice } from "../../config/interfaces";
+import { AssetData, Exchange, WSChannel } from "../../config/enums";
+import { ICache } from "../../services/CacheService";
 
-export class InMemoryClient implements ISignalCache {
-	private static instance: InMemoryClient;
+export class LocalCacheClient implements ICache {
+	private static instance: LocalCacheClient;
 	private readonly memoryCache: Map<string, ISignalPrice | ISignalOrderBook>;
 	private readonly env: string;
 
@@ -41,12 +41,12 @@ export class InMemoryClient implements ISignalCache {
 		return keys;
 	}
 
-	public static getInstance(): InMemoryClient {
-		if (!InMemoryClient.instance) {
-			InMemoryClient.instance = new InMemoryClient();
+	public static getInstance(): LocalCacheClient {
+		if (!LocalCacheClient.instance) {
+			LocalCacheClient.instance = new LocalCacheClient();
 		}
 
-		return InMemoryClient.instance;
+		return LocalCacheClient.instance;
 	}
 
 	public addSignalPrice({

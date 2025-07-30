@@ -3,10 +3,10 @@ import { FeatureFlagManager } from "../clients/SplitIOClient";
 import { redisFlagUserId } from "../clients/SplitIOClient/feature-flags";
 import { Exchange } from "../config/enums";
 import { IRemoveSignal, ISignalOrderBook, ISignalPrice } from "../config/interfaces";
-import { InMemoryClient } from "./InMemoryService";
-import { RedisClient } from "./RedisService";
+import { RedisClient } from "../clients/RedisClient";
+import { LocalCacheClient } from "../clients/LocalCacheClient";
 
-export interface ISignalCache {
+export interface ICache {
 	addSignalPrice: (data: ISignalPrice) => void | Promise<void>;
 	addSignalOrderBook: (data: ISignalOrderBook) => void | Promise<void>;
 	getAllSignalsPrices: (exchange?: Exchange) => ISignalPrice[] | Promise<ISignalPrice[]>;
@@ -18,58 +18,58 @@ export interface ISignalCache {
 	deleteAllCacheRecord: () => void | Promise<void>;
 }
 
-export class SignalCacheClient {
-	private static instance: SignalCacheClient;
+export class CacheClient {
+	private static instance: CacheClient;
 	private static isRedisCacheEnabled: boolean = false;
 	private static isFlagChecked: boolean = false;
 
-	private SignalCache: ISignalCache | undefined = undefined;
+	private Cache: ICache | undefined = undefined;
 
 	private constructor() {}
 
-	public static async getInstance(): Promise<SignalCacheClient> {
-		if (!SignalCacheClient.instance) {
-			SignalCacheClient.instance = new SignalCacheClient();
-			await SignalCacheClient.instance.initializeSignalCache();
+	public static async getInstance(): Promise<CacheClient> {
+		if (!CacheClient.instance) {
+			CacheClient.instance = new CacheClient();
+			await CacheClient.instance.initializeSignalCache();
 		}
 
-		return SignalCacheClient.instance;
+		return CacheClient.instance;
 	}
 
 	private async initializeSignalCache(): Promise<void> {
-		if (!SignalCacheClient.isFlagChecked) {
+		if (!CacheClient.isFlagChecked) {
 			const featureFlags = new FeatureFlagManager();
-			SignalCacheClient.isRedisCacheEnabled = await featureFlags.checkToggleFlag(
+			CacheClient.isRedisCacheEnabled = await featureFlags.checkToggleFlag(
 				"release-redis-cache",
 				redisFlagUserId
 			);
-			SignalCacheClient.isFlagChecked = true;
+			CacheClient.isFlagChecked = true;
 		}
 
-		this.SignalCache = SignalCacheClient.isRedisCacheEnabled
+		this.Cache = CacheClient.isRedisCacheEnabled
 			? RedisClient.getInstance()
-			: InMemoryClient.getInstance();
+			: LocalCacheClient.getInstance();
 	}
 
 	public async isRedisCacheEnabled(): Promise<boolean> {
-		if (!SignalCacheClient.isFlagChecked) {
+		if (!CacheClient.isFlagChecked) {
 			const featureFlags = new FeatureFlagManager();
-			SignalCacheClient.isRedisCacheEnabled = await featureFlags.checkToggleFlag(
+			CacheClient.isRedisCacheEnabled = await featureFlags.checkToggleFlag(
 				"release-redis-cache",
 				redisFlagUserId
 			);
-			SignalCacheClient.isFlagChecked = true;
+			CacheClient.isFlagChecked = true;
 		}
 
-		return SignalCacheClient.isRedisCacheEnabled;
+		return CacheClient.isRedisCacheEnabled;
 	}
 
-	public async getSignalCache(): Promise<ISignalCache> {
-		if (!this.SignalCache) {
+	public async getCache(): Promise<ICache> {
+		if (!this.Cache) {
 			await this.initializeSignalCache();
 		}
 
 		// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-		return this.SignalCache!;
+		return this.Cache!;
 	}
 }

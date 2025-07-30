@@ -1,11 +1,11 @@
 import cronjob from "node-cron";
 import { BinanceWebSocketService } from "../../services/BinanceWebSocketService";
-import { RedisClient } from "../../services/RedisService";
+import { RedisClient } from "../../clients/RedisClient";
 import WebSocket from "ws";
 import { openBinanceWebSocketConnection } from "../../websockets/BinanceWebSockets";
 import { Exchange, AssetData } from "../../config/enums";
 import { MessageActivityService } from "../../services/MessageActivityService";
-import { SignalCacheClient } from "../../services/SignalCacheService";
+import { CacheClient } from "../../services/CacheService";
 
 // Check Binance WebSockets
 export const BinanceWebSocketsHealthCheckJob = () =>
@@ -40,13 +40,13 @@ export const BinanceWebSocketsHealthCheckJob = () =>
 export const RedisConnectionHealthCheckJob = () =>
 	cronjob.schedule("*/10 * * * *", async () => {
 		// Redis connection health check runs only is redis is enabled
-		const signalCacheClient = await SignalCacheClient.getInstance();
-		const isRedisEnabled = await signalCacheClient.isRedisCacheEnabled();
-		const signalCache = await signalCacheClient.getSignalCache();
-		if (isRedisEnabled && signalCache instanceof RedisClient) {
+		const cacheClient = await CacheClient.getInstance();
+		const isRedisEnabled = await cacheClient.isRedisCacheEnabled();
+		const cache = await cacheClient.getCache();
+		if (isRedisEnabled && cache instanceof RedisClient) {
 			console.log("=== Running Redis Connection Health Check ===");
 			try {
-				const client = await signalCache.getClient();
+				const client = await cache.getClient();
 				const pong = await client.ping();
 				if (pong === "PONG") {
 					console.log("[HealthCheck] Redis is healthy.");
@@ -61,15 +61,15 @@ export const RedisConnectionHealthCheckJob = () =>
 
 export const BinanceAssetWebSocketHealthCheckJob = () =>
 	cronjob.schedule("* * * * *", async () => {
-		const signalCacheClient = await SignalCacheClient.getInstance();
+		const cacheClient = await CacheClient.getInstance();
 		const binanceSocketCache = BinanceWebSocketService.getInstance();
-		const signalCache = await signalCacheClient.getSignalCache();
+		const cache = await cacheClient.getCache();
 		const messageActivity = MessageActivityService.getInstance();
 		const socketMap = (binanceSocketCache as any).binanceSocketMap as Map<string, WebSocket>;
 
 		try {
 			// Get all cached assets from Redis
-			const allPrices = await signalCache.getAllSignalsPrices(Exchange.binance);
+			const allPrices = await cache.getAllSignalsPrices(Exchange.binance);
 			const assetMap = new Map(allPrices.map((p) => [p.signalId, p.asset]));
 
 			const TWO_MINUTES = 2 * 60 * 1000;

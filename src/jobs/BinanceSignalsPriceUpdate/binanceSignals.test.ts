@@ -1,21 +1,18 @@
-// src/jobs/BinanceSignalsPriceUpdate/binanceSignals.test.ts
 import mongoose from "mongoose";
-import { LocalCacheClient } from "../../clients/LocalCacheClient";
 import {
-	Candlestick,
-	Category,
-	ConnectionType,
-	Exchange as ExchangeEnum,
-	SignalRisk,
-	SignalStatus,
-	TradeSide,
-	TradeType,
-} from "../../config/enums";
+	baseCurrencyData,
+	bitcoinCoinData,
+	bitcoinSignalData,
+	cadanoCoinData,
+	cadanoSignalData,
+	exchangeData,
+} from "../../__tests__/test";
+import { Exchange as ExchangeEnum, SignalStatus } from "../../config/enums";
 import { IActiveSignalsData, ISignal } from "../../config/interfaces";
-import Coin, { ICoin } from "../../models/Coin";
-import Currency, { ICurrency } from "../../models/Currency";
-import Exchange, { IExchange } from "../../models/Exchange";
-import { CacheService } from "../../services/CacheService";
+import Coin from "../../models/Coin";
+import Currency from "../../models/Currency";
+import Exchange from "../../models/Exchange";
+import { CacheService, ICache } from "../../services/CacheService";
 import { SignalService } from "../../services/SignalService";
 import * as BinanceWebSockets from "../../websockets/BinanceWebSockets";
 import { binanceSignals } from "./binanceSignals";
@@ -49,163 +46,54 @@ jest.mock("../../services/BinanceWebSocketService", () => ({
 }));
 
 describe("Binance Signals Cron Job", () => {
-	let bitcoinCoin: ICoin,
-		cadanoCoin: ICoin,
-		baseCurrency: ICurrency,
-		exchange: IExchange,
-		cache: LocalCacheClient,
+	let cache: ICache,
 		newBitcoinSignal: ISignal,
 		newCadanoSignal: ISignal,
 		activeSignal: IActiveSignalsData[];
 
 	beforeAll(async () => {
-		// Create exchange
-		exchange = await Exchange.create({
-			_id: 270,
-			name: "Binance",
-			slug: "binance",
-			logo: "binance.png",
-			description: "Binance exchange",
-			status: "ACTIVE",
-			urls: "https://binance.com",
-			makerFee: 0.1,
-			takerFee: 0.1,
-			dateLaunched: new Date(),
-			category: Category.CRYPTO,
-			connectionTypes: [ConnectionType.MANUAL],
-			isIpAddressWhitelistRequired: true,
-			isSpotTradingSupported: true,
-			isFuturesTradingSupported: true,
-			isMarginTradingSupported: true,
-		});
-
-		// Create base currency (Currency)
-		baseCurrency = await Currency.create({
-			_id: 825,
-			name: "Tether USDT",
-			symbol: "USDT",
-			isTradingActive: true,
-			logo: "usdt.png",
-		});
-
-		// Create asset (Coin)
-		bitcoinCoin = await Coin.create({
-			_id: 1,
-			name: "Bitcoin",
-			slug: "bitcoin",
-			symbol: "BTC",
-			logo: "btc.png",
-			description: "Bitcoin asset",
-			urls: "https://bitcoin.org",
-			rank: 1,
-			isCoinActive: true,
-			isTradingActive: true,
-			dateLaunched: new Date(),
-			category: Category.CRYPTO,
-		});
-
-		cadanoCoin = await Coin.create({
-			_id: 2010,
-			name: "Cadano",
-			slug: "cadano",
-			symbol: "ADA",
-			logo: "ada.png",
-			description: "Cadano asset",
-			urls: "https://cadano.org",
-			rank: 11,
-			isCoinActive: true,
-			isTradingActive: true,
-			dateLaunched: new Date(),
-			category: Category.CRYPTO,
-		});
+		await Promise.all([
+			Exchange.create(exchangeData), // Create exchange
+			Currency.create(baseCurrencyData), // Create base currency (Currency)
+			Coin.create(bitcoinCoinData), // Create asset (btc)
+			Coin.create(cadanoCoinData), // Create asset (Cadano)
+		]);
 
 		// Get cache instance
 		const cacheService = await CacheService.getInstance();
-		cache = (await cacheService.getCache()) as LocalCacheClient;
+		cache = await cacheService.getCache();
 	});
 
 	beforeEach(async () => {
 		mockCheckToggleFlag.mockClear();
 		mockCheckToggleFlag.mockResolvedValue(false);
 
-		// Signal Data
-		const bitcoinSignalData = {
-			targetProfits: [
-				{ price: 45000, percent: 0, isReached: false },
-				{ price: 50000, percent: 0, isReached: false },
-				{ price: 55000, percent: 0, isReached: false },
-				{ price: 60000, percent: 0, isReached: false },
-			],
-			stopLoss: { price: 35000, percent: 0, isReached: false },
-			entryPrice: 40000,
-			entryPriceLowerBound: 39500,
-			entryPriceUpperBound: 40500,
-			tradeNote: "Bitcoin Test signal",
-			candlestick: Candlestick.oneHour,
-			risk: SignalRisk.medium,
-			isSignalTradable: false,
-			isSignalTriggered: false,
-			chartUrl: "https://chart.com",
-			status: SignalStatus.PENDING,
-			maxGain: 0,
-			createdAt: new Date().toISOString(),
-			supportedExchanges: [exchange._id],
-			asset: bitcoinCoin._id,
-			assetName: bitcoinCoin.symbol,
-			baseCurrency: baseCurrency._id,
-			baseCurrencyName: baseCurrency.symbol,
-			category: Category.CRYPTO,
-			tradeType: TradeType.FUTURES,
-			tradeSide: TradeSide.LONG,
-			leverage: 4,
-		};
-		const cadanoSignalData = {
-			targetProfits: [
-				{ price: 0.775, percent: 0, isReached: false },
-				{ price: 0.765, percent: 0, isReached: false },
-				{ price: 0.76, percent: 0, isReached: false },
-				{ price: 0.755, percent: 0, isReached: false },
-			],
-			stopLoss: { price: 0.8, percent: 0, isReached: false },
-			entryPrice: 0.785,
-			entryPriceLowerBound: 0.79,
-			entryPriceUpperBound: 0.78,
-			tradeNote: "Cadano Test signal",
-			candlestick: Candlestick.oneHour,
-			risk: SignalRisk.medium,
-			isSignalTradable: false,
-			isSignalTriggered: false,
-			chartUrl: "https://chart.com",
-			status: SignalStatus.PENDING,
-			maxGain: 0,
-			createdAt: new Date().toISOString(),
-			supportedExchanges: [exchange._id],
-			asset: cadanoCoin._id,
-			assetName: cadanoCoin.symbol,
-			baseCurrency: baseCurrency._id,
-			baseCurrencyName: baseCurrency.symbol,
-			category: Category.CRYPTO,
-			tradeType: TradeType.FUTURES,
-			tradeSide: TradeSide.SHORT,
-			leverage: 2,
-		};
-
 		// Create signals
 		const signalService = new SignalService();
-		newBitcoinSignal = (await signalService.createSignal(bitcoinSignalData)) as ISignal;
-		newCadanoSignal = (await signalService.createSignal(cadanoSignalData)) as ISignal;
+		const [bitcoinSignal, cadanoSignal] = await Promise.all([
+			signalService.createSignal(bitcoinSignalData),
+			signalService.createSignal(cadanoSignalData),
+		]);
+		newBitcoinSignal = bitcoinSignal as ISignal;
+		newCadanoSignal = cadanoSignal as ISignal;
 	});
 
 	afterEach(async () => {
 		jest.clearAllMocks();
 
-		// Remove all signals before each test
+		// Clear all signals after each test
 		await mongoose.connection.collection("signals").deleteMany({});
 	});
 
-	afterAll(() => {
-		// Clear cache after test
-		cache.deleteAllCacheRecord();
+	afterAll(async () => {
+		// Clear cache and DB collections after test
+		const collections = mongoose.connection.collections;
+		await Promise.all([
+			cache.deleteAllCacheRecord(),
+			collections["exchange"]?.deleteMany({}),
+			collections["coin"]?.deleteMany({}),
+			collections["currency"]?.deleteMany({}),
+		]);
 	});
 
 	it("Signals 'status' be pending, 'isSignalTradable' and 'isSignalTriggered' flag should both be false", () => {
@@ -287,7 +175,7 @@ describe("Binance Signals Cron Job", () => {
 		});
 
 		// Verify state of cache
-		const cachedPrices = cache.getAllSignalsPrices(ExchangeEnum.binance);
+		const cachedPrices = await cache.getAllSignalsPrices(ExchangeEnum.binance);
 		const updatedCachedBtc = cachedPrices.find(
 			(signal) => signal.signalId === btc?.signalId
 		)?.asset;
@@ -353,7 +241,7 @@ describe("Binance Signals Cron Job", () => {
 		});
 
 		// Verify state of cache
-		let cachedPrices = cache.getAllSignalsPrices(ExchangeEnum.binance);
+		let cachedPrices = await cache.getAllSignalsPrices(ExchangeEnum.binance);
 		let updatedCachedBtc = cachedPrices.find((signal) => signal.signalId === btc?.signalId)
 			?.asset as IActiveSignalsData;
 		let updatedCachedCadano = cachedPrices.find(
@@ -381,7 +269,7 @@ describe("Binance Signals Cron Job", () => {
 		});
 
 		// Verify state of cache
-		cachedPrices = cache.getAllSignalsPrices(ExchangeEnum.binance);
+		cachedPrices = await cache.getAllSignalsPrices(ExchangeEnum.binance);
 		updatedCachedBtc = cachedPrices.find((signal) => signal.signalId === btc?.signalId)
 			?.asset as IActiveSignalsData;
 		updatedCachedCadano = cachedPrices.find(
@@ -413,7 +301,7 @@ describe("Binance Signals Cron Job", () => {
 		cadano = activeSignal.find((signal) => signal.assetName === "ADA") as IActiveSignalsData;
 
 		// Verify state of cache
-		cachedPrices = cache.getAllSignalsPrices(ExchangeEnum.binance);
+		cachedPrices = await cache.getAllSignalsPrices(ExchangeEnum.binance);
 		updatedCachedCadano = cachedPrices.find(
 			(signal) => signal.signalId === cadano?.signalId
 		)?.asset;

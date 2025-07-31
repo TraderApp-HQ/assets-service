@@ -18,8 +18,8 @@ export interface ICache {
 	deleteAllCacheRecord: () => void | Promise<void>;
 }
 
-export class CacheClient {
-	private static instance: CacheClient;
+export class CacheService {
+	private static instance: CacheService;
 	private static isRedisCacheEnabled: boolean = false;
 	private static isFlagChecked: boolean = false;
 
@@ -27,41 +27,41 @@ export class CacheClient {
 
 	private constructor() {}
 
-	public static async getInstance(): Promise<CacheClient> {
-		if (!CacheClient.instance) {
-			CacheClient.instance = new CacheClient();
-			await CacheClient.instance.initializeSignalCache();
+	public static async getInstance(): Promise<CacheService> {
+		if (!CacheService.instance) {
+			CacheService.instance = new CacheService();
+			await CacheService.instance.initializeSignalCache();
 		}
 
-		return CacheClient.instance;
+		return CacheService.instance;
 	}
 
 	private async initializeSignalCache(): Promise<void> {
-		if (!CacheClient.isFlagChecked) {
+		if (!CacheService.isFlagChecked) {
 			const featureFlags = new FeatureFlagManager();
-			CacheClient.isRedisCacheEnabled = await featureFlags.checkToggleFlag(
+			CacheService.isRedisCacheEnabled = await featureFlags.checkToggleFlag(
 				"release-redis-cache",
 				redisFlagUserId
 			);
-			CacheClient.isFlagChecked = true;
+			CacheService.isFlagChecked = true;
 		}
 
-		this.Cache = CacheClient.isRedisCacheEnabled
+		this.Cache = CacheService.isRedisCacheEnabled
 			? RedisClient.getInstance()
 			: LocalCacheClient.getInstance();
 	}
 
 	public async isRedisCacheEnabled(): Promise<boolean> {
-		if (!CacheClient.isFlagChecked) {
+		if (!CacheService.isFlagChecked) {
 			const featureFlags = new FeatureFlagManager();
-			CacheClient.isRedisCacheEnabled = await featureFlags.checkToggleFlag(
+			CacheService.isRedisCacheEnabled = await featureFlags.checkToggleFlag(
 				"release-redis-cache",
 				redisFlagUserId
 			);
-			CacheClient.isFlagChecked = true;
+			CacheService.isFlagChecked = true;
 		}
 
-		return CacheClient.isRedisCacheEnabled;
+		return CacheService.isRedisCacheEnabled;
 	}
 
 	public async getCache(): Promise<ICache> {

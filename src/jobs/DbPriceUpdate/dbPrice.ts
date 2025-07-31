@@ -1,11 +1,11 @@
 import { Exchange } from "../../config/enums";
 import { SignalService } from "../../services/SignalService";
-import { CacheClient } from "../../services/CacheService";
+import { CacheService } from "../../services/CacheService";
 
 export const dbPrice = async () => {
 	const signalService = new SignalService();
-	const cacheClient = await CacheClient.getInstance();
-	const cache = await cacheClient.getCache();
+	const cacheService = await CacheService.getInstance();
+	const cache = await cacheService.getCache();
 
 	try {
 		// Get signals current prices from redis/In-memory cache

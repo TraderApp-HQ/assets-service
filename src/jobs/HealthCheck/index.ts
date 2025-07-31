@@ -5,7 +5,7 @@ import WebSocket from "ws";
 import { openBinanceWebSocketConnection } from "../../websockets/BinanceWebSockets";
 import { Exchange, AssetData } from "../../config/enums";
 import { MessageActivityService } from "../../services/MessageActivityService";
-import { CacheClient } from "../../services/CacheService";
+import { CacheService } from "../../services/CacheService";
 
 // Check Binance WebSockets
 export const BinanceWebSocketsHealthCheckJob = () =>
@@ -40,9 +40,9 @@ export const BinanceWebSocketsHealthCheckJob = () =>
 export const RedisConnectionHealthCheckJob = () =>
 	cronjob.schedule("*/10 * * * *", async () => {
 		// Redis connection health check runs only is redis is enabled
-		const cacheClient = await CacheClient.getInstance();
-		const isRedisEnabled = await cacheClient.isRedisCacheEnabled();
-		const cache = await cacheClient.getCache();
+		const cacheService = await CacheService.getInstance();
+		const isRedisEnabled = await cacheService.isRedisCacheEnabled();
+		const cache = await cacheService.getCache();
 		if (isRedisEnabled && cache instanceof RedisClient) {
 			console.log("=== Running Redis Connection Health Check ===");
 			try {
@@ -61,9 +61,9 @@ export const RedisConnectionHealthCheckJob = () =>
 
 export const BinanceAssetWebSocketHealthCheckJob = () =>
 	cronjob.schedule("* * * * *", async () => {
-		const cacheClient = await CacheClient.getInstance();
+		const cacheService = await CacheService.getInstance();
 		const binanceSocketCache = BinanceWebSocketService.getInstance();
-		const cache = await cacheClient.getCache();
+		const cache = await cacheService.getCache();
 		const messageActivity = MessageActivityService.getInstance();
 		const socketMap = (binanceSocketCache as any).binanceSocketMap as Map<string, WebSocket>;
 

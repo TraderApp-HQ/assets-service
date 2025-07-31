@@ -3,13 +3,13 @@ import { IActiveSignalsData, ISignalOrderBook, ISignalPrice } from "../../config
 import { BinanceWebSocketService } from "../../services/BinanceWebSocketService";
 import { SignalService } from "../../services/SignalService";
 import { openBinanceWebSocketConnection } from "../../websockets/BinanceWebSockets";
-import { CacheClient } from "../../services/CacheService";
+import { CacheService } from "../../services/CacheService";
 
 export const binanceSignals = async () => {
 	const signalService = new SignalService();
 	const binanceSocketCache = BinanceWebSocketService.getInstance();
-	const cacheClient = await CacheClient.getInstance();
-	const cache = await cacheClient.getCache();
+	const cacheServcie = await CacheService.getInstance();
+	const cache = await cacheServcie.getCache();
 
 	try {
 		// Initialiase records for active, cached and stale signals

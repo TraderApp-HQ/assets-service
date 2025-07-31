@@ -12,7 +12,7 @@ import secretsJson from "./env.json";
 import runAllJobs from "./jobs";
 import { CoinRoutes, CurrencyRoutes, ExchangeRoutes, SignalRoutes } from "./routes";
 import { RedisClient } from "./clients/RedisClient";
-import { CacheClient } from "./services/CacheService";
+import { CacheService } from "./services/CacheService";
 import specs from "./utils/swagger";
 
 config();
@@ -36,9 +36,9 @@ const secretNames = ["common-secrets", "assets-service-secrets"];
 		});
 
 		// Initialize Redis connection only is redis is enabled
-		const cacheClient = await CacheClient.getInstance();
-		const isRedisEnabled = await cacheClient.isRedisCacheEnabled();
-		const cache = await cacheClient.getCache();
+		const cacheService = await CacheService.getInstance();
+		const isRedisEnabled = await cacheService.isRedisCacheEnabled();
+		const cache = await cacheService.getCache();
 		if (isRedisEnabled && cache instanceof RedisClient) {
 			await cache.getClient(); // This will initialize the connection if redis is been used fro caching
 		}

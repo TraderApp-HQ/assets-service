@@ -4,7 +4,7 @@ import { AssetData, Exchange } from "../../config/enums";
 import { IActiveSignalsData } from "../../config/interfaces";
 import { BinanceWebSocketService } from "../../services/BinanceWebSocketService";
 import { MessageActivityService } from "../../services/MessageActivityService";
-import { CacheClient } from "../../services/CacheService";
+import { CacheService } from "../../services/CacheService";
 import { SignalService } from "../../services/SignalService";
 
 const wsOptions = {
@@ -27,7 +27,7 @@ const orderBookBuffer: Map<
 
 // Flush prices to cache every 20 seconds
 setInterval(async () => {
-	const cache = await (await CacheClient.getInstance()).getCache();
+	const cache = await (await CacheService.getInstance()).getCache();
 
 	for (const [signalId, { asset, assetPrice, exchange }] of priceBuffer.entries()) {
 		// Update the asset data based on the current price
@@ -42,7 +42,7 @@ setInterval(async () => {
 
 // Flush order books to cache every 20 seconds
 setInterval(async () => {
-	const cache = await (await CacheClient.getInstance()).getCache();
+	const cache = await (await CacheService.getInstance()).getCache();
 	for (const [
 		signalId,
 		{ exchange, totalSellQuantityInRange, totalBuyQuantityInRange },

@@ -6,7 +6,7 @@ import {
 	cadanoCoinData,
 	cadanoSignalData,
 	exchangeData,
-} from "../../__tests__/test";
+} from "../../__tests__/constants";
 import { Exchange as ExchangeEnum, SignalStatus } from "../../config/enums";
 import { IActiveSignalsData, ISignal } from "../../config/interfaces";
 import Coin from "../../models/Coin";

@@ -10,7 +10,7 @@ import {
 	cadanoCoinData,
 	cadanoSignalData,
 	exchangeData,
-} from "../../__tests__/test";
+} from "../../__tests__/constants";
 import { SignalService } from "../../services/SignalService";
 import { IActiveSignalsData, ISignal } from "../../config/interfaces";
 import { Exchange as ExchangeEnum, SignalStatus } from "../../config/enums";

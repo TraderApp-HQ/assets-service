@@ -23,8 +23,9 @@ export enum SignalRisk {
 }
 
 export enum SignalStatus {
-	ACTIVE = "ACTIVE",
-	PAUSED = "PAUSED",
+	PENDING = "PENDING", // When signal price has not been triggered
+	ACTIVE = "ACTIVE", // Signal has been triggered
+	PAUSED = "PAUSED", // When price is out of range or admin pauses it
 	INACTIVE = "INACTIVE",
 }
 

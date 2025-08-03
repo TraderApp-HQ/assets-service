@@ -52,7 +52,8 @@ export interface ISignalServiceCreateSignalProps {
 	tradeNote: string;
 	candlestick: Candlestick;
 	risk: SignalRisk;
-	isSignalTradable: boolean;
+	isSignalTradable: boolean; // This controls when a trade is entered (If price is within entry range)
+	isSignalTriggered?: boolean; //
 	chartUrl: string;
 	status: SignalStatus;
 	maxGain: number;
@@ -114,6 +115,8 @@ export interface IActiveSignalsData {
 	targetProfits: ISignalMilestone[];
 	entryPrice: number;
 	isSignalTradable: boolean;
+	isSignalTriggered: boolean;
+	status: SignalStatus;
 	assetName: string;
 	baseCurrencyName: string;
 	assetPair: string;

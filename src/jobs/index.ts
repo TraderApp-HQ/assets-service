@@ -1,21 +1,22 @@
 import { BinanceWebSocketService } from "../services/BinanceWebSocketService";
-import { RedisClient } from "../services/RedisService";
+import { CacheService } from "../services/CacheService";
 import { BinanceSignalsPriceUpdateJob } from "./BinanceSignalsPriceUpdate";
 import { DbPriceUpdateJob } from "./DbPriceUpdate";
 import {
+	BinanceAssetWebSocketHealthCheckJob,
 	BinanceWebSocketsHealthCheckJob,
 	RedisConnectionHealthCheckJob,
-	BinanceAssetWebSocketHealthCheckJob,
 } from "./HealthCheck";
 
 const runAllJobs = async () => {
-	// Deletes all record from in-memory and redis cache
+	// Deletes all record from in-memory and redis cache if redis is used for caching
 	try {
 		const binanceCache = BinanceWebSocketService.getInstance();
-		await binanceCache.closeAllSockects();
+		binanceCache.closeAllSockects();
 
-		const redisCache = RedisClient.getInstance();
-		await redisCache.deleteAllCacheRecord();
+		const cacheService = await CacheService.getInstance();
+		const cache = await cacheService.getCache();
+		await cache.deleteAllCacheRecord();
 		console.log("============= Old records cleared from cache ===================");
 
 		// Start all jobs

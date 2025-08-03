@@ -1,6 +1,6 @@
 import { Exchange } from "../../config/enums";
 import { ChannelClient } from "../../services/ChannelClientService";
-import { RedisClient } from "../../services/RedisService";
+import { RedisClient } from "../../clients/RedisClient";
 import WebSocket, * as WebSocketType from "ws";
 
 export const clientSignals = async () => {

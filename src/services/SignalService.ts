@@ -268,22 +268,23 @@ export class SignalService {
 				const isSignalTriggered = signal.asset.isSignalTriggered;
 				const status = signal.asset.status;
 
-				let priceChange: number;
-				if (tradeSide) {
-					if (tradeSide === TradeSide.SHORT) {
-						priceChange = Number(
-							((entryPrice - currentPrice) / entryPrice) * 100
-						).toFixed(2) as unknown as number;
+				let priceChange: number = 0;
+				// Calcute priceChange only after signal is triggered
+				if (status === SignalStatus.ACTIVE || status === SignalStatus.PAUSED) {
+					if (tradeSide) {
+						if (tradeSide === TradeSide.SHORT) {
+							priceChange = Math.round(
+								((entryPrice - currentPrice) / entryPrice) * 100
+							);
+						} else {
+							priceChange = Math.round(
+								((currentPrice - entryPrice) / entryPrice) * 100
+							);
+						}
 					} else {
-						priceChange = Number(
-							((currentPrice - entryPrice) / entryPrice) * 100
-						).toFixed(2) as unknown as number;
+						// for spot trading
+						priceChange = Math.round(((currentPrice - entryPrice) / entryPrice) * 100);
 					}
-				} else {
-					// for spot trading
-					priceChange = Number(((currentPrice - entryPrice) / entryPrice) * 100).toFixed(
-						2
-					) as unknown as number;
 				}
 
 				return {
@@ -325,57 +326,19 @@ export class SignalService {
 		signal: IActiveSignalsData,
 		currentPrice: number
 	): IActiveSignalsData {
-		const targetProfits = signal.targetProfits;
-		const stopLoss = signal.stopLoss;
 		const entryPrice = signal.entryPrice;
 		const entryPriceUpperBound = signal.entryPriceUpperBound;
 		const entryPriceLowerBound = signal.entryPriceLowerBound;
 		const tradeSide = signal.tradeSide;
-		let status = signal.status;
+		let targetProfits = signal.targetProfits;
+		let stopLoss = signal.stopLoss;
+		let status = signal.status; // If signal status is paused or inactive, leave status
 		let isSignalTradable = signal.isSignalTradable;
 		let isSignalTriggered = signal.isSignalTriggered;
-
-		// Update target profits
-		const calcTargetProfits = targetProfits.map((target) => {
-			let isReached = target.isReached;
-			if (tradeSide) {
-				if (tradeSide === TradeSide.SHORT) {
-					isReached = currentPrice <= target.price;
-				} else {
-					isReached = currentPrice >= target.price;
-				}
-			} else {
-				isReached = currentPrice >= target.price;
-			}
-			return {
-				...target,
-				isReached: target.isReached ? true : isReached,
-			};
-		});
-
-		// Update stop loss
-		const calcStopLoss = {
-			...stopLoss,
-			isReached: stopLoss.isReached
-				? true // Do not update if already true
-				: tradeSide === TradeSide.SHORT
-				? currentPrice >= stopLoss.price
-				: currentPrice <= stopLoss.price,
-		};
-
-		// Update max gain
-		const calcMaxGain = Math.max(
-			Math.round(
-				tradeSide === TradeSide.SHORT
-					? ((entryPrice - currentPrice) / entryPrice) * 100
-					: ((currentPrice - entryPrice) / entryPrice) * 100
-			),
-			signal.maxGain
-		);
+		let maxGain = signal.maxGain;
 
 		// Calculate isSignalTradable (either True or False based on conditions below)
 		// Check if signal status is pending or active
-		// Check if signal is already triggered
 		// Check if price is in range based on trade direction/side.
 		isSignalTradable =
 			(status === SignalStatus.PENDING || status === SignalStatus.ACTIVE) &&
@@ -387,19 +350,62 @@ export class SignalService {
 		// Skip if true, else calculate based on isSignalTradable.
 		isSignalTriggered = isSignalTriggered || isSignalTradable;
 
-		// Calculate when final TP or SL is reached to change status for INACTIVE
-		const finalTakeProfitReached = calcTargetProfits[calcTargetProfits.length - 1]?.isReached;
-		const stopLossReached = calcStopLoss.isReached;
-
-		// Calculate signal status
-		// Status - Pending, Active, Inactive
-		// If signal is paused or inactive, leave status
-		// else if signal is pending and signal is triggered, change status to active
-		// else if signal is active and either tp4 or sl is hit, change to inactive
+		// Calculate signal Status - Pending -> Active
+		// If signal is pending and signal is triggered, change status to active
 		if (status === SignalStatus.PENDING && isSignalTriggered) {
 			status = SignalStatus.ACTIVE;
-		} else if (status === SignalStatus.ACTIVE && (finalTakeProfitReached || stopLossReached)) {
-			status = SignalStatus.INACTIVE;
+		}
+
+		// Calcute targetProfit, stopLoss, maxGain only after signal is triggered
+		if (status === SignalStatus.ACTIVE || status === SignalStatus.PAUSED) {
+			// Update target profits
+			targetProfits = targetProfits.map((target) => {
+				let isReached = target.isReached;
+				if (tradeSide) {
+					if (tradeSide === TradeSide.SHORT) {
+						isReached = currentPrice <= target.price;
+					} else {
+						isReached = currentPrice >= target.price;
+					}
+				} else {
+					isReached = currentPrice >= target.price;
+				}
+
+				return {
+					...target,
+					isReached: target.isReached ? true : isReached,
+				};
+			});
+
+			// Update stop loss
+			stopLoss = {
+				...stopLoss,
+				isReached: stopLoss.isReached
+					? true // Do not update if already true
+					: tradeSide === TradeSide.SHORT
+					? currentPrice >= stopLoss.price
+					: currentPrice <= stopLoss.price,
+			};
+
+			// Update max gain
+			maxGain = Math.max(
+				Math.round(
+					tradeSide === TradeSide.SHORT
+						? ((entryPrice - currentPrice) / entryPrice) * 100
+						: ((currentPrice - entryPrice) / entryPrice) * 100
+				),
+				signal.maxGain
+			);
+
+			// Calculate when all TP or SL is reached to change status for INACTIVE
+			const allTargetProfitsReached = targetProfits.every((tp) => tp.isReached);
+			const stopLossReached = stopLoss.isReached;
+
+			// Calculate signal Status - Active -> Inactive
+			// If signal is active and either all tp or sl is hit, change to inactive
+			if (status === SignalStatus.ACTIVE && (allTargetProfitsReached || stopLossReached)) {
+				status = SignalStatus.INACTIVE;
+			}
 		}
 
 		// Return updated signal with computed flags
@@ -408,9 +414,9 @@ export class SignalService {
 			...signal,
 			isSignalTradable,
 			isSignalTriggered,
-			targetProfits: calcTargetProfits,
-			stopLoss: calcStopLoss,
-			maxGain: calcMaxGain,
+			targetProfits,
+			stopLoss,
+			maxGain,
 			status,
 		};
 

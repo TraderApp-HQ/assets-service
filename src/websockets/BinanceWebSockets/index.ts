@@ -28,15 +28,28 @@ const orderBookBuffer: Map<
 // Flush prices to cache every 20 seconds
 setInterval(async () => {
 	const cache = await (await CacheService.getInstance()).getCache();
+	const cacheAsset = await cache.getAllSignalsPrices(Exchange.binance);
 
 	for (const [signalId, { asset, assetPrice, exchange }] of priceBuffer.entries()) {
+		// Get asset from cache
+		const signalAsset = cacheAsset.find((asset) => asset.signalId === signalId);
+
 		// Update the asset data based on the current price
 		const signalService = new SignalService();
-		const updatedAsset = signalService.computeSignalFlags(asset, assetPrice);
+		const updatedAsset = signalService.computeSignalFlags(
+			signalAsset?.asset ?? asset,
+			assetPrice
+		);
 
 		// Add the updated asset data and price to the cache
-		await cache.addSignalPrice({ signalId, exchange, asset: updatedAsset, assetPrice });
+		await cache.addSignalPrice({
+			signalId,
+			exchange,
+			asset: updatedAsset,
+			assetPrice,
+		});
 	}
+
 	priceBuffer.clear();
 }, 20 * 1000);
 

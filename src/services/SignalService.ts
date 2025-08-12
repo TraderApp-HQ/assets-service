@@ -409,8 +409,7 @@ export class SignalService {
 		}
 
 		// Return updated signal with computed flags
-		// Note: This does not update the database, it just computes the flags
-		const updatedSignal = {
+		return {
 			...signal,
 			isSignalTradable,
 			isSignalTriggered,
@@ -419,7 +418,5 @@ export class SignalService {
 			maxGain,
 			status,
 		};
-
-		return updatedSignal;
 	}
 }

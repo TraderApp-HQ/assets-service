@@ -32,14 +32,13 @@ setInterval(async () => {
 
 	for (const [signalId, { asset, assetPrice, exchange }] of priceBuffer.entries()) {
 		// Get asset from cache
-		const signalAsset = cacheAsset.find((asset) => asset.signalId === signalId);
+		const signalAsset =
+			cacheAsset.find((assetFromCache) => assetFromCache.signalId === signalId)?.asset ??
+			asset;
 
 		// Update the asset data based on the current price
 		const signalService = new SignalService();
-		const updatedAsset = signalService.computeSignalFlags(
-			signalAsset?.asset ?? asset,
-			assetPrice
-		);
+		const updatedAsset = signalService.computeSignalFlags(signalAsset, assetPrice);
 
 		// Add the updated asset data and price to the cache
 		await cache.addSignalPrice({

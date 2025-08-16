@@ -6,27 +6,28 @@ import {
 	getAllExchanges,
 	getCurrenciesForExchange,
 	getExchangeById,
-	getSupportedExchanges,
+	getSupportedTradingPlatform,
 	updateExchangeInfo,
-} from "../controllers/ExchangeControllers";
+} from "../controllers/TradingPlatformControllers";
 
 import {
 	validateExchangesRequest,
 	validateExchangeRequest,
 	validateUpdateExchangeInfoRequest,
-	validateGetSupportedExchangesRequest,
+	validateGetSupportedTradingPlatformRequest,
 } from "../middlewares/ExchangeMiddleware";
 
 const router = Router();
 
 router.get(ROUTES.get, validateExchangesRequest, getAllExchanges);
+router.get(
+	ROUTES.getSupportedTradingPlatform,
+	validateGetSupportedTradingPlatformRequest,
+	getSupportedTradingPlatform
+);
 router.get(ROUTES.getExchangeById, validateExchangeRequest, getExchangeById);
-router.patch(ROUTES.patchExchangeById, validateUpdateExchangeInfoRequest, updateExchangeInfo);
 router.get(ROUTES.getAllAssets, getAllAssetsInExchange);
 router.get(ROUTES.getByCurrencies, getCurrenciesForExchange);
-router.get(
-	ROUTES.getSupportedExchanges,
-	validateGetSupportedExchangesRequest,
-	getSupportedExchanges
-);
+router.patch(ROUTES.patchExchangeById, validateUpdateExchangeInfoRequest, updateExchangeInfo);
+
 export default router;

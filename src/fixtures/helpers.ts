@@ -2,9 +2,10 @@
 /* eslint-disable @typescript-eslint/consistent-indexed-object-style */
 // import { PrismaClient } from "@prisma/client";
 
-import Coin from "../models/Coin";
+import Asset from "../models/Asset";
 import Currency from "../models/Currency";
-import ExchangePair from "../models/ExchangePair";
+import TradingPlatform from "../models/TradingPlatform";
+import TradingPlatformPair from "../models/TradingPlatformPair";
 import UnknownCoin from "../models/UnkownCoin";
 
 // const prisma = new PrismaClient();
@@ -27,11 +28,13 @@ export async function getAllCoins() {
 	const coins: { [k: string]: any } = {};
 
 	// get all coins from db
-	const allCoins = await Coin.find();
+	const allCoins = await Asset.find();
 
 	// put allCoins into hash Table for easy searching
 	allCoins.forEach((coin: any) => {
-		coins[coin.symbol] = coin.id;
+		if (!coins[coin.symbol]) {
+			coins[coin.symbol] = coin.id;
+		}
 	});
 
 	return coins;
@@ -53,7 +56,10 @@ export async function getAllCurrencies() {
 	return currencies;
 }
 
-export async function insertExchangePairs(symbols: { [k: string]: any }, exchangeId: number) {
+export async function insertTradingPlatformPairs(
+	symbols: { [k: string]: any },
+	platform: { _id: number; slug: string }
+) {
 	const coins = await getAllCoins();
 	const currencies = await getAllCurrencies();
 	let pairs: any[] = [];
@@ -71,9 +77,13 @@ export async function insertExchangePairs(symbols: { [k: string]: any }, exchang
 	Object.entries(symbols).forEach((symbol: any) => {
 		const pair = symbol[1].map((item: any) => {
 			return {
-				exchangeId,
-				coinId: coins[item],
+				platformId: platform._id,
+				assetId: coins[item],
 				currencyId: currencies[symbol[0]],
+				asset: item,
+				currency: symbol[0],
+				pair: `${item}${symbol[0]}`,
+				platform: platform.slug,
 			};
 		});
 
@@ -85,7 +95,7 @@ export async function insertExchangePairs(symbols: { [k: string]: any }, exchang
 
 	// prepare for insertion
 	symbolsMissing = symbolsMissing.map((symbol: any) => {
-		return { symbol, exchangeId };
+		return { symbol, tradingPlatformId: platform._id };
 	});
 
 	// // Write pairs and symbolsMissing to JSON files
@@ -99,12 +109,26 @@ export async function insertExchangePairs(symbols: { [k: string]: any }, exchang
 
 	// insert pairs
 	if (pairs.length) {
-		await ExchangePair.insertMany(pairs, { ordered: false });
-		console.log("Exchange pairs inserted");
+		await TradingPlatformPair.insertMany(pairs, { ordered: false });
+		console.log("Trading platform pairs inserted");
 	}
 
 	if (symbolsMissing.length) {
 		await UnknownCoin.insertMany(symbolsMissing, { ordered: false });
 		console.log("unknown coins inserted");
 	}
+}
+
+export async function getTradingPlatformData(
+	platformSlug: string
+): Promise<{ _id: number; slug: string }> {
+	const platform = await TradingPlatform.findOne({ slug: platformSlug })
+		.select("_id slug")
+		.lean();
+
+	if (!platform) {
+		throw new Error(`Trading platform with slug "${platformSlug}" not found`);
+	}
+
+	return platform as { _id: number; slug: string };
 }

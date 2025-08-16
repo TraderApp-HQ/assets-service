@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-base-to-string */
 import WebSocket from "ws";
-import { AssetData, Exchange } from "../../config/enums";
+import { AssetData, TradingPlatform } from "../../config/enums";
 import { IActiveSignalsData } from "../../config/interfaces";
 import { BinanceWebSocketService } from "../../services/BinanceWebSocketService";
 import { MessageActivityService } from "../../services/MessageActivityService";
@@ -13,24 +13,28 @@ const wsOptions = {
 
 const orderBookDepth = 20;
 
-// Map: signalId -> { asset, assetPrice, exchange }
+// Map: signalId -> { asset, assetPrice, tradingPlatform }
 const priceBuffer: Map<
 	string,
-	{ asset: IActiveSignalsData; assetPrice: number; exchange: Exchange }
+	{ asset: IActiveSignalsData; assetPrice: number; tradingPlatform: TradingPlatform }
 > = new Map();
 
-// Map: signalId -> { exchange, totalSellQuantityInRange, totalBuyQuantityInRange }
+// Map: signalId -> { tradingPlatform, totalSellQuantityInRange, totalBuyQuantityInRange }
 const orderBookBuffer: Map<
 	string,
-	{ exchange: Exchange; totalSellQuantityInRange: number; totalBuyQuantityInRange: number }
+	{
+		tradingPlatform: TradingPlatform;
+		totalSellQuantityInRange: number;
+		totalBuyQuantityInRange: number;
+	}
 > = new Map();
 
 // Flush prices to cache every 20 seconds
 setInterval(async () => {
 	const cache = await (await CacheService.getInstance()).getCache();
-	const cacheAsset = await cache.getAllSignalsPrices(Exchange.binance);
+	const cacheAsset = await cache.getAllSignalsPrices(TradingPlatform.binance);
 
-	for (const [signalId, { asset, assetPrice, exchange }] of priceBuffer.entries()) {
+	for (const [signalId, { asset, assetPrice, tradingPlatform }] of priceBuffer.entries()) {
 		// Get asset from cache
 		const signalAsset =
 			cacheAsset.find((assetFromCache) => assetFromCache.signalId === signalId)?.asset ??
@@ -43,7 +47,7 @@ setInterval(async () => {
 		// Add the updated asset data and price to the cache
 		await cache.addSignalPrice({
 			signalId,
-			exchange,
+			tradingPlatform,
 			asset: updatedAsset,
 			assetPrice,
 		});
@@ -57,11 +61,11 @@ setInterval(async () => {
 	const cache = await (await CacheService.getInstance()).getCache();
 	for (const [
 		signalId,
-		{ exchange, totalSellQuantityInRange, totalBuyQuantityInRange },
+		{ tradingPlatform, totalSellQuantityInRange, totalBuyQuantityInRange },
 	] of orderBookBuffer.entries()) {
 		await cache.addSignalOrderBook({
 			signalId,
-			exchange,
+			tradingPlatform,
 			totalSellQuantityInRange,
 			totalBuyQuantityInRange,
 		});
@@ -107,7 +111,7 @@ export const openBinanceWebSocketConnection = async (signal: IActiveSignalsData)
 			priceBuffer.set(signal.signalId, {
 				asset: signal,
 				assetPrice,
-				exchange: Exchange.binance,
+				tradingPlatform: TradingPlatform.binance,
 			});
 		});
 
@@ -160,10 +164,10 @@ export const openBinanceWebSocketConnection = async (signal: IActiveSignalsData)
 			}
 
 			const signalId = signal.signalId;
-			const exchange = Exchange.binance;
+			const tradingPlatform = TradingPlatform.binance;
 
 			orderBookBuffer.set(signalId, {
-				exchange,
+				tradingPlatform,
 				totalSellQuantityInRange,
 				totalBuyQuantityInRange,
 			});

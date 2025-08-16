@@ -1,22 +1,22 @@
 import axios from "axios";
 import { config } from "dotenv";
-import { getAllCurrencies, insertExchangePairs } from "./helpers";
+import { getAllCurrencies, getTradingPlatformData, insertTradingPlatformPairs } from "./helpers";
 
 // load env variables
 config();
 
 export async function getBinanceMarkets() {
-	// binance cmc id
-	const exchangeId = 270;
-
 	// binance api endpoint
 	const url = "https://api.binance.com/api/v3/exchangeInfo";
 
 	const symbols: Record<string, any> = {};
 
 	try {
-		// retrieve all currencies from db
-		const currencies = await getAllCurrencies();
+		// retrieve all currencies & binance data from db
+		const [currencies, platform] = await Promise.all([
+			getAllCurrencies(),
+			getTradingPlatformData("binance"),
+		]);
 
 		// fetch from binance api
 		const res = await axios.get(url);
@@ -36,7 +36,7 @@ export async function getBinanceMarkets() {
 		});
 
 		// insert exchange pairs
-		await insertExchangePairs(symbols, exchangeId);
+		await insertTradingPlatformPairs(symbols, platform);
 	} catch (err: any) {
 		console.log("Error getting binance markets: ", err.message);
 	}

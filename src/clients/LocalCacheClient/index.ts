@@ -1,6 +1,6 @@
 import "dotenv/config";
 import { IRemoveSignal, ISignalOrderBook, ISignalPrice } from "../../config/interfaces";
-import { AssetData, Exchange, WSChannel } from "../../config/enums";
+import { AssetData, TradingPlatform, WSChannel } from "../../config/enums";
 import { ICache } from "../../services/CacheService";
 
 export class LocalCacheClient implements ICache {
@@ -13,11 +13,15 @@ export class LocalCacheClient implements ICache {
 		this.memoryCache = new Map();
 	}
 
-	private getAssetKey(assetType: AssetData, signalId: string, exchange: Exchange): string {
-		return `${this.env}_${WSChannel.assetsUpdateWs}_${assetType}_${signalId}_${exchange}`;
+	private getAssetKey(
+		assetType: AssetData,
+		signalId: string,
+		tradingPlatform: TradingPlatform
+	): string {
+		return `${this.env}_${WSChannel.assetsUpdateWs}_${assetType}_${signalId}_${tradingPlatform}`;
 	}
 
-	private getAssetKeys(assetType: AssetData, exchange?: Exchange): string[] {
+	private getAssetKeys(assetType: AssetData, tradingPlatform?: TradingPlatform): string[] {
 		const keys: string[] = [];
 
 		for (const key of this.memoryCache.keys()) {
@@ -31,7 +35,7 @@ export class LocalCacheClient implements ICache {
 				env === this.env &&
 				wsType === WSChannel.assetsUpdateWs &&
 				type === assetType &&
-				(!exchange || keyExchange === exchange);
+				(!tradingPlatform || keyExchange === tradingPlatform);
 
 			if (isMatch) {
 				keys.push(key);
@@ -51,15 +55,15 @@ export class LocalCacheClient implements ICache {
 
 	public addSignalPrice({
 		signalId,
-		exchange,
+		tradingPlatform,
 		asset,
 		assetPrice,
 		timestamp,
 	}: ISignalPrice): void {
-		const wsKey = this.getAssetKey(AssetData.price, signalId, exchange);
+		const wsKey = this.getAssetKey(AssetData.price, signalId, tradingPlatform);
 		const data = {
 			signalId,
-			exchange,
+			tradingPlatform,
 			asset,
 			assetPrice,
 			timestamp: timestamp ?? Date.now(),
@@ -70,15 +74,15 @@ export class LocalCacheClient implements ICache {
 
 	public addSignalOrderBook({
 		signalId,
-		exchange,
+		tradingPlatform,
 		totalSellQuantityInRange,
 		totalBuyQuantityInRange,
 		timestamp,
 	}: ISignalOrderBook): void {
-		const wsKey = this.getAssetKey(AssetData.orderBook, signalId, exchange);
+		const wsKey = this.getAssetKey(AssetData.orderBook, signalId, tradingPlatform);
 		const data = {
 			signalId,
-			exchange,
+			tradingPlatform,
 			totalBuyQuantityInRange,
 			totalSellQuantityInRange,
 			timestamp: timestamp ?? Date.now(),
@@ -87,8 +91,8 @@ export class LocalCacheClient implements ICache {
 		this.memoryCache.set(wsKey, data);
 	}
 
-	public getAllSignalsPrices(exchange?: Exchange): ISignalPrice[] {
-		const keys = this.getAssetKeys(AssetData.price, exchange);
+	public getAllSignalsPrices(tradingPlatform?: TradingPlatform): ISignalPrice[] {
+		const keys = this.getAssetKeys(AssetData.price, tradingPlatform);
 
 		const signals = keys.flatMap((key) => {
 			const assetValue = this.memoryCache.get(key);
@@ -98,8 +102,8 @@ export class LocalCacheClient implements ICache {
 		return signals;
 	}
 
-	public getAllSignalsOrderBooks(exchange?: Exchange): ISignalOrderBook[] {
-		const keys = this.getAssetKeys(AssetData.orderBook, exchange);
+	public getAllSignalsOrderBooks(tradingPlatform?: TradingPlatform): ISignalOrderBook[] {
+		const keys = this.getAssetKeys(AssetData.orderBook, tradingPlatform);
 
 		const signals = keys.flatMap((key) => {
 			const assetValue = this.memoryCache.get(key);
@@ -109,12 +113,12 @@ export class LocalCacheClient implements ICache {
 		return signals;
 	}
 
-	public removeSignalPrice({ signalId, exchange }: IRemoveSignal): void {
-		this.memoryCache.delete(this.getAssetKey(AssetData.price, signalId, exchange));
+	public removeSignalPrice({ signalId, tradingPlatform }: IRemoveSignal): void {
+		this.memoryCache.delete(this.getAssetKey(AssetData.price, signalId, tradingPlatform));
 	}
 
-	public removeSignalOrderBook({ signalId, exchange }: IRemoveSignal): void {
-		this.memoryCache.delete(this.getAssetKey(AssetData.orderBook, signalId, exchange));
+	public removeSignalOrderBook({ signalId, tradingPlatform }: IRemoveSignal): void {
+		this.memoryCache.delete(this.getAssetKey(AssetData.orderBook, signalId, tradingPlatform));
 	}
 
 	public deleteAllCacheRecord(): void {

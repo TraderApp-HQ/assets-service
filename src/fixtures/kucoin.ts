@@ -1,23 +1,23 @@
 /* eslint-disable @typescript-eslint/consistent-indexed-object-style */
 import axios from "axios";
 import { config } from "dotenv";
-import { getAllCurrencies, insertExchangePairs } from "./helpers";
+import { getAllCurrencies, getTradingPlatformData, insertTradingPlatformPairs } from "./helpers";
 
 // load env variables
 config();
 
 export async function getKucoinMarkets() {
-	// kucoin cmc id
-	const exchangeId = 311;
-
 	// kucoin api endpoint
 	const url = "https://api.kucoin.com/api/v2/symbols";
 
 	const symbols: { [k: string]: any } = {};
 
 	try {
-		// retrieve all currencies from db
-		const currencies = await getAllCurrencies();
+		// retrieve all currencies & kucoin data from db
+		const [currencies, platform] = await Promise.all([
+			getAllCurrencies(),
+			getTradingPlatformData("kucoin"),
+		]);
 
 		// fetch from kucoin api
 		const res = await axios({
@@ -40,7 +40,7 @@ export async function getKucoinMarkets() {
 		});
 
 		// insert exchange pairs
-		await insertExchangePairs(symbols, exchangeId);
+		await insertTradingPlatformPairs(symbols, platform);
 	} catch (err: any) {
 		console.log("Error getting kucoin markets: ", err.message);
 	}

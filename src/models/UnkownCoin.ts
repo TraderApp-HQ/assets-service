@@ -4,7 +4,7 @@ import mongoose, { Schema, Document } from "mongoose";
 export interface IUnknownCoin extends Document {
 	_id: number;
 	symbol: string;
-	exchangeId: number;
+	tradingPlatformId: number;
 }
 
 // Create the schema
@@ -12,7 +12,7 @@ export const UnknownCoinSchema = new Schema<IUnknownCoin>(
 	{
 		_id: Number,
 		symbol: { type: String },
-		exchangeId: { type: Number, ref: "Exchange" },
+		tradingPlatformId: { type: Number, ref: "trading-platform" },
 	},
 	{ _id: false }
 );

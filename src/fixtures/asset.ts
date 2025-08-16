@@ -3,9 +3,9 @@
 /* eslint-disable @typescript-eslint/restrict-template-expressions */
 import axios from "axios";
 import { config } from "dotenv";
-import Coin from "../models/Coin";
 import Currency from "../models/Currency";
 import { Category } from "../config/enums";
+import Asset from "../models/Asset";
 // import { PrismaClient } from "@prisma/client";
 
 // load env variables
@@ -124,7 +124,7 @@ async function getCoins(start: number) {
 			const category = Category.CRYPTO;
 
 			// get currencies. USDT etc.
-			if (coin.symbol === "USDT" || coin.symbol === "BTC" || coin.symbol === "ETH") {
+			if (coin.symbol === "USDT") {
 				currencies.push({ _id: id, name, symbol, logo });
 			}
 
@@ -145,7 +145,7 @@ async function getCoins(start: number) {
 
 		// insert records into db
 		if (data.length) {
-			await Coin.insertMany(data, { ordered: false });
+			await Asset.insertMany(data, { ordered: false });
 			console.log(`inserted ${data.length} coins from ${start} to ${start + limit}`);
 		}
 
@@ -162,7 +162,7 @@ async function getCoins(start: number) {
 
 export const updateCoinsCategory = async () => {
 	try {
-		await Coin.updateMany({}, { $set: { category: Category.CRYPTO } });
+		await Asset.updateMany({}, { $set: { category: Category.CRYPTO } });
 	} catch (err: any) {
 		console.log("Error updating coins category: ", err.code, err.message);
 	}

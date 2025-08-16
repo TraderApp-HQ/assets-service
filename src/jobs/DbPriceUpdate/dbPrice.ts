@@ -1,4 +1,4 @@
-import { Exchange } from "../../config/enums";
+import { TradingPlatform } from "../../config/enums";
 import { SignalService } from "../../services/SignalService";
 import { CacheService } from "../../services/CacheService";
 
@@ -9,7 +9,7 @@ export const dbPrice = async () => {
 
 	try {
 		// Get signals current prices from redis/In-memory cache
-		const signalsPrice = await cache.getAllSignalsPrices(Exchange.binance);
+		const signalsPrice = await cache.getAllSignalsPrices(TradingPlatform.binance);
 
 		// Abort functon if no signal price is returned.
 		if (!signalsPrice || signalsPrice.length === 0) {

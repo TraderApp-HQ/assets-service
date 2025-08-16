@@ -2,7 +2,7 @@ import { DEFAULT_PAGE, DEFAULT_ROWS_PER_PAGE } from "../config/constants";
 import { SignalStatus, TradeSide } from "../config/enums";
 import {
 	IActiveSignalsData,
-	IExchange,
+	ITradingPlatform,
 	ISignal,
 	ISignalPrice,
 	ISignalResponse,
@@ -18,14 +18,14 @@ export class SignalService {
 		try {
 			// Find existing signals with the same asset ID
 			const existingSignals = await Signal.find({
-				asset: props.asset, // asset/coin ID
-				status: SignalStatus.ACTIVE, // match only Active signals
+				baseAsset: props.baseAsset, // asset/coin ID
+				status: { $ne: SignalStatus.INACTIVE }, // match any signals not INACTIVE
 			});
 
 			if (existingSignals && existingSignals.length > 0) {
 				// Update all existing signals' status to INACTIVE
 				await Signal.updateMany(
-					{ asset: props.asset },
+					{ baseAsset: props.baseAsset },
 					{ status: SignalStatus.INACTIVE, endedAt: new Date().toISOString() }
 				);
 			}
@@ -72,9 +72,9 @@ export class SignalService {
 
 			// Populate related fields
 			signalQuery = signalQuery.populate([
-				{ path: "supportedExchanges" },
-				{ path: "asset" },
-				{ path: "baseCurrency" },
+				{ path: "supportedTradingPlatform" },
+				{ path: "baseAsset" },
+				{ path: "quoteCurrency" },
 			]);
 
 			// Apply sorting, skipping, and limiting
@@ -83,12 +83,12 @@ export class SignalService {
 			if (keyword) {
 				signals = signals.filter((signal: any) => {
 					return (
-						signal.asset?.symbol?.match(new RegExp(keyword, "i")) ||
-						signal.asset?.name?.match(new RegExp(keyword, "i")) ||
-						signal.baseCurrency?.symbol?.match(new RegExp(keyword, "i")) ||
-						signal.baseCurrency?.name?.match(new RegExp(keyword, "i")) ||
-						signal.supportedExchanges.some((exchange: IExchange) =>
-							exchange.name.match(new RegExp(keyword, "i"))
+						signal.baseAsset?.symbol?.match(new RegExp(keyword, "i")) ||
+						signal.baseAsset?.name?.match(new RegExp(keyword, "i")) ||
+						signal.quoteCurrency?.symbol?.match(new RegExp(keyword, "i")) ||
+						signal.quoteCurrency?.name?.match(new RegExp(keyword, "i")) ||
+						signal.supportedTradingPlatform.some((platform: ITradingPlatform) =>
+							platform.name.match(new RegExp(keyword, "i"))
 						)
 					);
 				});
@@ -109,7 +109,16 @@ export class SignalService {
 			});
 
 			// Apply pagination
-			const paginatedSignals = signals.slice((page - 1) * rowsPerPage, page * rowsPerPage);
+			const paginatedSignals = signals
+				.slice((page - 1) * rowsPerPage, page * rowsPerPage)
+				.map((signal) => {
+					const { _id, ...rest } = signal.toObject();
+
+					return {
+						id: _id.toString(),
+						...rest,
+					};
+				});
 
 			return paginatedSignals as unknown as ISignalResponse[];
 		} catch (error: any) {
@@ -172,7 +181,7 @@ export class SignalService {
 	public async getSignalById(id: string): Promise<ISignalResponse | null> {
 		try {
 			const signal = await Signal.findById(id)
-				.populate(["supportedExchanges", "asset", "baseCurrency"])
+				.populate(["supportedTradingPlatform", "baseAsset", "quoteCurrency"])
 				.exec();
 
 			if (!signal) {
@@ -215,37 +224,44 @@ export class SignalService {
 		}
 	}
 
-	public async getExchangeActiveSignals(exchange?: string): Promise<IActiveSignalsData[]> {
+	public async getTradingPlatformActiveSignals(
+		tradingPlatform?: string
+	): Promise<IActiveSignalsData[]> {
 		try {
-			const filterCondition = exchange ? { slug: exchange } : {};
+			const filterCondition = tradingPlatform ? { slug: tradingPlatform } : {};
 
 			// TODO: Fetch all signals that are not inactive
 			const activeSignals = await Signal.find({ status: { $ne: SignalStatus.INACTIVE } })
 				.populate([
-					{ path: "supportedExchanges", select: "slug -_id", match: filterCondition },
+					{
+						path: "supportedTradingPlatform",
+						select: "slug -_id",
+						match: filterCondition,
+					},
 				])
 				.select(
-					"assetName baseCurrencyName targetProfits stopLoss entryPrice isSignalTradable supportedExchanges entryPriceUpperBound entryPriceLowerBound tradeSide maxGain status isSignalTriggered"
+					"baseAssetName quoteCurrencyName targetProfits stopLoss entryPrice isSignalTradable supportedTradingPlatform entryPriceUpperBound entryPriceLowerBound tradeSide maxGain status isSignalTriggered"
 				)
 				.exec();
 
 			// Extracting assets exchange
 			const signalAndExchanges = activeSignals
-				.filter((signal) => signal.supportedExchanges.length > 0)
-				.map((signal: any) => {
-					const assetName = `${signal.assetName}${signal.baseCurrencyName}`.toLowerCase();
-					const exchanges: string[] = signal.supportedExchanges.map(
-						(exchange: any) => exchange.slug
+				.filter((signal) => signal.supportedTradingPlatform.length > 0)
+				.map((signal) => {
+					const assetName =
+						`${signal.baseAssetName}${signal.quoteCurrencyName}`.toLowerCase();
+					const tradingPlatform: string[] = signal.supportedTradingPlatform.map(
+						(platform: any) => platform.slug
 					);
-					const { _id, supportedExchanges, ...restSignal } = signal.toObject();
+					const { _id, supportedTradingPlatform, ...restSignal } = signal.toObject();
 
 					return {
 						...restSignal,
 						assetPair: assetName,
-						exchanges,
+						tradingPlatform,
 						signalId: _id.toString(),
 					};
-				});
+				}) as IActiveSignalsData[];
 
 			return signalAndExchanges;
 		} catch (error: any) {

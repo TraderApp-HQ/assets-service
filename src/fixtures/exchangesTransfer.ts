@@ -1,5 +1,5 @@
 import { Connection } from "mongoose";
-import { ExchangeSchema } from "../models/Exchange";
+import { TradingPlatformSchema } from "../models/TradingPlatform";
 
 export const transferExchangesCollection = async ({
 	conn1,
@@ -12,8 +12,8 @@ export const transferExchangesCollection = async ({
 		throw new Error("Second database connection is required for this operation.");
 	}
 
-	const ExchangeModel1 = conn1.model("Exchanges", ExchangeSchema, "exchanges");
-	const ExchangeModel2 = conn2.model("Exchanges", ExchangeSchema, "exchanges");
+	const ExchangeModel1 = conn1.model("Exchanges", TradingPlatformSchema, "exchanges");
+	const ExchangeModel2 = conn2.model("Exchanges", TradingPlatformSchema, "exchanges");
 
 	const coins = await ExchangeModel1.find().exec();
 	console.log(`Fetched ${coins.length} exchanges from db1`);

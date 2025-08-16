@@ -2,7 +2,7 @@ import { PopulateOptions } from "mongoose";
 import {
 	Candlestick,
 	Category,
-	Exchange,
+	TradingPlatform,
 	SignalRisk,
 	SignalStatus,
 	TradeSide,
@@ -35,7 +35,7 @@ export interface ISignalMilestone {
 	isReached: boolean;
 }
 
-export interface IExchange {
+export interface ITradingPlatform {
 	id: string;
 	name: string;
 	logo: string;
@@ -59,11 +59,11 @@ export interface ISignalServiceCreateSignalProps {
 	maxGain: number;
 	createdAt: string;
 	endedAt?: string;
-	supportedExchanges: number[];
-	asset: number;
-	assetName: string;
-	baseCurrency: number;
-	baseCurrencyName: string;
+	supportedTradingPlatform: number[];
+	baseAsset: number;
+	baseAssetName: string;
+	quoteCurrency: number;
+	quoteCurrencyName: string;
 	category: Category;
 	tradeType?: TradeType;
 	tradeSide?: TradeSide;
@@ -90,8 +90,8 @@ export interface ISignal extends ISignalServiceCreateSignalProps, Document {}
 
 export interface ISignalResponse extends Document {
 	id: string;
-	asset: ISignalAsset;
-	baseCurrency: ISignalAsset;
+	baseAsset: ISignalAsset;
+	quoteCurrency: ISignalAsset;
 	targetProfits: ISignalMilestone[];
 	stopLoss: ISignalMilestone;
 	entryPrice: number;
@@ -106,7 +106,7 @@ export interface ISignalResponse extends Document {
 	maxGain: number;
 	createdAt: string;
 	endedAt?: string;
-	supportedExchanges: IExchange[];
+	supportedTradingPlatform: ITradingPlatform[];
 }
 
 export interface IActiveSignalsData {
@@ -117,10 +117,10 @@ export interface IActiveSignalsData {
 	isSignalTradable: boolean;
 	isSignalTriggered: boolean;
 	status: SignalStatus;
-	assetName: string;
-	baseCurrencyName: string;
+	baseAssetName: string;
+	quoteCurrencyName: string;
 	assetPair: string;
-	exchanges: Exchange[];
+	tradingPlatform: TradingPlatform[];
 	entryPriceUpperBound: number;
 	entryPriceLowerBound: number;
 	tradeSide: TradeSide;
@@ -129,7 +129,7 @@ export interface IActiveSignalsData {
 
 export interface ISignalPrice {
 	signalId: string;
-	exchange: Exchange;
+	tradingPlatform: TradingPlatform;
 	asset: IActiveSignalsData;
 	assetPrice: number;
 	timestamp?: number;
@@ -137,7 +137,7 @@ export interface ISignalPrice {
 
 export interface ISignalOrderBook {
 	signalId: string;
-	exchange: Exchange;
+	tradingPlatform: TradingPlatform;
 	totalSellQuantityInRange: number;
 	totalBuyQuantityInRange: number;
 	timestamp?: number;
@@ -145,5 +145,5 @@ export interface ISignalOrderBook {
 
 export interface IRemoveSignal {
 	signalId: string;
-	exchange: Exchange;
+	tradingPlatform: TradingPlatform;
 }

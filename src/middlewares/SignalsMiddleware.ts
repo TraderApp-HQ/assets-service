@@ -21,11 +21,11 @@ export async function validateCreateSignalRequest(
 		await checkAdmin(req);
 
 		// Joi schema for supportedExchanges as array of ObjectId
-		const supportedExchangesSchema = Joi.array()
+		const supportedTradingPlatformSchema = Joi.array()
 			.items(Joi.number().required().label("Object ID"))
 			.min(1)
 			.required()
-			.label("Supported Exchanges");
+			.label("Supported Trading Platform");
 
 		// Joi schema for targetProfits
 		const targetProfitSchema = {
@@ -43,11 +43,11 @@ export async function validateCreateSignalRequest(
 
 		// Joi schema to validate request body
 		const schema = Joi.object({
-			asset: Joi.number().required().label("Asset Id"),
-			assetName: Joi.string().required().label("Asset name"),
-			baseCurrency: Joi.number().required().label("Base Currency ID"),
-			baseCurrencyName: Joi.string().required().label("Base currency name"),
-			supportedExchanges: supportedExchangesSchema,
+			baseAsset: Joi.number().required().label("Base Asset Id"),
+			baseAssetName: Joi.string().required().label("Base Asset name"),
+			quoteCurrency: Joi.number().required().label("Quote Currency ID"),
+			quoteCurrencyName: Joi.string().required().label("Quote currency name"),
+			supportedTradingPlatform: supportedTradingPlatformSchema,
 			// entry: Joi.object().keys(entry).required().label("Entry"),
 			entryPrice: Joi.number().required().label("Entry price"),
 			entryPriceLowerBound: Joi.number().required().label("Entry price lower bound"),

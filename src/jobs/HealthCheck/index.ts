@@ -3,7 +3,7 @@ import { BinanceWebSocketService } from "../../services/BinanceWebSocketService"
 import { RedisClient } from "../../clients/RedisClient";
 import WebSocket from "ws";
 import { openBinanceWebSocketConnection } from "../../websockets/BinanceWebSockets";
-import { Exchange, AssetData } from "../../config/enums";
+import { TradingPlatform, AssetData } from "../../config/enums";
 import { MessageActivityService } from "../../services/MessageActivityService";
 import { CacheService } from "../../services/CacheService";
 
@@ -69,7 +69,7 @@ export const BinanceAssetWebSocketHealthCheckJob = () =>
 
 		try {
 			// Get all cached assets from Redis
-			const allPrices = await cache.getAllSignalsPrices(Exchange.binance);
+			const allPrices = await cache.getAllSignalsPrices(TradingPlatform.binance);
 			const assetMap = new Map(allPrices.map((p) => [p.signalId, p.asset]));
 
 			const TWO_MINUTES = 2 * 60 * 1000;

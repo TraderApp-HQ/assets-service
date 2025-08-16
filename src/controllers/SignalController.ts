@@ -17,8 +17,8 @@ import { SignalStatus } from "../config/enums";
 export async function createSignalHandler(req: Request, res: Response, next: NextFunction) {
 	const signalService: SignalService = new SignalService();
 	const {
-		asset,
-		assetName,
+		baseAsset,
+		baseAssetName,
 		entryPrice,
 		entryPriceLowerBound,
 		entryPriceUpperBound,
@@ -28,9 +28,9 @@ export async function createSignalHandler(req: Request, res: Response, next: Nex
 		tradeNote,
 		candlestick,
 		risk,
-		baseCurrency,
-		baseCurrencyName,
-		supportedExchanges,
+		quoteCurrency,
+		quoteCurrencyName,
+		supportedTradingPlatform,
 		category,
 		tradeSide,
 		tradeType,
@@ -51,10 +51,10 @@ export async function createSignalHandler(req: Request, res: Response, next: Nex
 
 		// Data to be set in the document
 		const newSignal: ISignalServiceCreateSignalProps = {
-			asset,
-			assetName,
-			baseCurrency,
-			baseCurrencyName,
+			baseAsset,
+			baseAssetName,
+			quoteCurrency,
+			quoteCurrencyName,
 			entryPrice,
 			entryPriceLowerBound,
 			entryPriceUpperBound,
@@ -67,7 +67,7 @@ export async function createSignalHandler(req: Request, res: Response, next: Nex
 			maxGain: 0,
 			tradeNote,
 			status: SignalStatus.PENDING,
-			supportedExchanges,
+			supportedTradingPlatform,
 			createdAt: new Date().toISOString(),
 			category,
 			tradeSide,

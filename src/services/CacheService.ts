@@ -1,17 +1,19 @@
 import "dotenv/config";
+import { LocalCacheClient } from "../clients/LocalCacheClient";
+import { RedisClient } from "../clients/RedisClient";
 import { FeatureFlagManager } from "../clients/SplitIOClient";
 import { redisFlagUserId } from "../clients/SplitIOClient/feature-flags";
-import { Exchange } from "../config/enums";
+import { TradingPlatform } from "../config/enums";
 import { IRemoveSignal, ISignalOrderBook, ISignalPrice } from "../config/interfaces";
-import { RedisClient } from "../clients/RedisClient";
-import { LocalCacheClient } from "../clients/LocalCacheClient";
 
 export interface ICache {
 	addSignalPrice: (data: ISignalPrice) => void | Promise<void>;
 	addSignalOrderBook: (data: ISignalOrderBook) => void | Promise<void>;
-	getAllSignalsPrices: (exchange?: Exchange) => ISignalPrice[] | Promise<ISignalPrice[]>;
+	getAllSignalsPrices: (
+		tradingPlatform?: TradingPlatform
+	) => ISignalPrice[] | Promise<ISignalPrice[]>;
 	getAllSignalsOrderBooks: (
-		exchange?: Exchange
+		tradingPlatform?: TradingPlatform
 	) => ISignalOrderBook[] | Promise<ISignalOrderBook[]>;
 	removeSignalPrice: (data: IRemoveSignal) => void | Promise<void>;
 	removeSignalOrderBook: (data: IRemoveSignal) => void | Promise<void>;

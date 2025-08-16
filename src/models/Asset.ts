@@ -1,7 +1,7 @@
 import mongoose, { Schema, Document } from "mongoose";
 import { Category } from "../config/enums";
 
-export interface ICoin extends Document {
+export interface IAsset extends Document {
 	_id: number;
 	name: string;
 	slug: string;
@@ -18,9 +18,9 @@ export interface ICoin extends Document {
 	// exchangePairs: mongoose.Types.ObjectId[];
 }
 
-interface ICoinModel extends ICoin {}
+interface IAssetModel extends IAsset {}
 
-export const CoinSchema = new Schema<ICoinModel>(
+export const AssetSchema = new Schema<IAssetModel>(
 	{
 		_id: { type: Number, required: true },
 		name: { type: String, required: true },
@@ -37,7 +37,10 @@ export const CoinSchema = new Schema<ICoinModel>(
 		// currency: { type: mongoose.Types.ObjectId, ref: "Currency" },
 		// exchangePairs: [{ type: mongoose.Types.ObjectId, ref: "ExchangePair" }],
 	},
-	{ versionKey: false, timestamps: false }
+	{
+		versionKey: false,
+		timestamps: false,
+	}
 );
 
-export default mongoose.model<ICoinModel>("Coin", CoinSchema);
+export default mongoose.model<IAssetModel>("asset", AssetSchema);

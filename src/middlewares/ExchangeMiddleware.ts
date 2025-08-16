@@ -102,7 +102,7 @@ export async function validateUpdateExchangeInfoRequest(
 	}
 }
 
-export async function validateGetSupportedExchangesRequest(
+export async function validateGetSupportedTradingPlatformRequest(
 	req: Request,
 	_res: Response,
 	next: NextFunction
@@ -112,8 +112,8 @@ export async function validateGetSupportedExchangesRequest(
 		await checkAdmin(req);
 
 		const querySchema = Joi.object({
-			currencyId: Joi.number().required().label("currency Id"),
-			coinId: Joi.number().required().label("coin Id"),
+			quoteCurrencyId: Joi.number().required().label("Quote Currency Id"),
+			baseAssetId: Joi.number().required().label("Base Asset Id"),
 		});
 		const { error } = querySchema.validate(req.query, { abortEarly: true });
 

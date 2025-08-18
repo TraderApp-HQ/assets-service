@@ -72,7 +72,7 @@ export class SignalService {
 
 			// Populate related fields
 			signalQuery = signalQuery.populate([
-				{ path: "supportedTradingPlatform" },
+				{ path: "supportedTradingPlatforms" },
 				{ path: "baseAsset" },
 				{ path: "quoteCurrency" },
 			]);
@@ -87,7 +87,7 @@ export class SignalService {
 						signal.baseAsset?.name?.match(new RegExp(keyword, "i")) ||
 						signal.quoteCurrency?.symbol?.match(new RegExp(keyword, "i")) ||
 						signal.quoteCurrency?.name?.match(new RegExp(keyword, "i")) ||
-						signal.supportedTradingPlatform.some((platform: ITradingPlatform) =>
+						signal.supportedTradingPlatforms.some((platform: ITradingPlatform) =>
 							platform.name.match(new RegExp(keyword, "i"))
 						)
 					);
@@ -181,7 +181,7 @@ export class SignalService {
 	public async getSignalById(id: string): Promise<ISignalResponse | null> {
 		try {
 			const signal = await Signal.findById(id)
-				.populate(["supportedTradingPlatform", "baseAsset", "quoteCurrency"])
+				.populate(["supportedTradingPlatforms", "baseAsset", "quoteCurrency"])
 				.exec();
 
 			if (!signal) {
@@ -234,31 +234,31 @@ export class SignalService {
 			const activeSignals = await Signal.find({ status: { $ne: SignalStatus.INACTIVE } })
 				.populate([
 					{
-						path: "supportedTradingPlatform",
+						path: "supportedTradingPlatforms",
 						select: "slug -_id",
 						match: filterCondition,
 					},
 				])
 				.select(
-					"baseAssetName quoteCurrencyName targetProfits stopLoss entryPrice isSignalTradable supportedTradingPlatform entryPriceUpperBound entryPriceLowerBound tradeSide maxGain status isSignalTriggered"
+					"baseAssetName quoteCurrencyName targetProfits stopLoss entryPrice isSignalTradable supportedTradingPlatforms entryPriceUpperBound entryPriceLowerBound tradeSide maxGain status isSignalTriggered"
 				)
 				.exec();
 
 			// Extracting assets exchange
 			const signalAndExchanges = activeSignals
-				.filter((signal) => signal.supportedTradingPlatform.length > 0)
+				.filter((signal) => signal.supportedTradingPlatforms.length > 0)
 				.map((signal) => {
 					const assetName =
 						`${signal.baseAssetName}${signal.quoteCurrencyName}`.toLowerCase();
-					const tradingPlatform: string[] = signal.supportedTradingPlatform.map(
+					const tradingPlatforms: string[] = signal.supportedTradingPlatforms.map(
 						(platform: any) => platform.slug
 					);
-					const { _id, supportedTradingPlatform, ...restSignal } = signal.toObject();
+					const { _id, supportedTradingPlatforms, ...restSignal } = signal.toObject();
 
 					return {
 						...restSignal,
 						assetPair: assetName,
-						tradingPlatform,
+						tradingPlatforms,
 						signalId: _id.toString(),
 					};
 				}) as IActiveSignalsData[];

@@ -1,15 +1,16 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
-import { initSecrets } from "@traderapp/shared-resources";
-import { config } from "dotenv";
+import "dotenv/config";
 import fs from "fs";
 import mongoose from "mongoose";
 import path from "path";
 import { ENVIRONMENTS } from "../config/constants";
-import secretsJson from "../env.json";
+import {
+	getSecrets,
+	IAssetsServiceSecrets,
+	ICommonSecrets,
+	SecretLocation,
+} from "../config/secrets";
 import Migration from "./Migration"; // Import the Migration model
-
-// First load environment variables
-config();
 
 const env = process.env.NODE_ENV;
 if (!env) {
@@ -17,7 +18,6 @@ if (!env) {
 	process.exit(1);
 }
 const suffix = ENVIRONMENTS[env];
-const secretNames = ["common-secrets", "assets-service-secrets"];
 
 const MIGRATIONS_DIR = path.join(__dirname, "migrations"); // Directory for migration scripts
 
@@ -70,18 +70,17 @@ async function getExecutedMigrations() {
 }
 
 async function main() {
-	// Then initialize secrets
-	await initSecrets({
-		env: suffix,
-		secretNames,
-		secretsJson,
-	});
+	const [assetsServiceSecrets, commonSecrets] = await Promise.all([
+		getSecrets<IAssetsServiceSecrets>(`${SecretLocation.assetsServiceSecrets}/${suffix}`),
+		getSecrets<ICommonSecrets>(`${SecretLocation.commonSecrets}/${suffix}`),
+	]);
+
+	process.env.CMC_API_KEY = commonSecrets.CMC_API_KEY;
 
 	// Connect to MongoDB using Mongoose
 	try {
 		console.log("Connecting to MongoDB...");
-		const dbUri = process.env.ASSETS_SERVICE_DB_URL as string;
-		await mongoose.connect(dbUri);
+		await mongoose.connect(assetsServiceSecrets.ASSETS_SERVICE_DB_URL);
 		console.log("Connected to MongoDB successfully.");
 	} catch (error: any) {
 		console.error("Error connecting to MongoDB: ", error.message);

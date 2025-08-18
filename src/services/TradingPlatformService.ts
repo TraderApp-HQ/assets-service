@@ -4,7 +4,7 @@ import {
 	IGetAllTradingPlatformQuery,
 	ISupportedTradingPlatform,
 	ITradingPlatformServiceGetAllTradingPlatformParams,
-	ITradingPlatformServiceGetSupportedTradingPlatformParams,
+	ITradingPlatformServiceGetSupportedTradingPlatformsParams,
 	ITradingPlatformServiceUpdateTradingPlatformByIdProps,
 } from "../interfaces/controllers";
 import TradingPlatform, { ITradingPlatform } from "../models/TradingPlatform";
@@ -27,16 +27,16 @@ export class TradingPlatformService {
 			}
 
 			// Fetch the trading platforms based on the query
-			const exchanges = await TradingPlatform.find(query)
+			const tardingPlatforms = await TradingPlatform.find(query)
 				.sort({ name: orderBy === "asc" ? 1 : -1 })
 				.skip(offset)
 				.limit(rowsPerPage);
 
-			if (!exchanges || exchanges.length === 0) {
+			if (!tardingPlatforms || tardingPlatforms.length === 0) {
 				return null;
 			}
 
-			return exchanges;
+			return tardingPlatforms;
 		} catch (error: any) {
 			throw new Error(error.message);
 		}
@@ -92,10 +92,10 @@ export class TradingPlatformService {
 		}
 	}
 
-	public async getSupportedTradingPlatform({
+	public async getSupportedTradingPlatforms({
 		baseAssetId,
 		quoteCurrencyId,
-	}: ITradingPlatformServiceGetSupportedTradingPlatformParams): Promise<
+	}: ITradingPlatformServiceGetSupportedTradingPlatformsParams): Promise<
 		ISupportedTradingPlatform[] | null
 	> {
 		try {

@@ -12,7 +12,7 @@ import Currency from "../models/Currency";
 import { TradingPlatformService } from "../services/TradingPlatformService";
 import { HttpStatus } from "../utils/httpStatus";
 
-export async function getAllExchanges(req: Request, res: Response, next: NextFunction) {
+export async function getAllTradingPlatforms(req: Request, res: Response, next: NextFunction) {
 	const tradingPlatformService: TradingPlatformService = new TradingPlatformService();
 
 	try {
@@ -163,14 +163,18 @@ export async function getCurrenciesForExchange(req: Request, res: Response, next
 	}
 }
 
-export async function getSupportedTradingPlatform(req: Request, res: Response, next: NextFunction) {
+export async function getSupportedTradingPlatforms(
+	req: Request,
+	res: Response,
+	next: NextFunction
+) {
 	const tradingPlatformService: TradingPlatformService = new TradingPlatformService();
 
 	const baseAssetId = Number(req.query.baseAssetId);
 	const quoteCurrencyId = Number(req.query.quoteCurrencyId);
 
 	try {
-		const platforms = await tradingPlatformService.getSupportedTradingPlatform({
+		const platforms = await tradingPlatformService.getSupportedTradingPlatforms({
 			baseAssetId,
 			quoteCurrencyId,
 		});

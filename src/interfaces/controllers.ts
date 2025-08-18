@@ -66,7 +66,7 @@ export interface IGetAllTradingPlatformQuery {
 	status?: TradeStatus;
 }
 
-export interface ITradingPlatformServiceGetSupportedTradingPlatformParams {
+export interface ITradingPlatformServiceGetSupportedTradingPlatformsParams {
 	baseAssetId: number;
 	quoteCurrencyId: number;
 }

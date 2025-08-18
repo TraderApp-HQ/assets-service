@@ -59,7 +59,7 @@ export const ROUTES = {
 	patchExchangeById: "/update/:exchangeId",
 	getAllAssets: "/exchange/:exchangeId",
 	getByCurrencies: "/currency/:exchangeId",
-	getSupportedTradingPlatform: "/supported-trading-platform",
+	getSupportedTradingPlatforms: "/supported-trading-platforms",
 };
 
 export const DOC_RESPONSE = {

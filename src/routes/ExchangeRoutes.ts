@@ -3,27 +3,27 @@ import { ROUTES } from "../config/constants";
 
 import {
 	getAllAssetsInExchange,
-	getAllExchanges,
+	getAllTradingPlatforms,
 	getCurrenciesForExchange,
 	getExchangeById,
-	getSupportedTradingPlatform,
+	getSupportedTradingPlatforms,
 	updateExchangeInfo,
 } from "../controllers/TradingPlatformControllers";
 
 import {
-	validateExchangesRequest,
+	validateTradingPlatformsRequest,
 	validateExchangeRequest,
 	validateUpdateExchangeInfoRequest,
-	validateGetSupportedTradingPlatformRequest,
+	validateGetSupportedTradingPlatformsRequest,
 } from "../middlewares/ExchangeMiddleware";
 
 const router = Router();
 
-router.get(ROUTES.get, validateExchangesRequest, getAllExchanges);
+router.get(ROUTES.get, validateTradingPlatformsRequest, getAllTradingPlatforms);
 router.get(
-	ROUTES.getSupportedTradingPlatform,
-	validateGetSupportedTradingPlatformRequest,
-	getSupportedTradingPlatform
+	ROUTES.getSupportedTradingPlatforms,
+	validateGetSupportedTradingPlatformsRequest,
+	getSupportedTradingPlatforms
 );
 router.get(ROUTES.getExchangeById, validateExchangeRequest, getExchangeById);
 router.get(ROUTES.getAllAssets, getAllAssetsInExchange);

@@ -21,7 +21,7 @@ export async function validateCreateSignalRequest(
 		await checkAdmin(req);
 
 		// Joi schema for supportedExchanges as array of ObjectId
-		const supportedTradingPlatformSchema = Joi.array()
+		const supportedTradingPlatformsSchema = Joi.array()
 			.items(Joi.number().required().label("Object ID"))
 			.min(1)
 			.required()
@@ -47,7 +47,7 @@ export async function validateCreateSignalRequest(
 			baseAssetName: Joi.string().required().label("Base Asset name"),
 			quoteCurrency: Joi.number().required().label("Quote Currency ID"),
 			quoteCurrencyName: Joi.string().required().label("Quote currency name"),
-			supportedTradingPlatform: supportedTradingPlatformSchema,
+			supportedTradingPlatforms: supportedTradingPlatformsSchema,
 			// entry: Joi.object().keys(entry).required().label("Entry"),
 			entryPrice: Joi.number().required().label("Entry price"),
 			entryPriceLowerBound: Joi.number().required().label("Entry price lower bound"),

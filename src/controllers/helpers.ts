@@ -35,7 +35,7 @@ export const formatSignalResponse = (signal: ISignalResponse) => {
 			logo: signal.quoteCurrency.logo,
 			marketCap: signal.quoteCurrency.marketCap,
 		},
-		supportedTradingPlatform: signal.supportedTradingPlatform.map((platform) => ({
+		supportedTradingPlatforms: signal.supportedTradingPlatforms.map((platform) => ({
 			id: platform.id,
 			name: platform.name,
 			logo: platform.logo,

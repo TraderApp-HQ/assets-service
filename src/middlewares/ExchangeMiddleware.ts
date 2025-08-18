@@ -4,7 +4,11 @@ import { DEFAULT_PAGE, DEFAULT_ROWS_PER_PAGE } from "../config/constants";
 import { checkAdmin, checkUser } from "../helpers/middlewares";
 import { TradeStatus } from "../config/enums";
 
-export async function validateExchangesRequest(req: Request, _res: Response, next: NextFunction) {
+export async function validateTradingPlatformsRequest(
+	req: Request,
+	_res: Response,
+	next: NextFunction
+) {
 	try {
 		// check accessToken and user role
 		await checkUser(req);
@@ -102,7 +106,7 @@ export async function validateUpdateExchangeInfoRequest(
 	}
 }
 
-export async function validateGetSupportedTradingPlatformRequest(
+export async function validateGetSupportedTradingPlatformsRequest(
 	req: Request,
 	_res: Response,
 	next: NextFunction

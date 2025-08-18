@@ -59,7 +59,7 @@ export interface ISignalServiceCreateSignalProps {
 	maxGain: number;
 	createdAt: string;
 	endedAt?: string;
-	supportedTradingPlatform: number[];
+	supportedTradingPlatforms: number[];
 	baseAsset: number;
 	baseAssetName: string;
 	quoteCurrency: number;
@@ -106,7 +106,7 @@ export interface ISignalResponse extends Document {
 	maxGain: number;
 	createdAt: string;
 	endedAt?: string;
-	supportedTradingPlatform: ITradingPlatform[];
+	supportedTradingPlatforms: ITradingPlatform[];
 }
 
 export interface IActiveSignalsData {
@@ -120,7 +120,7 @@ export interface IActiveSignalsData {
 	baseAssetName: string;
 	quoteCurrencyName: string;
 	assetPair: string;
-	tradingPlatform: TradingPlatform[];
+	tradingPlatforms: TradingPlatform[];
 	entryPriceUpperBound: number;
 	entryPriceLowerBound: number;
 	tradeSide: TradeSide;

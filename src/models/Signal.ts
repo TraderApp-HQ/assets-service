@@ -43,7 +43,7 @@ const SignalSchema = new Schema<ISignal>(
 		maxGain: { type: Number },
 		createdAt: { type: String, required: true },
 		endedAt: { type: String },
-		supportedTradingPlatform: [{ type: Number, ref: "trading-platform", required: true }],
+		supportedTradingPlatforms: [{ type: Number, ref: "trading-platform", required: true }],
 		baseAsset: { type: Number, ref: "asset", required: true },
 		baseAssetName: { type: String, required: true },
 		quoteCurrency: { type: Number, ref: "asset", required: true },

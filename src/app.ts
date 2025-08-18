@@ -43,9 +43,9 @@ const secretNames = ["common-secrets", "assets-service-secrets"];
 			await cache.getClient(); // This will initialize the connection if redis is been used fro caching
 		}
 
-		// const port = process.env.PORT ?? "";
+		const port = process.env.PORT ?? "";
 		const dbUrl = process.env.ASSETS_SERVICE_DB_URL ?? "";
-		const port = 8082;
+		// const port = 8082;
 		// const dbUrl = "mongodb://localhost:27017/assets-service-db";
 
 		// Connect to MongoDB

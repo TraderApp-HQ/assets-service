@@ -163,7 +163,38 @@ export async function getActiveSignalsHandler(req: Request, res: Response, next:
 	try {
 		const signalsResponse = await signalService.getPaginatedSignals(
 			req.query as Record<string, string>,
-			[SignalStatus.PENDING, SignalStatus.ACTIVE, SignalStatus.PAUSED]
+			[SignalStatus.ACTIVE, SignalStatus.PAUSED]
+		);
+		if (!signalsResponse.success) {
+			res.status(HttpStatus.NOT_FOUND).json(
+				apiResponseHandler({
+					type: ResponseType.SUCCESS,
+					message: ResponseMessage.NO_SIGNAL,
+					object: signalsResponse.response,
+				})
+			);
+			return;
+		}
+
+		res.status(HttpStatus.OK).json(
+			apiResponseHandler({
+				type: ResponseType.SUCCESS,
+				message: ResponseMessage.GET_SIGNALS,
+				object: signalsResponse.response,
+			})
+		);
+	} catch (err) {
+		console.log(err);
+		next(err);
+	}
+}
+
+export async function getPendingSignalsHandler(req: Request, res: Response, next: NextFunction) {
+	const signalService: SignalService = new SignalService();
+	try {
+		const signalsResponse = await signalService.getPaginatedSignals(
+			req.query as Record<string, string>,
+			[SignalStatus.PENDING]
 		);
 		if (!signalsResponse.success) {
 			res.status(HttpStatus.NOT_FOUND).json(

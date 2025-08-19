@@ -150,8 +150,13 @@ export async function validateGetAllSignalsRequest(
 
 export async function validateGetSignalsRequest(req: Request, _res: Response, next: NextFunction) {
 	try {
-		// check accessToken and user role
-		await checkUser(req);
+		if (req.path === "/pending") {
+			// check accessToken and admin role
+			await checkAdmin(req);
+		} else {
+			// check accessToken and user role
+			await checkUser(req);
+		}
 
 		const querySchema = Joi.object({
 			rowsPerPage: Joi.number()
@@ -189,8 +194,13 @@ export async function validateGetSignalByIdRequest(
 	next: NextFunction
 ) {
 	try {
-		// check accessToken and user role
-		await checkUser(req);
+		if (req.path === "/pending") {
+			// check accessToken and admin role
+			await checkAdmin(req);
+		} else {
+			// check accessToken and user role
+			await checkUser(req);
+		}
 
 		const paramsSchema = Joi.object({
 			id: Joi.string().required().label("signal id"),
@@ -219,8 +229,8 @@ export async function validateUpdateSignalByIdRequest(
 	next: NextFunction
 ) {
 	try {
-		// Check accessToken and user role
-		await checkUser(req);
+		// Check accessToken and admin role
+		await checkAdmin(req);
 
 		const paramsSchema = Joi.object({
 			id: Joi.string().required().label("signal id"),

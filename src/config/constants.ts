@@ -85,6 +85,7 @@ export const SIGNAL_ROUTES = {
 	post: "/create",
 	get: "/",
 	getActive: "/active",
+	getPending: "/pending",
 	getHistory: "/history",
 	getSignalById: "/:id",
 	updateSignalById: "/update/:id",

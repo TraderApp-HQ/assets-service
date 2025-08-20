@@ -1,10 +1,15 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
+import "dotenv/config";
+import fs from "fs";
 import mongoose from "mongoose";
 import path from "path";
-import fs from "fs";
-import "dotenv/config";
 import { ENVIRONMENTS } from "../config/constants";
-import { getSecrets, IAssetsServiceSecrets, SecretLocation } from "../config/secrets";
+import {
+	getSecrets,
+	IAssetsServiceSecrets,
+	ICommonSecrets,
+	SecretLocation,
+} from "../config/secrets";
 import Migration from "./Migration"; // Import the Migration model
 
 const env = process.env.NODE_ENV;
@@ -65,9 +70,12 @@ async function getExecutedMigrations() {
 }
 
 async function main() {
-	const assetsServiceSecrets = await getSecrets<IAssetsServiceSecrets>(
-		`${SecretLocation.assetsServiceSecrets}/${suffix}`
-	);
+	const [assetsServiceSecrets, commonSecrets] = await Promise.all([
+		getSecrets<IAssetsServiceSecrets>(`${SecretLocation.assetsServiceSecrets}/${suffix}`),
+		getSecrets<ICommonSecrets>(`${SecretLocation.commonSecrets}/${suffix}`),
+	]);
+
+	process.env.CMC_API_KEY = commonSecrets.CMC_API_KEY;
 
 	// Connect to MongoDB using Mongoose
 	try {

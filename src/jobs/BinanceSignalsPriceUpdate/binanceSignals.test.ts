@@ -1,17 +1,17 @@
 import mongoose from "mongoose";
 import {
-	baseCurrencyData,
 	bitcoinCoinData,
 	bitcoinSignalData,
 	cadanoCoinData,
 	cadanoSignalData,
 	exchangeData,
+	quoteCurrencyData,
 } from "../../__tests__/constants";
-import { Exchange as ExchangeEnum, SignalStatus } from "../../config/enums";
+import { SignalStatus, TradingPlatform as TradePlatform } from "../../config/enums";
 import { IActiveSignalsData, ISignal, ISignalPrice } from "../../config/interfaces";
-import Coin from "../../models/Coin";
+import Asset from "../../models/Asset";
 import Currency from "../../models/Currency";
-import Exchange from "../../models/Exchange";
+import TradingPlatform from "../../models/TradingPlatform";
 import { CacheService, ICache } from "../../services/CacheService";
 import { SignalService } from "../../services/SignalService";
 import * as BinanceWebSockets from "../../websockets/BinanceWebSockets";
@@ -53,10 +53,10 @@ describe("Binance Signals Cron Job", () => {
 
 	beforeAll(async () => {
 		await Promise.all([
-			Exchange.create(exchangeData), // Create exchange
-			Currency.create(baseCurrencyData), // Create base currency (Currency)
-			Coin.create(bitcoinCoinData), // Create asset (btc)
-			Coin.create(cadanoCoinData), // Create asset (Cadano)
+			TradingPlatform.create(exchangeData), // Create trading platform
+			Currency.create(quoteCurrencyData), // Create quote currency (Currency)
+			Asset.create(bitcoinCoinData), // Create base asset (btc)
+			Asset.create(cadanoCoinData), // Create base asset (Cadano)
 		]);
 
 		// Get cache instance
@@ -90,8 +90,8 @@ describe("Binance Signals Cron Job", () => {
 		const collections = mongoose.connection.collections;
 		await Promise.all([
 			cache.deleteAllCacheRecord(),
-			collections["exchange"]?.deleteMany({}),
-			collections["coin"]?.deleteMany({}),
+			collections["trading-platform"]?.deleteMany({}),
+			collections["asset"]?.deleteMany({}),
 			collections["currency"]?.deleteMany({}),
 		]);
 	});
@@ -119,11 +119,11 @@ describe("Binance Signals Cron Job", () => {
 		await binanceSignals();
 
 		// Get active signals from db
-		activeSignal = await signalService.getExchangeActiveSignals(ExchangeEnum.binance);
+		activeSignal = await signalService.getTradingPlatformActiveSignals(TradePlatform.binance);
 
 		// Verify state of cache
-		const cachedPrices = cache.getAllSignalsPrices(ExchangeEnum.binance);
-		const cachedOrderBooks = cache.getAllSignalsOrderBooks(ExchangeEnum.binance);
+		const cachedPrices = cache.getAllSignalsPrices(TradePlatform.binance);
+		const cachedOrderBooks = cache.getAllSignalsOrderBooks(TradePlatform.binance);
 
 		expect(cachedPrices).toEqual([]);
 		expect(cachedOrderBooks).toEqual([]);
@@ -141,7 +141,7 @@ describe("Binance Signals Cron Job", () => {
 		await binanceSignals();
 
 		// Get active signals from db
-		activeSignal = await signalService.getExchangeActiveSignals(ExchangeEnum.binance);
+		activeSignal = await signalService.getTradingPlatformActiveSignals(TradePlatform.binance);
 
 		// Should call openBinanceWebSocketConnection for the new signals
 		expect(BinanceWebSockets.openBinanceWebSocketConnection).toHaveBeenCalledTimes(
@@ -149,9 +149,11 @@ describe("Binance Signals Cron Job", () => {
 		);
 
 		// Manually compute signal with new price and add to cache
-		const btc = activeSignal.find((signal) => signal.assetName === "BTC") as IActiveSignalsData;
+		const btc = activeSignal.find(
+			(signal) => signal.baseAssetName === "BTC"
+		) as IActiveSignalsData;
 		const cadano = activeSignal.find(
-			(signal) => signal.assetName === "ADA"
+			(signal) => signal.baseAssetName === "ADA"
 		) as IActiveSignalsData;
 		const btcCurrentPrice = 39800;
 		const cadanoCurrentPrice = 0.787;
@@ -163,19 +165,19 @@ describe("Binance Signals Cron Job", () => {
 		// Update cache with price andd asset
 		cache.addSignalPrice({
 			signalId: btc.signalId,
-			exchange: ExchangeEnum.binance,
+			tradingPlatform: TradePlatform.binance,
 			asset: computedBtcAsset,
 			assetPrice: btcCurrentPrice,
 		});
 		cache.addSignalPrice({
 			signalId: cadano.signalId,
-			exchange: ExchangeEnum.binance,
+			tradingPlatform: TradePlatform.binance,
 			asset: computedCadanoAsset,
 			assetPrice: cadanoCurrentPrice,
 		});
 
 		// Verify state of cache
-		const cachedPrices = await cache.getAllSignalsPrices(ExchangeEnum.binance);
+		const cachedPrices = await cache.getAllSignalsPrices(TradePlatform.binance);
 		const updatedCachedBtc = cachedPrices.find(
 			(signal) => signal.signalId === btc?.signalId
 		)?.asset;
@@ -206,16 +208,18 @@ describe("Binance Signals Cron Job", () => {
 		await binanceSignals();
 
 		// Get active signals from db
-		activeSignal = await signalService.getExchangeActiveSignals(ExchangeEnum.binance);
+		activeSignal = await signalService.getTradingPlatformActiveSignals(TradePlatform.binance);
 
 		// Should call openBinanceWebSocketConnection for the new signals
 		expect(BinanceWebSockets.openBinanceWebSocketConnection).toHaveBeenCalledTimes(
 			activeSignal.length
 		);
 
-		const btc = activeSignal.find((signal) => signal.assetName === "BTC") as IActiveSignalsData;
+		const btc = activeSignal.find(
+			(signal) => signal.baseAssetName === "BTC"
+		) as IActiveSignalsData;
 		let cadano = activeSignal.find(
-			(signal) => signal.assetName === "ADA"
+			(signal) => signal.baseAssetName === "ADA"
 		) as IActiveSignalsData;
 
 		// ------------------------ 'status' -> 'ACTIVE' ----------------------------
@@ -229,19 +233,19 @@ describe("Binance Signals Cron Job", () => {
 		// Update cache with price and asset
 		cache.addSignalPrice({
 			signalId: btc.signalId,
-			exchange: ExchangeEnum.binance,
+			tradingPlatform: TradePlatform.binance,
 			asset: computedBtcAsset,
 			assetPrice: btcCurrentPrice,
 		});
 		cache.addSignalPrice({
 			signalId: cadano.signalId,
-			exchange: ExchangeEnum.binance,
+			tradingPlatform: TradePlatform.binance,
 			asset: computedCadanoAsset,
 			assetPrice: cadanoCurrentPrice,
 		});
 
 		// Verify state of cache
-		let cachedPrices = await cache.getAllSignalsPrices(ExchangeEnum.binance);
+		let cachedPrices = await cache.getAllSignalsPrices(TradePlatform.binance);
 		let updatedCachedBtc = cachedPrices.find((signal) => signal.signalId === btc?.signalId)
 			?.asset as IActiveSignalsData;
 		let updatedCachedCadano = cachedPrices.find(
@@ -263,13 +267,13 @@ describe("Binance Signals Cron Job", () => {
 		// Update cache with price and asset
 		cache.addSignalPrice({
 			signalId: btc?.signalId,
-			exchange: ExchangeEnum.binance,
+			tradingPlatform: TradePlatform.binance,
 			asset: computedBtcAsset,
 			assetPrice: btcCurrentPrice,
 		});
 
 		// Verify state of cache
-		cachedPrices = await cache.getAllSignalsPrices(ExchangeEnum.binance);
+		cachedPrices = await cache.getAllSignalsPrices(TradePlatform.binance);
 		updatedCachedBtc = cachedPrices.find((signal) => signal.signalId === btc?.signalId)
 			?.asset as IActiveSignalsData;
 		updatedCachedCadano = cachedPrices.find(
@@ -297,11 +301,13 @@ describe("Binance Signals Cron Job", () => {
 		await binanceSignals();
 
 		// Get active signals from db after UPDATE
-		activeSignal = await signalService.getExchangeActiveSignals(ExchangeEnum.binance);
-		cadano = activeSignal.find((signal) => signal.assetName === "ADA") as IActiveSignalsData;
+		activeSignal = await signalService.getTradingPlatformActiveSignals(TradePlatform.binance);
+		cadano = activeSignal.find(
+			(signal) => signal.baseAssetName === "ADA"
+		) as IActiveSignalsData;
 
 		// Verify state of cache
-		cachedPrices = await cache.getAllSignalsPrices(ExchangeEnum.binance);
+		cachedPrices = await cache.getAllSignalsPrices(TradePlatform.binance);
 		updatedCachedCadano = cachedPrices.find(
 			(signal) => signal.signalId === cadano?.signalId
 		)?.asset;
@@ -323,12 +329,14 @@ describe("Binance Signals Cron Job", () => {
 		await binanceSignals();
 
 		// Fetch current active signals from DB
-		const activeSignals = await signalService.getExchangeActiveSignals(ExchangeEnum.binance);
+		const activeSignals = await signalService.getTradingPlatformActiveSignals(
+			TradePlatform.binance
+		);
 		const btc = activeSignals.find(
-			(signal) => signal.assetName === "BTC"
+			(signal) => signal.baseAssetName === "BTC"
 		) as IActiveSignalsData;
 		const cadano = activeSignals.find(
-			(signal) => signal.assetName === "ADA"
+			(signal) => signal.baseAssetName === "ADA"
 		) as IActiveSignalsData;
 
 		// Assert status to currently be Pending
@@ -357,13 +365,13 @@ describe("Binance Signals Cron Job", () => {
 		await Promise.all([
 			cache.addSignalPrice({
 				signalId: btc.signalId,
-				exchange: ExchangeEnum.binance,
+				tradingPlatform: TradePlatform.binance,
 				asset: computedBtc1,
 				assetPrice: btcPrice1,
 			}),
 			cache.addSignalPrice({
 				signalId: cadano.signalId,
-				exchange: ExchangeEnum.binance,
+				tradingPlatform: TradePlatform.binance,
 				asset: computedCadano1,
 				assetPrice: cadanoPrice1,
 			}),
@@ -371,7 +379,7 @@ describe("Binance Signals Cron Job", () => {
 
 		// ------------- Iteration #2: out-of-range -> must NOT go back to PENDING -------------
 		// Get asset from cache for 2nd iteration
-		cachedAssets = await cache.getAllSignalsPrices(ExchangeEnum.binance);
+		cachedAssets = await cache.getAllSignalsPrices(TradePlatform.binance);
 		const cachedBtc1 = (cachedAssets.find((p) => p.signalId === btc.signalId) as ISignalPrice)
 			.asset;
 		const cachedCadano1 = (
@@ -408,13 +416,13 @@ describe("Binance Signals Cron Job", () => {
 		await Promise.all([
 			cache.addSignalPrice({
 				signalId: btc.signalId,
-				exchange: ExchangeEnum.binance,
+				tradingPlatform: TradePlatform.binance,
 				asset: computedBtc2,
 				assetPrice: btcPrice2,
 			}),
 			cache.addSignalPrice({
 				signalId: cadano.signalId,
-				exchange: ExchangeEnum.binance,
+				tradingPlatform: TradePlatform.binance,
 				asset: computedCadano2,
 				assetPrice: cadanoPrice2,
 			}),
@@ -422,7 +430,7 @@ describe("Binance Signals Cron Job", () => {
 
 		// ------------- Iteration #3: trigger INACTIVE (hit TP & SL) -------------
 		// Get asset from cache for 3rd iteration
-		cachedAssets = await cache.getAllSignalsPrices(ExchangeEnum.binance);
+		cachedAssets = await cache.getAllSignalsPrices(TradePlatform.binance);
 		const cachedBtc2 = (cachedAssets.find((p) => p.signalId === btc.signalId) as ISignalPrice)
 			.asset;
 		const cachedCadano2 = (
@@ -463,13 +471,13 @@ describe("Binance Signals Cron Job", () => {
 		await Promise.all([
 			cache.addSignalPrice({
 				signalId: btc.signalId,
-				exchange: ExchangeEnum.binance,
+				tradingPlatform: TradePlatform.binance,
 				asset: computedBtc3,
 				assetPrice: btcPrice3,
 			}),
 			cache.addSignalPrice({
 				signalId: cadano.signalId,
-				exchange: ExchangeEnum.binance,
+				tradingPlatform: TradePlatform.binance,
 				asset: computedCadano3,
 				assetPrice: cadanoPrice3,
 			}),
@@ -477,7 +485,7 @@ describe("Binance Signals Cron Job", () => {
 
 		// ----------- Iteration #4: back in-range -> must remain INACTIVE -----------------
 		// Get asset from cache for 4th iteration
-		cachedAssets = await cache.getAllSignalsPrices(ExchangeEnum.binance);
+		cachedAssets = await cache.getAllSignalsPrices(TradePlatform.binance);
 		const cachedBtc3 = (cachedAssets.find((p) => p.signalId === btc.signalId) as ISignalPrice)
 			.asset;
 		const cachedCadano3 = (

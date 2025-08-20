@@ -1,4 +1,4 @@
-import { Exchange } from "../../config/enums";
+import { TradingPlatform } from "../../config/enums";
 import { ChannelClient } from "../../services/ChannelClientService";
 import { RedisClient } from "../../clients/RedisClient";
 import WebSocket, * as WebSocketType from "ws";
@@ -14,7 +14,7 @@ export const clientSignals = async () => {
 		// const clients = (await redisCache.getChannelClients()) as unknown as WebSocketType[];
 
 		// Get signals current prices
-		const signalsPrice = await redisCache.getAllSignalsPrices(Exchange.binance);
+		const signalsPrice = await redisCache.getAllSignalsPrices(TradingPlatform.binance);
 
 		// Send prices to clients
 		clients.forEach((client) => {

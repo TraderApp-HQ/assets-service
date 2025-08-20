@@ -1,5 +1,5 @@
 import Redis from "ioredis";
-import { AssetData, Exchange, WSChannel } from "../../config/enums";
+import { AssetData, TradingPlatform, WSChannel } from "../../config/enums";
 import { IRemoveSignal, ISignalOrderBook, ISignalPrice } from "../../config/interfaces";
 import "dotenv/config";
 import { ICache } from "../../services/CacheService";
@@ -54,13 +54,19 @@ export class RedisClient implements ICache {
 		return this.client as Redis;
 	}
 
-	async addSignalPrice({ signalId, exchange, asset, assetPrice, timestamp }: ISignalPrice) {
+	async addSignalPrice({
+		signalId,
+		tradingPlatform,
+		asset,
+		assetPrice,
+		timestamp,
+	}: ISignalPrice) {
 		try {
 			const client = await this.getClient();
-			const wsKey = `${this.env}_${WSChannel.assetsUpdateWs}_${AssetData.price}_${signalId}_${exchange}`;
+			const wsKey = `${this.env}_${WSChannel.assetsUpdateWs}_${AssetData.price}_${signalId}_${tradingPlatform}`;
 			const data = {
 				signalId,
-				exchange,
+				tradingPlatform,
 				asset,
 				assetPrice,
 				timestamp: timestamp ?? Date.now(),
@@ -73,17 +79,17 @@ export class RedisClient implements ICache {
 
 	async addSignalOrderBook({
 		signalId,
-		exchange,
+		tradingPlatform,
 		totalSellQuantityInRange,
 		totalBuyQuantityInRange,
 		timestamp,
 	}: ISignalOrderBook) {
 		try {
 			const client = await this.getClient();
-			const wsKey = `${this.env}_${WSChannel.assetsUpdateWs}_${AssetData.orderBook}_${signalId}_${exchange}`;
+			const wsKey = `${this.env}_${WSChannel.assetsUpdateWs}_${AssetData.orderBook}_${signalId}_${tradingPlatform}`;
 			const data = {
 				signalId,
-				exchange,
+				tradingPlatform,
 				totalBuyQuantityInRange,
 				totalSellQuantityInRange,
 				timestamp: timestamp ?? Date.now(),
@@ -95,10 +101,10 @@ export class RedisClient implements ICache {
 		}
 	}
 
-	async getAllSignalsPrices(exchange?: Exchange): Promise<ISignalPrice[]> {
+	async getAllSignalsPrices(tradingPlatform?: TradingPlatform): Promise<ISignalPrice[]> {
 		const client = await this.getClient();
-		const filteredKey = exchange
-			? `${this.env}_${WSChannel.assetsUpdateWs}_${AssetData.price}_*_${exchange}`
+		const filteredKey = tradingPlatform
+			? `${this.env}_${WSChannel.assetsUpdateWs}_${AssetData.price}_*_${tradingPlatform}`
 			: `${this.env}_${WSChannel.assetsUpdateWs}_${AssetData.price}_*`;
 
 		const keys = await client.keys(filteredKey);
@@ -107,11 +113,11 @@ export class RedisClient implements ICache {
 					keys.map(async (key) => {
 						const keyArray = key.split("_");
 						const signalId = keyArray[keyArray.length - 2];
-						const exchange = keyArray[keyArray.length - 1] as Exchange;
+						const tradingPlatform = keyArray[keyArray.length - 1] as TradingPlatform;
 						const assetValue = (await client.get(key)) as string;
 						const { asset, assetPrice, timestamp } = JSON.parse(assetValue);
 
-						return { signalId, exchange, asset, assetPrice, timestamp };
+						return { signalId, tradingPlatform, asset, assetPrice, timestamp };
 					})
 			  )
 			: [];
@@ -119,10 +125,10 @@ export class RedisClient implements ICache {
 		return signals;
 	}
 
-	async getAllSignalsOrderBooks(exchange?: string): Promise<ISignalOrderBook[]> {
+	async getAllSignalsOrderBooks(tradingPlatform?: string): Promise<ISignalOrderBook[]> {
 		const client = await this.getClient();
-		const filteredKey = exchange
-			? `${this.env}_${WSChannel.assetsUpdateWs}_${AssetData.orderBook}_*_${exchange}`
+		const filteredKey = tradingPlatform
+			? `${this.env}_${WSChannel.assetsUpdateWs}_${AssetData.orderBook}_*_${tradingPlatform}`
 			: `${this.env}_${WSChannel.assetsUpdateWs}_${AssetData.orderBook}_*`;
 
 		const keys = await client.keys(filteredKey);
@@ -131,13 +137,13 @@ export class RedisClient implements ICache {
 					keys.map(async (key) => {
 						const keyArray = key.split("_");
 						const signalId = keyArray[keyArray.length - 2];
-						const exchange = keyArray[keyArray.length - 1] as Exchange;
+						const tradingPlatform = keyArray[keyArray.length - 1] as TradingPlatform;
 						const assetValue = (await client.get(key)) as string;
 						const { totalBuyQuantityInRange, totalSellQuantityInRange, timestamp } =
 							JSON.parse(assetValue);
 						return {
 							signalId,
-							exchange,
+							tradingPlatform,
 							totalSellQuantityInRange,
 							totalBuyQuantityInRange,
 							timestamp,
@@ -149,20 +155,20 @@ export class RedisClient implements ICache {
 		return signals;
 	}
 
-	async removeSignalPrice({ signalId, exchange }: IRemoveSignal): Promise<void> {
+	async removeSignalPrice({ signalId, tradingPlatform }: IRemoveSignal): Promise<void> {
 		try {
 			const client = await this.getClient();
-			const wsKey = `${this.env}_${WSChannel.assetsUpdateWs}_${AssetData.price}_${signalId}_${exchange}`;
+			const wsKey = `${this.env}_${WSChannel.assetsUpdateWs}_${AssetData.price}_${signalId}_${tradingPlatform}`;
 			await client.del(wsKey);
 		} catch (error) {
 			console.error(`Failed to remove signal price from Redis:`, error);
 		}
 	}
 
-	async removeSignalOrderBook({ signalId, exchange }: IRemoveSignal): Promise<void> {
+	async removeSignalOrderBook({ signalId, tradingPlatform }: IRemoveSignal): Promise<void> {
 		try {
 			const client = await this.getClient();
-			const wsKey = `${this.env}_${WSChannel.assetsUpdateWs}_${AssetData.orderBook}_${signalId}_${exchange}`;
+			const wsKey = `${this.env}_${WSChannel.assetsUpdateWs}_${AssetData.orderBook}_${signalId}_${tradingPlatform}`;
 			await client.del(wsKey);
 		} catch (error) {
 			console.error(`Failed to remove signal order book from Redis:`, error);

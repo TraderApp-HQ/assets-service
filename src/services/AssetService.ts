@@ -1,18 +1,18 @@
-import Coin, { ICoin } from "../models/Coin";
-import {
-	ICoinServiceGetAllCoinsParams,
-	ICoinServiceGetCoinByIdProps,
-} from "../interfaces/controllers";
 import { SortOrder } from "mongoose";
+import {
+	IAssetServiceGetAllAssetParams,
+	IAssetServiceGetAssetByIdProps,
+} from "../interfaces/controllers";
+import Asset, { IAsset } from "../models/Asset";
 
-export class CoinService {
+export class AssetService {
 	public async getAllCoins({
 		category,
 		page,
 		rowsPerPage,
 		orderBy,
 		sortBy,
-	}: ICoinServiceGetAllCoinsParams): Promise<ICoin[] | null> {
+	}: IAssetServiceGetAllAssetParams): Promise<IAsset[] | null> {
 		try {
 			const offset = (page - 1) * rowsPerPage;
 
@@ -20,7 +20,7 @@ export class CoinService {
 			const sortOptions: Record<string, SortOrder> = {};
 			sortOptions[sortBy] = orderBy === "asc" ? 1 : -1;
 
-			const exchanges = await Coin.find({})
+			const exchanges = await Asset.find({})
 				.sort(sortOptions)
 				.skip(offset)
 				.limit(rowsPerPage)
@@ -48,9 +48,9 @@ export class CoinService {
 	public async getCoinById({
 		id,
 		populateFields,
-	}: ICoinServiceGetCoinByIdProps): Promise<ICoin | null> {
+	}: IAssetServiceGetAssetByIdProps): Promise<IAsset | null> {
 		try {
-			let query = Coin.findOne({ _id: id }).select({
+			let query = Asset.findOne({ _id: id }).select({
 				id: 1,
 				name: 1,
 				slug: 1,

@@ -1,4 +1,4 @@
-import { getExchanges } from "../../fixtures/exchanges";
+import { getTradingPlatforms } from "../../fixtures/tradingPlatforms";
 import { runScript } from "../config";
 
-runScript({ scriptFunction: getExchanges });
+runScript({ scriptFunction: getTradingPlatforms });

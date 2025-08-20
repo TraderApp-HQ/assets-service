@@ -1,4 +1,4 @@
-import { updateCoinsCategory } from "../../fixtures/coins";
+import { updateCoinsCategory } from "../../fixtures/asset";
 import { runScript } from "../config";
 
 runScript({ scriptFunction: updateCoinsCategory });

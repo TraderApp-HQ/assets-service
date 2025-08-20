@@ -1,4 +1,4 @@
-import { Exchange, SignalStatus } from "../../config/enums";
+import { TradingPlatform, SignalStatus } from "../../config/enums";
 import { IActiveSignalsData, ISignalOrderBook, ISignalPrice } from "../../config/interfaces";
 import { BinanceWebSocketService } from "../../services/BinanceWebSocketService";
 import { SignalService } from "../../services/SignalService";
@@ -21,11 +21,13 @@ export const binanceSignals = async () => {
 		const staleSignalsOrderBook: ISignalOrderBook[] = [];
 
 		// Fetch active signals from db together with their supported exchanges
-		const activeSignals = await signalService.getExchangeActiveSignals(Exchange.binance);
+		const activeSignals = await signalService.getTradingPlatformActiveSignals(
+			TradingPlatform.binance
+		);
 
 		// Fetch all signals prices and order books from redis cache
-		const cacheSignalsPrices = await cache.getAllSignalsPrices(Exchange.binance);
-		const cacheSignalsOrderBooks = await cache.getAllSignalsOrderBooks(Exchange.binance);
+		const cacheSignalsPrices = await cache.getAllSignalsPrices(TradingPlatform.binance);
+		const cacheSignalsOrderBooks = await cache.getAllSignalsOrderBooks(TradingPlatform.binance);
 
 		// Hash active signals in hash table for active signals
 		activeSignals.forEach(
@@ -77,13 +79,13 @@ export const binanceSignals = async () => {
 
 			if (!data) return null;
 
-			const { signalId, exchange, assetPrice, timestamp, asset } = data;
+			const { signalId, tradingPlatform, assetPrice, timestamp, asset } = data;
 
 			// Only update cache with data from db if the trade status from DB is "PAUSED"
 			if (signal.status === SignalStatus.PAUSED) {
 				await cache.addSignalPrice({
 					signalId,
-					exchange,
+					tradingPlatform,
 					assetPrice,
 					asset: {
 						...asset,
@@ -95,15 +97,17 @@ export const binanceSignals = async () => {
 		});
 
 		// Delete stale signals price and order book from redis cache
-		const pricePromises = staleSignalsPrice.map(async ({ signalId, exchange }) => {
+		const pricePromises = staleSignalsPrice.map(async ({ signalId, tradingPlatform }) => {
 			binanceSocketCache.closePriceSocket(signalId); // Binanace web socket connection
-			await cache.removeSignalPrice({ signalId, exchange });
+			await cache.removeSignalPrice({ signalId, tradingPlatform });
 		});
 
-		const orderBookPromises = staleSignalsOrderBook.map(async ({ signalId, exchange }) => {
-			binanceSocketCache.closeOrderBookSocket(signalId); // Binanace web socket connection
-			await cache.removeSignalOrderBook({ signalId, exchange });
-		});
+		const orderBookPromises = staleSignalsOrderBook.map(
+			async ({ signalId, tradingPlatform }) => {
+				binanceSocketCache.closeOrderBookSocket(signalId); // Binanace web socket connection
+				await cache.removeSignalOrderBook({ signalId, tradingPlatform });
+			}
+		);
 
 		// make batch requests to delete stale signals from redis cache
 		await Promise.all([...updatedSignalDataPromises, ...pricePromises, ...orderBookPromises]);

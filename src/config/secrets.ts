@@ -9,6 +9,10 @@ export interface IAssetsServiceSecrets {
 	ASSETS_SERVICE_DB_URL: string;
 }
 
+export interface ICommonSecrets {
+	CMC_API_KEY: string;
+}
+
 const client = new SecretsManagerClient({
 	region: process.env.AWS_REGION ?? "eu-west-1",
 });

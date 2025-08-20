@@ -1,7 +1,7 @@
 import axios from "axios";
 import { config } from "dotenv";
-import Exchange from "../models/Exchange";
 import { Category, ConnectionType, TradeStatus } from "../config/enums";
+import TradingPlatform from "../models/TradingPlatform";
 // import { PrismaClient } from "@prisma/client";
 
 // load env variables
@@ -42,7 +42,7 @@ const exchangeConfig: Record<
 	// Add other exchanges as needed
 };
 
-export async function getExchanges() {
+export async function getTradingPlatforms() {
 	try {
 		const res = await axios({
 			method: "get",
@@ -88,16 +88,16 @@ export async function getExchanges() {
 				takerFee,
 				urls: JSON.stringify(urls),
 				dateLaunched,
-				status: TradeStatus.inactive,
-				category: Category.CRYPTO,
+				status: TradeStatus.active,
+				category: [Category.CRYPTO],
 				...config,
 			});
 		});
 
 		// Insert records into db
-		const ex = await Exchange.insertMany(data, { ordered: false });
+		const ex = await TradingPlatform.insertMany(data, { ordered: false });
 		console.log("Records inserted:", ex);
 	} catch (err: any) {
-		console.log("Error getting exchanges:", err.message);
+		console.log("Error getting trading platforms:", err.message);
 	}
 }

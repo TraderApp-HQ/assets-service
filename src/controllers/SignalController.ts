@@ -17,8 +17,8 @@ import { SignalStatus } from "../config/enums";
 export async function createSignalHandler(req: Request, res: Response, next: NextFunction) {
 	const signalService: SignalService = new SignalService();
 	const {
-		asset,
-		assetName,
+		baseAsset,
+		baseAssetName,
 		entryPrice,
 		entryPriceLowerBound,
 		entryPriceUpperBound,
@@ -28,9 +28,9 @@ export async function createSignalHandler(req: Request, res: Response, next: Nex
 		tradeNote,
 		candlestick,
 		risk,
-		baseCurrency,
-		baseCurrencyName,
-		supportedExchanges,
+		quoteCurrency,
+		quoteCurrencyName,
+		supportedTradingPlatforms,
 		category,
 		tradeSide,
 		tradeType,
@@ -51,10 +51,10 @@ export async function createSignalHandler(req: Request, res: Response, next: Nex
 
 		// Data to be set in the document
 		const newSignal: ISignalServiceCreateSignalProps = {
-			asset,
-			assetName,
-			baseCurrency,
-			baseCurrencyName,
+			baseAsset,
+			baseAssetName,
+			quoteCurrency,
+			quoteCurrencyName,
 			entryPrice,
 			entryPriceLowerBound,
 			entryPriceUpperBound,
@@ -67,7 +67,7 @@ export async function createSignalHandler(req: Request, res: Response, next: Nex
 			maxGain: 0,
 			tradeNote,
 			status: SignalStatus.PENDING,
-			supportedExchanges,
+			supportedTradingPlatforms,
 			createdAt: new Date().toISOString(),
 			category,
 			tradeSide,
@@ -163,7 +163,38 @@ export async function getActiveSignalsHandler(req: Request, res: Response, next:
 	try {
 		const signalsResponse = await signalService.getPaginatedSignals(
 			req.query as Record<string, string>,
-			[SignalStatus.PENDING, SignalStatus.ACTIVE, SignalStatus.PAUSED]
+			[SignalStatus.ACTIVE, SignalStatus.PAUSED]
+		);
+		if (!signalsResponse.success) {
+			res.status(HttpStatus.NOT_FOUND).json(
+				apiResponseHandler({
+					type: ResponseType.SUCCESS,
+					message: ResponseMessage.NO_SIGNAL,
+					object: signalsResponse.response,
+				})
+			);
+			return;
+		}
+
+		res.status(HttpStatus.OK).json(
+			apiResponseHandler({
+				type: ResponseType.SUCCESS,
+				message: ResponseMessage.GET_SIGNALS,
+				object: signalsResponse.response,
+			})
+		);
+	} catch (err) {
+		console.log(err);
+		next(err);
+	}
+}
+
+export async function getPendingSignalsHandler(req: Request, res: Response, next: NextFunction) {
+	const signalService: SignalService = new SignalService();
+	try {
+		const signalsResponse = await signalService.getPaginatedSignals(
+			req.query as Record<string, string>,
+			[SignalStatus.PENDING]
 		);
 		if (!signalsResponse.success) {
 			res.status(HttpStatus.NOT_FOUND).json(

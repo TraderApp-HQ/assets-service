@@ -60,7 +60,7 @@ export enum WSChannel {
 	binanceWs = "binance-ws",
 }
 
-export enum Exchange {
+export enum TradingPlatform {
 	binance = "binance",
 	kucoin = "kucoin",
 }

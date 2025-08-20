@@ -1,19 +1,19 @@
 import { apiResponseHandler } from "@traderapp/shared-resources";
-import { Request, Response, NextFunction } from "express";
+import { NextFunction, Request, Response } from "express";
 import {
 	DEFAULT_PAGE,
 	DEFAULT_ROWS_PER_PAGE,
 	ResponseMessage,
 	ResponseType,
 } from "../config/constants";
-import { ExchangeService } from "../services/ExchangeService";
-import { HttpStatus } from "../utils/httpStatus";
-import Currency from "../models/Currency";
-import Coin from "../models/Coin";
 import { TradeStatus } from "../config/enums";
+import Asset from "../models/Asset";
+import Currency from "../models/Currency";
+import { TradingPlatformService } from "../services/TradingPlatformService";
+import { HttpStatus } from "../utils/httpStatus";
 
-export async function getAllExchanges(req: Request, res: Response, next: NextFunction) {
-	const exchangeService: ExchangeService = new ExchangeService();
+export async function getAllTradingPlatforms(req: Request, res: Response, next: NextFunction) {
+	const tradingPlatformService: TradingPlatformService = new TradingPlatformService();
 
 	try {
 		const page: number = parseInt(req.query.page as string, 10) || DEFAULT_PAGE;
@@ -25,7 +25,7 @@ export async function getAllExchanges(req: Request, res: Response, next: NextFun
 
 		const status = req.query.status as TradeStatus;
 
-		const exchanges = await exchangeService.getAllExchanges({
+		const platform = await tradingPlatformService.getAllTradingPlatforms({
 			page,
 			rowsPerPage,
 			orderBy,
@@ -35,7 +35,7 @@ export async function getAllExchanges(req: Request, res: Response, next: NextFun
 		res.status(HttpStatus.OK).json(
 			apiResponseHandler({
 				type: ResponseType.SUCCESS,
-				object: exchanges,
+				object: platform,
 				message: ResponseMessage.GET_EXCHANGES,
 			})
 		);
@@ -45,12 +45,12 @@ export async function getAllExchanges(req: Request, res: Response, next: NextFun
 }
 
 export async function getExchangeById(req: Request, res: Response, next: NextFunction) {
-	const exchangeService: ExchangeService = new ExchangeService();
+	const tradingPlatformService: TradingPlatformService = new TradingPlatformService();
 	try {
 		const { id } = req.params;
-		const exchange = await exchangeService.getExchangeById(id);
+		const platform = await tradingPlatformService.getTradingPlatformById(id);
 
-		if (!exchange) {
+		if (!platform) {
 			return res.status(HttpStatus.BAD_REQUEST).json(
 				apiResponseHandler({
 					type: ResponseType.ERROR,
@@ -63,7 +63,7 @@ export async function getExchangeById(req: Request, res: Response, next: NextFun
 		res.status(HttpStatus.OK).json(
 			apiResponseHandler({
 				type: ResponseType.SUCCESS,
-				object: exchange,
+				object: platform,
 				message: ResponseMessage.GET_EXCHANGE,
 			})
 		);
@@ -73,19 +73,19 @@ export async function getExchangeById(req: Request, res: Response, next: NextFun
 }
 
 export async function getAllAssetsInExchange(req: Request, res: Response, next: NextFunction) {
-	const exchangeService: ExchangeService = new ExchangeService();
+	const tradingPlatformService: TradingPlatformService = new TradingPlatformService();
 	try {
 		const exchangeId = Number(req.params.exchangeId);
 
 		const populateFields = [
 			{
-				path: "coinId",
-				model: Coin,
+				path: "assetId",
+				model: Asset,
 			},
 		];
 
-		const assetsInExchange = await exchangeService.getManyExchangeById({
-			exchangeId,
+		const assetsInExchange = await tradingPlatformService.getManyTradingPlatformById({
+			tradingPlatformId: exchangeId,
 			populateFields,
 		});
 		res.status(HttpStatus.OK).json(
@@ -101,7 +101,7 @@ export async function getAllAssetsInExchange(req: Request, res: Response, next: 
 }
 
 export async function updateExchangeInfo(req: Request, res: Response, next: NextFunction) {
-	const exchangeService: ExchangeService = new ExchangeService();
+	const tradingPlatformService: TradingPlatformService = new TradingPlatformService();
 	try {
 		const exchangeId = Number(req.params.exchangeId);
 
@@ -114,8 +114,8 @@ export async function updateExchangeInfo(req: Request, res: Response, next: Next
 			takerFee,
 		};
 
-		const updatedExchange = await exchangeService.updateExchangeById({
-			exchangeId,
+		const updatedExchange = await tradingPlatformService.updateTradingPlatformById({
+			tradingPlatformId: exchangeId,
 			updateData,
 		});
 
@@ -133,7 +133,7 @@ export async function updateExchangeInfo(req: Request, res: Response, next: Next
 
 // Function to get all currencies in an exchange
 export async function getCurrenciesForExchange(req: Request, res: Response, next: NextFunction) {
-	const exchangeService: ExchangeService = new ExchangeService();
+	const tradingPlatformService: TradingPlatformService = new TradingPlatformService();
 	try {
 		const exchangeId = Number(req.params.exchangeId);
 
@@ -146,8 +146,8 @@ export async function getCurrenciesForExchange(req: Request, res: Response, next
 		];
 
 		// Call the reusable function
-		const exchangePairs = await exchangeService.getManyExchangeById({
-			exchangeId,
+		const exchangePairs = await tradingPlatformService.getManyTradingPlatformById({
+			tradingPlatformId: exchangeId,
 			populateFields,
 		});
 
@@ -163,19 +163,26 @@ export async function getCurrenciesForExchange(req: Request, res: Response, next
 	}
 }
 
-export async function getSupportedExchanges(req: Request, res: Response, next: NextFunction) {
-	const exchangeService: ExchangeService = new ExchangeService();
+export async function getSupportedTradingPlatforms(
+	req: Request,
+	res: Response,
+	next: NextFunction
+) {
+	const tradingPlatformService: TradingPlatformService = new TradingPlatformService();
 
-	const coinId = Number(req.query.coinId);
-	const currencyId = Number(req.query.currencyId);
+	const baseAssetId = Number(req.query.baseAssetId);
+	const quoteCurrencyId = Number(req.query.quoteCurrencyId);
 
 	try {
-		const exchanges = await exchangeService.getSupportedExchanges({ coinId, currencyId });
+		const platforms = await tradingPlatformService.getSupportedTradingPlatforms({
+			baseAssetId,
+			quoteCurrencyId,
+		});
 
 		res.status(HttpStatus.OK).json(
 			apiResponseHandler({
 				type: ResponseType.SUCCESS,
-				object: exchanges ?? [],
+				object: platforms ?? [],
 				message: ResponseMessage.GET_EXCHANGES,
 			})
 		);

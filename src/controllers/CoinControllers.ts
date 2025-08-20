@@ -2,12 +2,12 @@ import { apiResponseHandler } from "@traderapp/shared-resources";
 import { Request, Response, NextFunction } from "express";
 import { ResponseMessage, ResponseType } from "../config/constants";
 import { HttpStatus } from "../utils/httpStatus";
-import { CoinService } from "../services/CoinService";
-import { ICoin, IPagedResultData } from "../interfaces/controllers";
+import { AssetService } from "../services/AssetService";
+import { IAsset, IPagedResultData } from "../interfaces/controllers";
 import { Category } from "../config/enums";
 
 export async function getAllCoins(req: Request, res: Response, next: NextFunction) {
-	const coinService: CoinService = new CoinService();
+	const assetService: AssetService = new AssetService();
 	try {
 		const category = req.query.category as Category;
 		const page: number = parseInt(req.query.page as string, 10) || 1;
@@ -17,7 +17,7 @@ export async function getAllCoins(req: Request, res: Response, next: NextFunctio
 		const orderBy: "asc" | "desc" = (req.query.orderBy as "asc" | "desc") || "asc";
 		const sortBy: string = (req.query.sortBy as string) || "rank";
 
-		const coinsArr = await coinService.getAllCoins({
+		const coinsArr = await assetService.getAllCoins({
 			category,
 			page,
 			rowsPerPage,
@@ -30,8 +30,8 @@ export async function getAllCoins(req: Request, res: Response, next: NextFunctio
 		}
 
 		// Parse URLs back to JS Object. NB: URLs were stored in the DB as strings using JSON.stringify
-		const coins: ICoin[] = coinsArr.map((coin) => {
-			const coinObj = coin.toObject() as ICoin;
+		const coins: IAsset[] = coinsArr.map((coin) => {
+			const coinObj = coin.toObject() as IAsset;
 			return { ...coinObj, urls: JSON.parse(coinObj.urls), id: coin._id };
 		});
 
@@ -48,7 +48,7 @@ export async function getAllCoins(req: Request, res: Response, next: NextFunctio
 			rowsPerPage,
 			sortBy,
 			orderBy,
-			coins,
+			assets: coins,
 		};
 
 		res.status(HttpStatus.OK).json(
@@ -65,7 +65,7 @@ export async function getAllCoins(req: Request, res: Response, next: NextFunctio
 
 //	A function to get coin, exchange and currency details for a coin
 export async function getCoinById(req: Request, res: Response, next: NextFunction) {
-	const coinService: CoinService = new CoinService();
+	const assetService: AssetService = new AssetService();
 	// const exchangesTable: Record<number, any> = {};
 	// const currenciesTable: Record<number, any> = {};
 	const exchanges: any[] = [];
@@ -95,7 +95,7 @@ export async function getCoinById(req: Request, res: Response, next: NextFunctio
 		// ];
 
 		// fetch coin by id using the service method
-		const coin: any = await coinService.getCoinById({ id });
+		const coin: any = await assetService.getCoinById({ id });
 		console.log("coins ...............", coin);
 
 		// // loop through coin exchange pairs

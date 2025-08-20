@@ -1,7 +1,7 @@
 import mongoose, { Schema, Document } from "mongoose";
 import { Category, ConnectionType, TradeStatus } from "../config/enums";
 
-export interface IExchange extends Document {
+export interface ITradingPlatform extends Document {
 	_id: number;
 	name: string;
 	slug: string;
@@ -12,7 +12,7 @@ export interface IExchange extends Document {
 	makerFee: number;
 	takerFee: number;
 	dateLaunched: Date;
-	category: Category;
+	category: Category[];
 	connectionTypes: ConnectionType[];
 	isIpAddressWhitelistRequired: boolean;
 	isSpotTradingSupported: Boolean;
@@ -21,9 +21,9 @@ export interface IExchange extends Document {
 	isPassphraseRequired?: boolean;
 }
 
-interface IExchangeModel extends IExchange {}
+interface ITradingPlatformModel extends ITradingPlatform {}
 
-export const ExchangeSchema = new Schema<IExchangeModel>(
+export const TradingPlatformSchema = new Schema<ITradingPlatformModel>(
 	{
 		_id: { type: Number, required: true },
 		name: { type: String, required: true },
@@ -35,7 +35,7 @@ export const ExchangeSchema = new Schema<IExchangeModel>(
 		makerFee: { type: Number, required: true },
 		takerFee: { type: Number, required: true },
 		dateLaunched: { type: Date, default: Date.now },
-		category: { type: String, enum: Category, required: true },
+		category: [{ type: String, enum: Category, required: true }],
 		connectionTypes: [{ type: String, enum: Object.values(ConnectionType) }],
 		isIpAddressWhitelistRequired: { type: Boolean, required: true },
 		isSpotTradingSupported: { type: Boolean, required: true },
@@ -43,7 +43,10 @@ export const ExchangeSchema = new Schema<IExchangeModel>(
 		isMarginTradingSupported: { type: Boolean, required: true },
 		isPassphraseRequired: { type: Boolean },
 	},
-	{ versionKey: false, timestamps: false }
+	{
+		versionKey: false,
+		timestamps: false,
+	}
 );
 
-export default mongoose.model<IExchangeModel>("Exchange", ExchangeSchema);
+export default mongoose.model<ITradingPlatformModel>("trading-platform", TradingPlatformSchema);

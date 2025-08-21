@@ -289,17 +289,19 @@ export class SignalService {
 				if (status === SignalStatus.ACTIVE || status === SignalStatus.PAUSED) {
 					if (tradeSide) {
 						if (tradeSide === TradeSide.SHORT) {
-							priceChange = Math.round(
-								((entryPrice - currentPrice) / entryPrice) * 100
+							priceChange = Number(
+								(((entryPrice - currentPrice) / entryPrice) * 100).toFixed(2)
 							);
 						} else {
-							priceChange = Math.round(
-								((currentPrice - entryPrice) / entryPrice) * 100
+							priceChange = Number(
+								(((currentPrice - entryPrice) / entryPrice) * 100).toFixed(2)
 							);
 						}
 					} else {
 						// for spot trading
-						priceChange = Math.round(((currentPrice - entryPrice) / entryPrice) * 100);
+						priceChange = Number(
+							(((currentPrice - entryPrice) / entryPrice) * 100).toFixed(2)
+						);
 					}
 				}
 

@@ -19,6 +19,9 @@ export async function up() {
 		"LUSD",
 		"OUSD",
 		"TUSD",
+		"WLFI",
+		"USD1",
+		"RLUSD",
 	];
 
 	// Delete all stable coins and their trading pairs in parallel

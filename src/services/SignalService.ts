@@ -140,15 +140,18 @@ export class SignalService {
 		const keyword = query.keyword as string;
 
 		// Fetch signals using the service method
-		const signals = await this.getSignals({
-			rowsPerPage,
-			page,
-			sortBy,
-			sortOrder,
-			keyword,
-			startAfterDoc,
-			status,
-		});
+		const [signals, totalRecords] = await Promise.all([
+			this.getSignals({
+				rowsPerPage,
+				page,
+				sortBy,
+				sortOrder,
+				keyword,
+				startAfterDoc,
+				status,
+			}),
+			this.getSignalCount(),
+		]);
 
 		if (!signals) {
 			return {
@@ -158,7 +161,6 @@ export class SignalService {
 		}
 
 		// Calculate total pages
-		const totalRecords: number = await this.getSignalCount();
 		const totalPages = Math.ceil(totalRecords / rowsPerPage);
 
 		// Format the response

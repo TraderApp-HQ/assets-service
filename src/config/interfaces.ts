@@ -22,7 +22,7 @@ export interface IAccessToken {
 }
 
 export interface ISignalAsset {
-	id: string;
+	_id: number;
 	name: string;
 	symbol: string;
 	logo: string;
@@ -36,7 +36,7 @@ export interface ISignalMilestone {
 }
 
 export interface ITradingPlatform {
-	id: string;
+	_id: number;
 	name: string;
 	logo: string;
 }

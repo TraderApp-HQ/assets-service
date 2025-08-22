@@ -46,7 +46,7 @@ const SignalSchema = new Schema<ISignal>(
 		supportedTradingPlatforms: [{ type: Number, ref: "trading-platform", required: true }],
 		baseAsset: { type: Number, ref: "asset", required: true },
 		baseAssetName: { type: String, required: true },
-		quoteCurrency: { type: Number, ref: "asset", required: true },
+		quoteCurrency: { type: Number, ref: "currency", required: true },
 		quoteCurrencyName: { type: String, required: true },
 		category: { type: String, required: true, enum: Object.values(Category) },
 		tradeType: { type: String, enum: Object.values(TradeType) },

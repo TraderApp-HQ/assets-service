@@ -165,6 +165,7 @@ export async function getActiveSignalsHandler(req: Request, res: Response, next:
 			req.query as Record<string, string>,
 			[SignalStatus.ACTIVE, SignalStatus.PAUSED]
 		);
+
 		if (!signalsResponse.success) {
 			res.status(HttpStatus.NOT_FOUND).json(
 				apiResponseHandler({

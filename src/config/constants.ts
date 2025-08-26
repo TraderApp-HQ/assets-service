@@ -34,7 +34,7 @@ export const RESPONSE_TAGS = {
 export const ResponseMessage = {
 	GET_EXCHANGES: "Exchanges Fetched Successfully",
 	GET_EXCHANGE: "Exchange Fetched Successfully",
-	GET_ASSETS: "All Assets in an Exchange Fetched Successfully ",
+	GET_ASSETS: "All Assets in an Exchange Fetched Successfully",
 	UPDATE_EXCHANGE: "Exchange Updated Successfully",
 	GET_CURRENCIES: "All Currency Fetched Successfully",
 	EXCHANGE_NOT_FOUND: "Exchange not found.",
@@ -47,6 +47,9 @@ export const ResponseMessage = {
 	GET_SIGNAL: "Signal Fetched Successfully",
 	NO_SIGNAL: "No signal found",
 	UPDATE_SIGNAL: "signal updated Successfully",
+
+	SIGNAL_PRICE: "Signals Current Price Fetched Successfully",
+	NO_SIGNAL_PRICE: "Failed to fetch signal price",
 };
 
 export const DEFAULT_ROWS_PER_PAGE = 10;
@@ -87,6 +90,7 @@ export const SIGNAL_ROUTES = {
 	getActive: "/active",
 	getPending: "/pending",
 	getHistory: "/history",
+	getAssetCurrentPrice: "/asset-current-price",
 	getSignalById: "/:id",
 	updateSignalById: "/update/:id",
 };

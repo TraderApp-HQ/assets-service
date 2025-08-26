@@ -13,6 +13,7 @@ import { formatSignalResponse } from "./helpers";
 import { SignalService } from "../services/SignalService";
 import { HttpStatus } from "../utils/httpStatus";
 import { SignalStatus } from "../config/enums";
+import { getAssetCurrentPrice } from "../utils/assetPrice";
 
 export async function createSignalHandler(req: Request, res: Response, next: NextFunction) {
 	const signalService: SignalService = new SignalService();
@@ -34,7 +35,6 @@ export async function createSignalHandler(req: Request, res: Response, next: Nex
 		category,
 		tradeSide,
 		tradeType,
-		leverage,
 	} = req.body as ISignal;
 
 	// generate id for signal
@@ -72,7 +72,6 @@ export async function createSignalHandler(req: Request, res: Response, next: Nex
 			category,
 			tradeSide,
 			tradeType,
-			leverage,
 		};
 
 		const signal = await signalService.createSignal(newSignal);
@@ -163,7 +162,8 @@ export async function getActiveSignalsHandler(req: Request, res: Response, next:
 	try {
 		const signalsResponse = await signalService.getPaginatedSignals(
 			req.query as Record<string, string>,
-			[SignalStatus.ACTIVE, SignalStatus.PAUSED]
+			[SignalStatus.ACTIVE, SignalStatus.PAUSED],
+			true // To filter for active and paused signals using isSignalTriggered flag
 		);
 
 		if (!signalsResponse.success) {
@@ -195,7 +195,8 @@ export async function getPendingSignalsHandler(req: Request, res: Response, next
 	try {
 		const signalsResponse = await signalService.getPaginatedSignals(
 			req.query as Record<string, string>,
-			[SignalStatus.PENDING]
+			[SignalStatus.PENDING, SignalStatus.PAUSED],
+			false // To filter for pending and paused signals using isSignalTriggered flag
 		);
 		if (!signalsResponse.success) {
 			res.status(HttpStatus.NOT_FOUND).json(
@@ -299,6 +300,37 @@ export async function updateSignalByIdHandler(req: Request, res: Response, next:
 				type: ResponseType.SUCCESS,
 				message: ResponseMessage.UPDATE_SIGNAL,
 				object: signal,
+			})
+		);
+	} catch (err) {
+		console.log(err);
+		next(err);
+	}
+}
+
+export async function getSignalCurrentPrice(req: Request, res: Response, next: NextFunction) {
+	try {
+		const asset = req.query.asset as string;
+		const quote = req.query.quote as string;
+
+		const price = await getAssetCurrentPrice({ asset, quote });
+
+		if (!price) {
+			res.status(HttpStatus.NOT_FOUND).json(
+				apiResponseHandler({
+					type: ResponseType.ERROR,
+					message: ResponseMessage.NO_SIGNAL_PRICE,
+					object: null,
+				})
+			);
+			return;
+		}
+
+		res.status(HttpStatus.OK).json(
+			apiResponseHandler({
+				type: ResponseType.SUCCESS,
+				message: ResponseMessage.SIGNAL_PRICE,
+				object: { price },
 			})
 		);
 	} catch (err) {

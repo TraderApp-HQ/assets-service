@@ -99,5 +99,6 @@ export async function getTradingPlatforms() {
 		console.log("Records inserted:", ex);
 	} catch (err: any) {
 		console.log("Error getting trading platforms:", err.message);
+		throw err;
 	}
 }

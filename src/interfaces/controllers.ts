@@ -1,8 +1,8 @@
 import { PopulateOptions } from "mongoose";
-import { IExchange } from "../models/Exchange";
-import { TradeStatus } from "../config/enums";
+import { Category, TradeStatus } from "../config/enums";
+import { ITradingPlatform } from "../models/TradingPlatform";
 
-export interface ICoin {
+export interface IAsset {
 	id: number;
 	name: string;
 	slug: string;
@@ -22,7 +22,7 @@ export interface IPagedResultData {
 	rowsPerPage: number;
 	sortBy: string;
 	orderBy: string;
-	coins: ICoin[];
+	assets: IAsset[];
 }
 
 export interface IQueryParameter {
@@ -32,50 +32,51 @@ export interface IQueryParameter {
 	model: any;
 }
 
-export interface ICoinServiceGetAllCoinsParams {
+export interface IAssetServiceGetAllAssetParams {
 	page: number;
 	rowsPerPage: number;
 	orderBy: "asc" | "desc";
 	sortBy: string;
+	category: Category;
 }
 
-export interface ICoinServiceGetCoinByIdProps {
+export interface IAssetServiceGetAssetByIdProps {
 	id: number;
 	populateFields?: PopulateOptions[];
 }
 
-export interface IExchangeServiceGetAllExchangesParams {
+export interface ITradingPlatformServiceGetAllTradingPlatformParams {
 	page: number;
 	rowsPerPage: number;
 	orderBy: "asc" | "desc";
 	status?: TradeStatus;
 }
 
-export interface IExchangeServiceUpdateExchangeByIdProps {
-	exchangeId: number;
-	updateData: Partial<IExchange>;
+export interface ITradingPlatformServiceUpdateTradingPlatformByIdProps {
+	tradingPlatformId: number;
+	updateData: Partial<ITradingPlatform>;
 }
 
-export interface GetManyExchangeByIdProps {
-	exchangeId: number;
+export interface GetManyTradingPlatformByIdProps {
+	tradingPlatformId: number;
 	populateFields?: PopulateOptions[];
 }
 
-export interface IGetAllExchangesQuery {
+export interface IGetAllTradingPlatformQuery {
 	status?: TradeStatus;
 }
 
-export interface IExchangeServiceGetSupportedExchangesParams {
-	coinId: number;
-	currencyId: number;
+export interface ITradingPlatformServiceGetSupportedTradingPlatformsParams {
+	baseAssetId: number;
+	quoteCurrencyId: number;
 }
 
-export interface ISupportedExchange {
+export interface ISupportedTradingPlatform {
 	_id: string;
 	logo: string;
 	name: string;
 }
 
-export interface ISupportedExchangeData extends Document {
-	exchangeId: ISupportedExchange;
+export interface ISupportedTradingPlatformData extends Document {
+	tradingPlatformId: ISupportedTradingPlatform;
 }

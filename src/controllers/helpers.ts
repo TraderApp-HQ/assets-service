@@ -21,24 +21,24 @@ export const formatSignalResponse = (signal: ISignalResponse) => {
 		maxGain: signal.maxGain,
 		currentChange: signal.currentChange,
 		currentPrice: signal.currentPrice,
-		asset: {
-			id: signal.asset.id,
-			name: signal.asset.name,
-			symbol: signal.asset.symbol,
-			logo: signal.asset.logo,
-			marketCap: signal.asset.marketCap,
+		baseAsset: {
+			id: signal.baseAsset._id,
+			name: signal.baseAsset.name,
+			symbol: signal.baseAsset.symbol,
+			logo: signal.baseAsset.logo,
+			marketCap: signal.baseAsset.marketCap,
 		},
-		baseCurrency: {
-			id: signal.baseCurrency.id,
-			name: signal.baseCurrency.name,
-			symbol: signal.baseCurrency.symbol,
-			logo: signal.baseCurrency.logo,
-			marketCap: signal.baseCurrency.marketCap,
+		quoteCurrency: {
+			id: signal.quoteCurrency._id,
+			name: signal.quoteCurrency.name,
+			symbol: signal.quoteCurrency.symbol,
+			logo: signal.quoteCurrency.logo,
+			marketCap: signal.quoteCurrency.marketCap,
 		},
-		supportedExchanges: signal.supportedExchanges.map((exchange) => ({
-			id: exchange.id,
-			name: exchange.name,
-			logo: exchange.logo,
+		supportedTradingPlatforms: signal.supportedTradingPlatforms.map((platform) => ({
+			id: platform._id,
+			name: platform.name,
+			logo: platform.logo,
 		})),
 	};
 };

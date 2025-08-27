@@ -1,65 +1,66 @@
-import express, { Application, Request, Response, NextFunction } from "express";
-import mongoose from "mongoose";
 import { apiResponseHandler, initSecrets, logger } from "@traderapp/shared-resources";
 import cors from "cors";
 import { config } from "dotenv";
+import express, { Application, NextFunction, Request, Response } from "express";
+import expressWs from "express-ws";
+import mongoose from "mongoose";
 // import initDatabase from "./config/database";
 
-import { CoinRoutes, CurrencyRoutes, ExchangeRoutes, SignalRoutes } from "./routes";
-import secretsJson from "./env.json";
-import { ENVIRONMENTS } from "./config/constants";
 import swaggerUi from "swagger-ui-express";
+import { ENVIRONMENTS } from "./config/constants";
+import secretsJson from "./env.json";
+import runAllJobs from "./jobs";
+import { CoinRoutes, CurrencyRoutes, ExchangeRoutes, SignalRoutes } from "./routes";
+import { RedisClient } from "./clients/RedisClient";
+import { CacheService } from "./services/CacheService";
 import specs from "./utils/swagger";
 
 config();
 const app: Application = express();
+expressWs(app);
 
 const env = process.env.NODE_ENV ?? "development";
 const suffix = ENVIRONMENTS[env] ?? "dev";
 const secretNames = ["common-secrets", "assets-service-secrets"];
 
-// initSecrets({
-// 	env: suffix,
-// 	secretNames,
-// 	secretsJson,
-// })
-// 	.then(() => {
-// 		// const port = process.env.PORT as string;
-// 		const port = 8082;
-// 		app.listen(port, async () => {
-// 			await initDatabase();
-// 			startServer();
-// 			logger.log(`Server listening at port ${port}`);
-// 			logger.log(`Docs available at http://localhost:${port}/api-docs`);
-// 		});
-// 	})
-// 	.catch((err) => {
-// 		logger.log(`Error getting secrets. === ${JSON.stringify(err)}`);
-// 		throw err;
-// 	});
-
 (async function () {
-	await initSecrets({
-		env: suffix,
-		secretNames,
-		secretsJson,
-	});
-	const port = process.env.PORT ?? "";
-	// const port = 8082;
-	const dbUrl = process.env.ASSETS_SERVICE_DB_URL ?? "";
-	// connect to mongodb
-	mongoose
-		.connect(dbUrl)
-		.then(() => {
-			app.listen(port, () => {
-				logger.log(`Server listening at port ${port}`);
-				startServer();
-				logger.log(`Docs available at http://localhost:${port}/api-docs`);
-			});
-		})
-		.catch((err) => {
-			logger.error(`Unable to connect to mongodb. Error === ${JSON.stringify(err)}`);
+	try {
+		// First load environment variables
+		config();
+
+		// Then initialize secrets
+		await initSecrets({
+			env: suffix,
+			secretNames,
+			secretsJson,
 		});
+
+		// Initialize Redis connection only is redis is enabled
+		const cacheService = await CacheService.getInstance();
+		const isRedisEnabled = await cacheService.isRedisCacheEnabled();
+		const cache = await cacheService.getCache();
+		if (isRedisEnabled && cache instanceof RedisClient) {
+			await cache.getClient(); // This will initialize the connection if redis is been used fro caching
+		}
+
+		const port = process.env.PORT ?? "";
+		const dbUrl = process.env.ASSETS_SERVICE_DB_URL ?? "";
+		// const port = 8082;
+		// const dbUrl = "mongodb://localhost:27017/assets-service-db";
+
+		// Connect to MongoDB
+		await mongoose.connect(dbUrl);
+
+		// Start the server
+		app.listen(port, () => {
+			logger.log(`Server listening at port ${port}`);
+			startServer();
+			logger.log(`Docs available at http://localhost:${port}/api-docs`);
+		});
+	} catch (err) {
+		logger.error(`Server startup failed: ${JSON.stringify(err)}`);
+		process.exit(1);
+	}
 })();
 
 function startServer() {
@@ -70,7 +71,9 @@ function startServer() {
 		"http://localhost:8788",
 		"https://users-dashboard-dev.traderapp.finance",
 		"https://web-dashboard-dev.traderapp.finance",
+		"https://www.web-dashboard-dev.traderapp.finance",
 		"https://web-dashboard-staging.traderapp.finance",
+		"https://www.web-dashboard-staging.traderapp.finance",
 	];
 
 	const corsOptions = {
@@ -103,6 +106,7 @@ function startServer() {
 	app.use(`/exchanges`, ExchangeRoutes);
 	app.use(`/signals`, SignalRoutes);
 	app.use(`/currencies`, CurrencyRoutes);
+	// app.use("/stream", StreamsRoutes);
 
 	// health check
 	app.get(`/ping`, (_req, res) => {
@@ -112,6 +116,9 @@ function startServer() {
 			})
 		);
 	});
+
+	// Start cron jobs
+	runAllJobs();
 
 	// handle errors
 	app.use((err: Error, _req: Request, res: Response, _next: NextFunction) => {

@@ -1,5 +1,5 @@
 import { Connection } from "mongoose";
-import { ExchangePairSchema } from "../models/ExchangePair";
+import { TradingPlatformPairSchema } from "../models/TradingPlatformPair";
 import { UnknownCoinSchema } from "../models/UnkownCoin";
 
 export const exchangePairAndUnknownCoinTransfer = async ({
@@ -14,14 +14,22 @@ export const exchangePairAndUnknownCoinTransfer = async ({
 	}
 
 	// fetch and inserted into exchangePair in Atlas
-	const ExchangePairModel1 = conn1.model("ExchangePair", ExchangePairSchema, "exchangepairs");
-	const ExchangePairModel2 = conn2.model("ExchangePair", ExchangePairSchema, "exchangepairs");
+	const ExchangePairModel1 = conn1.model(
+		"ExchangePair",
+		TradingPlatformPairSchema,
+		"exchangepairs"
+	);
+	const ExchangePairModel2 = conn2.model(
+		"ExchangePair",
+		TradingPlatformPairSchema,
+		"exchangepairs"
+	);
 
-	const coins = await ExchangePairModel2.find().exec();
+	const coins = await ExchangePairModel1.find().exec();
 	console.log(`Fetched ${coins.length} ExchangePair from db1`);
 
 	if (coins.length > 0) {
-		await ExchangePairModel1.insertMany(coins);
+		await ExchangePairModel2.insertMany(coins);
 		console.log(`Inserted ${coins.length} ExchangePair into db2`);
 	}
 

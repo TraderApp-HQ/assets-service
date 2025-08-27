@@ -1,5 +1,14 @@
 import { PopulateOptions } from "mongoose";
-import { Candlestick, SignalRisk, SignalStatus, UserRoles } from "./enums";
+import {
+	Candlestick,
+	Category,
+	TradingPlatform,
+	SignalRisk,
+	SignalStatus,
+	TradeSide,
+	TradeType,
+	UserRoles,
+} from "./enums";
 
 export interface IAccessToken {
 	id: string;
@@ -13,7 +22,7 @@ export interface IAccessToken {
 }
 
 export interface ISignalAsset {
-	id: string;
+	_id: number;
 	name: string;
 	symbol: string;
 	logo: string;
@@ -26,8 +35,8 @@ export interface ISignalMilestone {
 	isReached: boolean;
 }
 
-export interface IExchange {
-	id: string;
+export interface ITradingPlatform {
+	_id: number;
 	name: string;
 	logo: string;
 }
@@ -36,20 +45,29 @@ export interface ISignalServiceCreateSignalProps {
 	targetProfits: ISignalMilestone[];
 	stopLoss: ISignalMilestone;
 	entryPrice: number;
+	entryPriceLowerBound: number;
+	entryPriceUpperBound: number;
 	currentPrice?: number;
 	currentChange?: number;
 	tradeNote: string;
 	candlestick: Candlestick;
 	risk: SignalRisk;
-	isSignalTradable: boolean;
+	isSignalTradable: boolean; // This controls when a trade is entered (If price is within entry range)
+	isSignalTriggered?: boolean; //
 	chartUrl: string;
 	status: SignalStatus;
 	maxGain: number;
 	createdAt: string;
 	endedAt?: string;
-	supportedExchanges: number[];
-	asset: number;
-	baseCurrency: number;
+	supportedTradingPlatforms: number[];
+	baseAsset: number;
+	baseAssetName: string;
+	quoteCurrency: number;
+	quoteCurrencyName: string;
+	category: Category;
+	tradeType?: TradeType;
+	tradeSide?: TradeSide;
+	leverage?: number;
 }
 
 export interface ISignalServiceGetSignalsParams {
@@ -72,8 +90,8 @@ export interface ISignal extends ISignalServiceCreateSignalProps, Document {}
 
 export interface ISignalResponse extends Document {
 	id: string;
-	asset: ISignalAsset;
-	baseCurrency: ISignalAsset;
+	baseAsset: ISignalAsset;
+	quoteCurrency: ISignalAsset;
 	targetProfits: ISignalMilestone[];
 	stopLoss: ISignalMilestone;
 	entryPrice: number;
@@ -88,5 +106,44 @@ export interface ISignalResponse extends Document {
 	maxGain: number;
 	createdAt: string;
 	endedAt?: string;
-	supportedExchanges: IExchange[];
+	supportedTradingPlatforms: ITradingPlatform[];
+}
+
+export interface IActiveSignalsData {
+	signalId: string;
+	stopLoss: ISignalMilestone;
+	targetProfits: ISignalMilestone[];
+	entryPrice: number;
+	isSignalTradable: boolean;
+	isSignalTriggered: boolean;
+	status: SignalStatus;
+	baseAssetName: string;
+	quoteCurrencyName: string;
+	assetPair: string;
+	tradingPlatforms: TradingPlatform[];
+	entryPriceUpperBound: number;
+	entryPriceLowerBound: number;
+	tradeSide: TradeSide;
+	maxGain: number;
+}
+
+export interface ISignalPrice {
+	signalId: string;
+	tradingPlatform: TradingPlatform;
+	asset: IActiveSignalsData;
+	assetPrice: number;
+	timestamp?: number;
+}
+
+export interface ISignalOrderBook {
+	signalId: string;
+	tradingPlatform: TradingPlatform;
+	totalSellQuantityInRange: number;
+	totalBuyQuantityInRange: number;
+	timestamp?: number;
+}
+
+export interface IRemoveSignal {
+	signalId: string;
+	tradingPlatform: TradingPlatform;
 }

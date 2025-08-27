@@ -23,12 +23,49 @@ export enum SignalRisk {
 }
 
 export enum SignalStatus {
-	ACTIVE = "ACTIVE",
-	PAUSED = "PAUSED",
+	PENDING = "PENDING", // When signal price has not been triggered
+	ACTIVE = "ACTIVE", // Signal has been triggered
+	PAUSED = "PAUSED", // When price is out of range or admin pauses it
 	INACTIVE = "INACTIVE",
 }
 
 export enum TradeStatus {
 	active = "ACTIVE",
 	inactive = "INACTIVE",
+}
+
+export enum Category {
+	FOREX = "FOREX",
+	CRYPTO = "CRYPTO",
+}
+
+export enum TradeType {
+	SPOT = "SPOT",
+	FUTURES = "FUTURES",
+}
+
+export enum TradeSide {
+	SHORT = "SHORT",
+	LONG = "LONG",
+}
+
+export enum ConnectionType {
+	MANUAL = "MANUAL",
+	FAST = "FAST",
+}
+
+export enum WSChannel {
+	usersWs = "users-ws",
+	assetsUpdateWs = "assets-update-ws",
+	binanceWs = "binance-ws",
+}
+
+export enum TradingPlatform {
+	binance = "binance",
+	kucoin = "kucoin",
+}
+
+export enum AssetData {
+	price = "price",
+	orderBook = "orderbook",
 }

@@ -2,6 +2,7 @@ import { apiDocumentationResponseObject } from "@traderapp/shared-resources";
 
 export const ENVIRONMENTS: Record<string, string> = Object.freeze({
 	development: "dev",
+	test: "dev",
 	staging: "staging",
 	production: "prod",
 });
@@ -58,7 +59,7 @@ export const ROUTES = {
 	patchExchangeById: "/update/:exchangeId",
 	getAllAssets: "/exchange/:exchangeId",
 	getByCurrencies: "/currency/:exchangeId",
-	getSupportedExchanges: "/supported/exchanges",
+	getSupportedTradingPlatforms: "/supported-trading-platforms",
 };
 
 export const DOC_RESPONSE = {
@@ -84,6 +85,7 @@ export const SIGNAL_ROUTES = {
 	post: "/create",
 	get: "/",
 	getActive: "/active",
+	getPending: "/pending",
 	getHistory: "/history",
 	getSignalById: "/:id",
 	updateSignalById: "/update/:id",

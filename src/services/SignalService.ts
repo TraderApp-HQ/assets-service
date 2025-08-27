@@ -1,8 +1,10 @@
 import { DEFAULT_PAGE, DEFAULT_ROWS_PER_PAGE } from "../config/constants";
-import { SignalStatus } from "../config/enums";
+import { SignalStatus, TradeSide } from "../config/enums";
 import {
-	IExchange,
+	IActiveSignalsData,
+	ITradingPlatform,
 	ISignal,
+	ISignalPrice,
 	ISignalResponse,
 	ISignalServiceCreateSignalProps,
 	ISignalServiceGetSignalsParams,
@@ -16,14 +18,14 @@ export class SignalService {
 		try {
 			// Find existing signals with the same asset ID
 			const existingSignals = await Signal.find({
-				asset: props.asset, // asset/coin ID
-				status: SignalStatus.ACTIVE, // match only Active signals
+				baseAsset: props.baseAsset, // asset/coin ID
+				status: { $ne: SignalStatus.INACTIVE }, // match any signals not INACTIVE
 			});
 
 			if (existingSignals && existingSignals.length > 0) {
 				// Update all existing signals' status to INACTIVE
 				await Signal.updateMany(
-					{ asset: props.asset },
+					{ baseAsset: props.baseAsset },
 					{ status: SignalStatus.INACTIVE, endedAt: new Date().toISOString() }
 				);
 			}
@@ -70,9 +72,9 @@ export class SignalService {
 
 			// Populate related fields
 			signalQuery = signalQuery.populate([
-				{ path: "supportedExchanges" },
-				{ path: "asset" },
-				{ path: "baseCurrency" },
+				{ path: "supportedTradingPlatforms" },
+				{ path: "baseAsset" },
+				{ path: "quoteCurrency" },
 			]);
 
 			// Apply sorting, skipping, and limiting
@@ -81,12 +83,12 @@ export class SignalService {
 			if (keyword) {
 				signals = signals.filter((signal: any) => {
 					return (
-						signal.asset?.symbol?.match(new RegExp(keyword, "i")) ||
-						signal.asset?.name?.match(new RegExp(keyword, "i")) ||
-						signal.baseCurrency?.symbol?.match(new RegExp(keyword, "i")) ||
-						signal.baseCurrency?.name?.match(new RegExp(keyword, "i")) ||
-						signal.supportedExchanges.some((exchange: IExchange) =>
-							exchange.name.match(new RegExp(keyword, "i"))
+						signal.baseAsset?.symbol?.match(new RegExp(keyword, "i")) ||
+						signal.baseAsset?.name?.match(new RegExp(keyword, "i")) ||
+						signal.quoteCurrency?.symbol?.match(new RegExp(keyword, "i")) ||
+						signal.quoteCurrency?.name?.match(new RegExp(keyword, "i")) ||
+						signal.supportedTradingPlatforms.some((platform: ITradingPlatform) =>
+							platform.name.match(new RegExp(keyword, "i"))
 						)
 					);
 				});
@@ -107,7 +109,16 @@ export class SignalService {
 			});
 
 			// Apply pagination
-			const paginatedSignals = signals.slice((page - 1) * rowsPerPage, page * rowsPerPage);
+			const paginatedSignals = signals
+				.slice((page - 1) * rowsPerPage, page * rowsPerPage)
+				.map((signal) => {
+					const { _id, ...rest } = signal.toObject();
+
+					return {
+						id: _id.toString(),
+						...rest,
+					};
+				});
 
 			return paginatedSignals as unknown as ISignalResponse[];
 		} catch (error: any) {
@@ -129,15 +140,18 @@ export class SignalService {
 		const keyword = query.keyword as string;
 
 		// Fetch signals using the service method
-		const signals = await this.getSignals({
-			rowsPerPage,
-			page,
-			sortBy,
-			sortOrder,
-			keyword,
-			startAfterDoc,
-			status,
-		});
+		const [signals, totalRecords] = await Promise.all([
+			this.getSignals({
+				rowsPerPage,
+				page,
+				sortBy,
+				sortOrder,
+				keyword,
+				startAfterDoc,
+				status,
+			}),
+			this.getSignalCount(),
+		]);
 
 		if (!signals) {
 			return {
@@ -147,7 +161,6 @@ export class SignalService {
 		}
 
 		// Calculate total pages
-		const totalRecords: number = await this.getSignalCount();
 		const totalPages = Math.ceil(totalRecords / rowsPerPage);
 
 		// Format the response
@@ -170,7 +183,7 @@ export class SignalService {
 	public async getSignalById(id: string): Promise<ISignalResponse | null> {
 		try {
 			const signal = await Signal.findById(id)
-				.populate(["supportedExchanges", "asset", "baseCurrency"])
+				.populate(["supportedTradingPlatforms", "baseAsset", "quoteCurrency"])
 				.exec();
 
 			if (!signal) {
@@ -211,5 +224,219 @@ export class SignalService {
 		} catch (error: any) {
 			throw new Error(error.message);
 		}
+	}
+
+	public async getTradingPlatformActiveSignals(
+		tradingPlatform?: string
+	): Promise<IActiveSignalsData[]> {
+		try {
+			const filterCondition = tradingPlatform ? { slug: tradingPlatform } : {};
+
+			// TODO: Fetch all signals that are not inactive
+			const activeSignals = await Signal.find({ status: { $ne: SignalStatus.INACTIVE } })
+				.populate([
+					{
+						path: "supportedTradingPlatforms",
+						select: "slug -_id",
+						match: filterCondition,
+					},
+				])
+				.select(
+					"baseAssetName quoteCurrencyName targetProfits stopLoss entryPrice isSignalTradable supportedTradingPlatforms entryPriceUpperBound entryPriceLowerBound tradeSide maxGain status isSignalTriggered"
+				)
+				.exec();
+
+			// Extracting assets exchange
+			const signalAndExchanges = activeSignals
+				.filter((signal) => signal.supportedTradingPlatforms.length > 0)
+				.map((signal) => {
+					const assetName =
+						`${signal.baseAssetName}${signal.quoteCurrencyName}`.toLowerCase();
+					const tradingPlatforms: string[] = signal.supportedTradingPlatforms.map(
+						(platform: any) => platform.slug
+					);
+					const { _id, supportedTradingPlatforms, ...restSignal } = signal.toObject();
+
+					return {
+						...restSignal,
+						assetPair: assetName,
+						tradingPlatforms,
+						signalId: _id.toString(),
+					};
+				}) as IActiveSignalsData[];
+
+			return signalAndExchanges;
+		} catch (error: any) {
+			throw new Error(error.message);
+		}
+	}
+
+	public async updateSignalsDataInDB(signals: ISignalPrice[]) {
+		try {
+			// Update operation
+			const bulkPriceUpdate = signals.map((signal) => {
+				const signalId = signal.signalId;
+				const currentPrice = signal.assetPrice;
+				const entryPrice = signal.asset.entryPrice;
+				const tradeSide = signal.asset.tradeSide;
+				const targetProfits = signal.asset.targetProfits;
+				const stopLoss = signal.asset.stopLoss;
+				const maxGain = signal.asset.maxGain;
+				const isSignalTradable = signal.asset.isSignalTradable;
+				const isSignalTriggered = signal.asset.isSignalTriggered;
+				const status = signal.asset.status;
+
+				let priceChange: number = 0;
+				// Calcute priceChange only after signal is triggered
+				if (status === SignalStatus.ACTIVE || status === SignalStatus.PAUSED) {
+					if (tradeSide) {
+						if (tradeSide === TradeSide.SHORT) {
+							priceChange = Number(
+								(((entryPrice - currentPrice) / entryPrice) * 100).toFixed(2)
+							);
+						} else {
+							priceChange = Number(
+								(((currentPrice - entryPrice) / entryPrice) * 100).toFixed(2)
+							);
+						}
+					} else {
+						// for spot trading
+						priceChange = Number(
+							(((currentPrice - entryPrice) / entryPrice) * 100).toFixed(2)
+						);
+					}
+				}
+
+				return {
+					updateOne: {
+						filter: { _id: signalId },
+						update: [
+							{
+								$set: {
+									currentPrice,
+									isSignalTradable,
+									isSignalTriggered,
+									targetProfits,
+									stopLoss,
+									maxGain,
+									currentChange: priceChange,
+									// The status field is updated using aggregation pipeline conditions
+									status: {
+										$cond: [
+											{ $eq: ["$status", SignalStatus.PAUSED] }, // If current status in DB is PAUSED
+											"$status", // then keep the status as PAUSED
+											status, // else update to the new status
+										],
+									},
+								},
+							},
+						],
+					},
+				};
+			});
+
+			// Execute bulk write update operation
+			await Signal.bulkWrite(bulkPriceUpdate);
+		} catch (error: any) {
+			throw new Error(error.message);
+		}
+	}
+
+	public computeSignalFlags(
+		signal: IActiveSignalsData,
+		currentPrice: number
+	): IActiveSignalsData {
+		const entryPrice = signal.entryPrice;
+		const entryPriceUpperBound = signal.entryPriceUpperBound;
+		const entryPriceLowerBound = signal.entryPriceLowerBound;
+		const tradeSide = signal.tradeSide;
+		let targetProfits = signal.targetProfits;
+		let stopLoss = signal.stopLoss;
+		let status = signal.status; // If signal status is paused or inactive, leave status
+		let isSignalTradable = signal.isSignalTradable;
+		let isSignalTriggered = signal.isSignalTriggered;
+		let maxGain = signal.maxGain;
+
+		// Calculate isSignalTradable (either True or False based on conditions below)
+		// Check if signal status is pending or active
+		// Check if price is in range based on trade direction/side.
+		isSignalTradable =
+			(status === SignalStatus.PENDING || status === SignalStatus.ACTIVE) &&
+			(tradeSide === TradeSide.SHORT
+				? currentPrice > entryPriceUpperBound && currentPrice < entryPriceLowerBound
+				: currentPrice > entryPriceLowerBound && currentPrice < entryPriceUpperBound);
+
+		// Calculate isSignalTriggered (once True, always true)
+		// Skip if true, else calculate based on isSignalTradable.
+		isSignalTriggered = isSignalTriggered || isSignalTradable;
+
+		// Calculate signal Status - Pending -> Active
+		// If signal is pending and signal is triggered, change status to active
+		if (status === SignalStatus.PENDING && isSignalTriggered) {
+			status = SignalStatus.ACTIVE;
+		}
+
+		// Calcute targetProfit, stopLoss, maxGain only after signal is triggered
+		if (status === SignalStatus.ACTIVE || status === SignalStatus.PAUSED) {
+			// Update target profits
+			targetProfits = targetProfits.map((target) => {
+				let isReached = target.isReached;
+				if (tradeSide) {
+					if (tradeSide === TradeSide.SHORT) {
+						isReached = currentPrice <= target.price;
+					} else {
+						isReached = currentPrice >= target.price;
+					}
+				} else {
+					isReached = currentPrice >= target.price;
+				}
+
+				return {
+					...target,
+					isReached: target.isReached ? true : isReached,
+				};
+			});
+
+			// Update stop loss
+			stopLoss = {
+				...stopLoss,
+				isReached: stopLoss.isReached
+					? true // Do not update if already true
+					: tradeSide === TradeSide.SHORT
+					? currentPrice >= stopLoss.price
+					: currentPrice <= stopLoss.price,
+			};
+
+			// Update max gain
+			maxGain = Math.max(
+				Math.round(
+					tradeSide === TradeSide.SHORT
+						? ((entryPrice - currentPrice) / entryPrice) * 100
+						: ((currentPrice - entryPrice) / entryPrice) * 100
+				),
+				signal.maxGain
+			);
+
+			// Calculate when all TP or SL is reached to change status for INACTIVE
+			const allTargetProfitsReached = targetProfits.every((tp) => tp.isReached);
+			const stopLossReached = stopLoss.isReached;
+
+			// Calculate signal Status - Active -> Inactive
+			// If signal is active and either all tp or sl is hit, change to inactive
+			if (status === SignalStatus.ACTIVE && (allTargetProfitsReached || stopLossReached)) {
+				status = SignalStatus.INACTIVE;
+			}
+		}
+
+		// Return updated signal with computed flags
+		return {
+			...signal,
+			isSignalTradable,
+			isSignalTriggered,
+			targetProfits,
+			stopLoss,
+			maxGain,
+			status,
+		};
 	}
 }

@@ -1,8 +1,8 @@
 import { Request, Response, NextFunction } from "express";
 // import { prismaClient } from "../config/database";
-import { ICoin, IPagedResultData } from "../interfaces/controllers";
+import { IAsset, IPagedResultData } from "../interfaces/controllers";
 import { apiResponseHandler } from "@traderapp/shared-resources";
-import Coin from "../models/Coin";
+import Asset from "../models/Asset";
 
 //	A function to get all coins
 export async function coinsHandler(req: Request, res: Response, next: NextFunction) {
@@ -22,7 +22,7 @@ export async function coinsHandler(req: Request, res: Response, next: NextFuncti
 			[variable]: order,
 		};
 
-		const coinsArr = await Coin.find({
+		const coinsArr = await Asset.find({
 			take: rowsPerPage,
 			skip: offset,
 			orderBy: [orderby],
@@ -39,8 +39,8 @@ export async function coinsHandler(req: Request, res: Response, next: NextFuncti
 		});
 
 		//	parse urls back to js Object. NB: Urls was stored in db as strings using JSON.stringify
-		const coins: ICoin[] = coinsArr.map((coin) => {
-			const coinObj = coin as ICoin;
+		const coins: IAsset[] = coinsArr.map((coin) => {
+			const coinObj = coin as IAsset;
 			return { ...coinObj, urls: JSON.parse(coinObj.urls), id: coin._id };
 		});
 
@@ -58,7 +58,7 @@ export async function coinsHandler(req: Request, res: Response, next: NextFuncti
 			rowsPerPage,
 			sortBy: sort,
 			orderBy: order,
-			coins,
+			assets: coins,
 		};
 
 		res.status(200).json(apiResponseHandler({ object: response }));
@@ -80,7 +80,7 @@ export async function coinHandler(req: Request, res: Response, next: NextFunctio
 
 		//	fetch coin by id
 		// const db = await prismaClient();
-		const coin: any = await Coin.findOne({
+		const coin: any = await Asset.findOne({
 			where: { id },
 			select: {
 				id: true,

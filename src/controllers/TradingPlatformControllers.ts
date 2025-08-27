@@ -1,0 +1,192 @@
+import { apiResponseHandler } from "@traderapp/shared-resources";
+import { NextFunction, Request, Response } from "express";
+import {
+	DEFAULT_PAGE,
+	DEFAULT_ROWS_PER_PAGE,
+	ResponseMessage,
+	ResponseType,
+} from "../config/constants";
+import { TradeStatus } from "../config/enums";
+import Asset from "../models/Asset";
+import Currency from "../models/Currency";
+import { TradingPlatformService } from "../services/TradingPlatformService";
+import { HttpStatus } from "../utils/httpStatus";
+
+export async function getAllTradingPlatforms(req: Request, res: Response, next: NextFunction) {
+	const tradingPlatformService: TradingPlatformService = new TradingPlatformService();
+
+	try {
+		const page: number = parseInt(req.query.page as string, 10) || DEFAULT_PAGE;
+		const rowsPerPage: number = Math.min(
+			parseInt(req.query.rowsPerPage as string, 10) || DEFAULT_ROWS_PER_PAGE,
+			100
+		);
+		const orderBy: "asc" | "desc" = (req.query.orderBy as "asc" | "desc") || "asc";
+
+		const status = req.query.status as TradeStatus;
+
+		const platform = await tradingPlatformService.getAllTradingPlatforms({
+			page,
+			rowsPerPage,
+			orderBy,
+			status,
+		});
+
+		res.status(HttpStatus.OK).json(
+			apiResponseHandler({
+				type: ResponseType.SUCCESS,
+				object: platform,
+				message: ResponseMessage.GET_EXCHANGES,
+			})
+		);
+	} catch (error) {
+		next(error);
+	}
+}
+
+export async function getExchangeById(req: Request, res: Response, next: NextFunction) {
+	const tradingPlatformService: TradingPlatformService = new TradingPlatformService();
+	try {
+		const { id } = req.params;
+		const platform = await tradingPlatformService.getTradingPlatformById(id);
+
+		if (!platform) {
+			return res.status(HttpStatus.BAD_REQUEST).json(
+				apiResponseHandler({
+					type: ResponseType.ERROR,
+					object: null,
+					message: ResponseMessage.EXCHANGE_NOT_FOUND,
+				})
+			);
+		}
+
+		res.status(HttpStatus.OK).json(
+			apiResponseHandler({
+				type: ResponseType.SUCCESS,
+				object: platform,
+				message: ResponseMessage.GET_EXCHANGE,
+			})
+		);
+	} catch (error) {
+		next(error);
+	}
+}
+
+export async function getAllAssetsInExchange(req: Request, res: Response, next: NextFunction) {
+	const tradingPlatformService: TradingPlatformService = new TradingPlatformService();
+	try {
+		const exchangeId = Number(req.params.exchangeId);
+
+		const populateFields = [
+			{
+				path: "assetId",
+				model: Asset,
+			},
+		];
+
+		const assetsInExchange = await tradingPlatformService.getManyTradingPlatformById({
+			tradingPlatformId: exchangeId,
+			populateFields,
+		});
+		res.status(HttpStatus.OK).json(
+			apiResponseHandler({
+				type: ResponseType.SUCCESS,
+				object: assetsInExchange,
+				message: ResponseMessage.GET_ASSETS,
+			})
+		);
+	} catch (error) {
+		next(error);
+	}
+}
+
+export async function updateExchangeInfo(req: Request, res: Response, next: NextFunction) {
+	const tradingPlatformService: TradingPlatformService = new TradingPlatformService();
+	try {
+		const exchangeId = Number(req.params.exchangeId);
+
+		const { description, status, makerFee, takerFee } = req.body;
+
+		const updateData = {
+			description,
+			status,
+			makerFee,
+			takerFee,
+		};
+
+		const updatedExchange = await tradingPlatformService.updateTradingPlatformById({
+			tradingPlatformId: exchangeId,
+			updateData,
+		});
+
+		res.status(HttpStatus.OK).json(
+			apiResponseHandler({
+				type: ResponseType.SUCCESS,
+				object: updatedExchange,
+				message: ResponseMessage.UPDATE_EXCHANGE,
+			})
+		);
+	} catch (err) {
+		next(err);
+	}
+}
+
+// Function to get all currencies in an exchange
+export async function getCurrenciesForExchange(req: Request, res: Response, next: NextFunction) {
+	const tradingPlatformService: TradingPlatformService = new TradingPlatformService();
+	try {
+		const exchangeId = Number(req.params.exchangeId);
+
+		// Define the populate fields if needed
+		const populateFields = [
+			{
+				path: "currencyId",
+				model: Currency,
+			},
+		];
+
+		// Call the reusable function
+		const exchangePairs = await tradingPlatformService.getManyTradingPlatformById({
+			tradingPlatformId: exchangeId,
+			populateFields,
+		});
+
+		res.status(HttpStatus.OK).json(
+			apiResponseHandler({
+				type: ResponseType.SUCCESS,
+				object: exchangePairs,
+				message: ResponseMessage.GET_CURRENCIES,
+			})
+		);
+	} catch (err) {
+		next(err);
+	}
+}
+
+export async function getSupportedTradingPlatforms(
+	req: Request,
+	res: Response,
+	next: NextFunction
+) {
+	const tradingPlatformService: TradingPlatformService = new TradingPlatformService();
+
+	const baseAssetId = Number(req.query.baseAssetId);
+	const quoteCurrencyId = Number(req.query.quoteCurrencyId);
+
+	try {
+		const platforms = await tradingPlatformService.getSupportedTradingPlatforms({
+			baseAssetId,
+			quoteCurrencyId,
+		});
+
+		res.status(HttpStatus.OK).json(
+			apiResponseHandler({
+				type: ResponseType.SUCCESS,
+				object: platforms ?? [],
+				message: ResponseMessage.GET_EXCHANGES,
+			})
+		);
+	} catch (error) {
+		next(error);
+	}
+}

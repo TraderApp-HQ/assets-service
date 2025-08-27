@@ -94,8 +94,8 @@ export const bitcoinSignalData = {
 	category: Category.CRYPTO,
 	tradeType: TradeType.FUTURES,
 	tradeSide: TradeSide.LONG,
-	leverage: 4,
 };
+
 export const cadanoSignalData = {
 	targetProfits: [
 		{ price: 0.775, percent: 0, isReached: false },
@@ -124,5 +124,4 @@ export const cadanoSignalData = {
 	category: Category.CRYPTO,
 	tradeType: TradeType.FUTURES,
 	tradeSide: TradeSide.SHORT,
-	leverage: 2,
 };

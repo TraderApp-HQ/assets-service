@@ -10,6 +10,7 @@ import {
 	ISignalServiceGetSignalsParams,
 	ISignalServiceUpdateSignalByIdProps,
 	ICalculateLeverageInput,
+	IGetPaginatedSignalInput,
 } from "../config/interfaces";
 import { formatSignalResponse, getNestedField } from "../controllers/helpers";
 import Signal from "../models/Signal";
@@ -189,11 +190,11 @@ export class SignalService {
 		}
 	}
 
-	public async getPaginatedSignals(
-		query: Record<string, string | string[]>,
-		status: SignalStatus[],
-		isSignalTriggered?: boolean
-	) {
+	public async getPaginatedSignals({
+		query,
+		status,
+		isSignalTriggered,
+	}: IGetPaginatedSignalInput) {
 		const rowsPerPage = query.rowsPerPage
 			? Number.parseInt(query.rowsPerPage as string, 10)
 			: DEFAULT_ROWS_PER_PAGE;

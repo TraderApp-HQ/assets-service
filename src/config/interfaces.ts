@@ -158,3 +158,9 @@ export interface ICalculateLeverageInput {
 	tradeSide: TradeSide;
 	maintenanceMarginRate?: number;
 }
+
+export interface IGetPaginatedSignalInput {
+	query: Record<string, string | string[]>;
+	status: SignalStatus[];
+	isSignalTriggered?: boolean;
+}

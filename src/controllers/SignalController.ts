@@ -160,11 +160,11 @@ export async function getSignalsHandler(req: Request, res: Response, next: NextF
 export async function getActiveSignalsHandler(req: Request, res: Response, next: NextFunction) {
 	const signalService: SignalService = new SignalService();
 	try {
-		const signalsResponse = await signalService.getPaginatedSignals(
-			req.query as Record<string, string>,
-			[SignalStatus.ACTIVE, SignalStatus.PAUSED],
-			true // To filter for active and paused signals using isSignalTriggered flag
-		);
+		const signalsResponse = await signalService.getPaginatedSignals({
+			query: req.query as Record<string, string>,
+			status: [SignalStatus.ACTIVE, SignalStatus.PAUSED],
+			isSignalTriggered: true, // To filter for active and paused signals using isSignalTriggered flag
+		});
 
 		if (!signalsResponse.success) {
 			res.status(HttpStatus.NOT_FOUND).json(
@@ -193,11 +193,11 @@ export async function getActiveSignalsHandler(req: Request, res: Response, next:
 export async function getPendingSignalsHandler(req: Request, res: Response, next: NextFunction) {
 	const signalService: SignalService = new SignalService();
 	try {
-		const signalsResponse = await signalService.getPaginatedSignals(
-			req.query as Record<string, string>,
-			[SignalStatus.PENDING, SignalStatus.PAUSED],
-			false // To filter for pending and paused signals using isSignalTriggered flag
-		);
+		const signalsResponse = await signalService.getPaginatedSignals({
+			query: req.query as Record<string, string>,
+			status: [SignalStatus.PENDING, SignalStatus.PAUSED],
+			isSignalTriggered: false, // To filter for pending and paused signals using isSignalTriggered flag
+		});
 		if (!signalsResponse.success) {
 			res.status(HttpStatus.NOT_FOUND).json(
 				apiResponseHandler({
@@ -225,10 +225,10 @@ export async function getPendingSignalsHandler(req: Request, res: Response, next
 export async function getInActiveSignalsHandler(req: Request, res: Response, next: NextFunction) {
 	const signalService: SignalService = new SignalService();
 	try {
-		const signalsResponse = await signalService.getPaginatedSignals(
-			req.query as Record<string, string>,
-			[SignalStatus.INACTIVE]
-		);
+		const signalsResponse = await signalService.getPaginatedSignals({
+			query: req.query as Record<string, string>,
+			status: [SignalStatus.INACTIVE],
+		});
 		if (!signalsResponse.success) {
 			res.status(HttpStatus.NOT_FOUND).json(
 				apiResponseHandler({
@@ -316,14 +316,7 @@ export async function getSignalCurrentPrice(req: Request, res: Response, next: N
 		const price = await getAssetCurrentPrice({ asset, quote });
 
 		if (!price) {
-			res.status(HttpStatus.NOT_FOUND).json(
-				apiResponseHandler({
-					type: ResponseType.ERROR,
-					message: ResponseMessage.NO_SIGNAL_PRICE,
-					object: null,
-				})
-			);
-			return;
+			throw new Error(`Fialed to get current price for ${asset}/${quote}`);
 		}
 
 		res.status(HttpStatus.OK).json(

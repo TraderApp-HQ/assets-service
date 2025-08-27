@@ -23,7 +23,8 @@ export async function up() {
 
 	// Run getTradingPlatforms to get platforms data
 	// Run initCoins function again to get all trading assets
-	await Promise.all([getTradingPlatforms(), initCoins()]);
+	await getTradingPlatforms();
+	await initCoins();
 
 	console.log(
 		"Migration completed successfully for: 20250814T214857_reinitialize-trading-platform-and-asset-and-currency.ts"

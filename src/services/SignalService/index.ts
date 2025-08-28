@@ -1,5 +1,5 @@
-import { DEFAULT_PAGE, DEFAULT_ROWS_PER_PAGE } from "../config/constants";
-import { SignalStatus, TradeSide } from "../config/enums";
+import { DEFAULT_PAGE, DEFAULT_ROWS_PER_PAGE } from "../../config/constants";
+import { SignalStatus, TradeSide } from "../../config/enums";
 import {
 	IActiveSignalsData,
 	ITradingPlatform,
@@ -11,9 +11,9 @@ import {
 	ISignalServiceUpdateSignalByIdProps,
 	ICalculateLeverageInput,
 	IGetPaginatedSignalInput,
-} from "../config/interfaces";
-import { formatSignalResponse, getNestedField } from "../controllers/helpers";
-import Signal from "../models/Signal";
+} from "../../config/interfaces";
+import { formatSignalResponse, getNestedField } from "../../controllers/helpers";
+import Signal from "../../models/Signal";
 
 export class SignalService {
 	private calculateLeverage(input: ICalculateLeverageInput): number {

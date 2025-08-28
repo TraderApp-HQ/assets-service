@@ -14,6 +14,7 @@ export const formatSignalResponse = (signal: ISignalResponse) => {
 		candlestick: signal.candlestick,
 		risk: signal.risk,
 		isSignalTradable: signal.isSignalTradable,
+		isSignalTriggered: signal.isSignalTriggered,
 		chartUrl: signal.chartUrl,
 		status: signal.status,
 		createdAt: signal.createdAt,

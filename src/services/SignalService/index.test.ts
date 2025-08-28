@@ -1,18 +1,18 @@
 import mongoose from "mongoose";
+import { SignalService } from ".";
 import {
 	bitcoinCoinData,
+	bitcoinSignalData,
 	cadanoCoinData,
+	cadanoSignalData,
 	exchangeData,
 	quoteCurrencyData,
-	bitcoinSignalData,
-	cadanoSignalData,
-} from "../__tests__/constants";
-import { SignalStatus, TradeSide } from "../config/enums";
-import { SignalService } from "../services/SignalService";
-import Asset from "../models/Asset";
-import Currency from "../models/Currency";
-import TradingPlatform from "../models/TradingPlatform";
-import Signal from "../models/Signal";
+} from "../../__tests__/constants";
+import { SignalStatus, TradeSide } from "../../config/enums";
+import Asset from "../../models/Asset";
+import Currency from "../../models/Currency";
+import Signal from "../../models/Signal";
+import TradingPlatform from "../../models/TradingPlatform";
 
 describe("Signal Service", () => {
 	beforeAll(async () => {

@@ -81,8 +81,12 @@ export const binanceSignals = async () => {
 
 			const { signalId, tradingPlatform, assetPrice, timestamp, asset } = data;
 
-			// Only update cache with data from db if the trade status from DB is "PAUSED"
-			if (signal.status === SignalStatus.PAUSED) {
+			// Only update cache with data status from db if the trade status from DB is not "PENDING" and trade status in cache is not "INACTIVE"
+			if (
+				((signal.status === SignalStatus.PENDING && !signal.isSignalTriggered) ||
+					signal.status !== SignalStatus.PENDING) &&
+				asset.status !== SignalStatus.INACTIVE
+			) {
 				await cache.addSignalPrice({
 					signalId,
 					tradingPlatform,

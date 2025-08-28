@@ -9,11 +9,53 @@ import {
 	ISignalServiceCreateSignalProps,
 	ISignalServiceGetSignalsParams,
 	ISignalServiceUpdateSignalByIdProps,
+	ICalculateLeverageInput,
+	IGetPaginatedSignalInput,
 } from "../config/interfaces";
 import { formatSignalResponse, getNestedField } from "../controllers/helpers";
 import Signal from "../models/Signal";
 
 export class SignalService {
+	private calculateLeverage(input: ICalculateLeverageInput): number {
+		/**
+		 * Calculate leverage for a futures position (LONG or SHORT)
+		 *
+		 * For LONG:
+		 *    L = 1 / ((1 + m) - (Pl / P0))
+		 *
+		 * For SHORT:
+		 *    L = 1 / ((Pl / P0) - (1 - m))
+		 *
+		 * @param entryPrice - Entry price (P0)
+		 * @param stopLossPrice - Liquidation price (Pl)
+		 * @param tradeSide - "LONG" or "SHORT"
+		 * @param maintenanceMarginRate - Maintenance margin rate (default 0.004 for Binance BTC small positions)
+		 * @returns Leverage (number)
+		 */
+		const { entryPrice, stopLossPrice, tradeSide, maintenanceMarginRate = 0.004 } = input;
+
+		if (entryPrice <= 0 || stopLossPrice <= 0) {
+			throw new Error("Entry price and liquidation price must be greater than zero.");
+		}
+
+		const ratio = stopLossPrice / entryPrice;
+		let denominator: number;
+
+		if (tradeSide === TradeSide.LONG) {
+			denominator = 1 + maintenanceMarginRate - ratio;
+		} else if (tradeSide === TradeSide.SHORT) {
+			denominator = ratio - (1 - maintenanceMarginRate);
+		} else {
+			throw new Error("Invalid trade side. Must be 'LONG' or 'SHORT'.");
+		}
+
+		if (denominator <= 0) {
+			throw new Error("Invalid values: denominator is zero or negative. Check inputs.");
+		}
+
+		return Math.floor(1 / denominator);
+	}
+
 	public async createSignal(props: ISignalServiceCreateSignalProps): Promise<ISignal | null> {
 		try {
 			// Find existing signals with the same asset ID
@@ -30,8 +72,21 @@ export class SignalService {
 				);
 			}
 
+			// Calcualte signal leverage
+			const leverage = this.calculateLeverage({
+				entryPrice: props.entryPrice,
+				stopLossPrice: props.stopLoss.price,
+				tradeSide: props.tradeSide as TradeSide,
+			});
+
+			const newSignalData = {
+				...props,
+				leverage,
+			};
+
 			// Create a new Signal document using the provided props
-			const signal = new Signal(props);
+			// const signal = new Signal(props);
+			const signal = new Signal(newSignalData);
 
 			// Save the signal to the database
 			await signal.save();
@@ -50,6 +105,7 @@ export class SignalService {
 		startAfterDoc, // Document to start after, for pagination
 		keyword, // Keyword for filtering by name or other fields
 		status,
+		isSignalTriggered,
 	}: ISignalServiceGetSignalsParams): Promise<ISignalResponse[] | null> {
 		try {
 			const query: any = {};
@@ -57,6 +113,14 @@ export class SignalService {
 			// Apply status filter
 			if (status?.length) {
 				query.status = { $in: status };
+
+				// To filter for ACTIVE/PENDING signals using isSignalTriggered flag (including PAUSED)
+				if (
+					typeof isSignalTriggered === "boolean" &&
+					(status.includes(SignalStatus.ACTIVE) || status.includes(SignalStatus.PENDING))
+				) {
+					query.isSignalTriggered = isSignalTriggered;
+				}
 			}
 
 			// Apply startAfterDoc for pagination
@@ -110,7 +174,7 @@ export class SignalService {
 
 			// Apply pagination
 			const paginatedSignals = signals
-				.slice((page - 1) * rowsPerPage, page * rowsPerPage)
+				.slice((page - 1) * rowsPerPage, Math.min(page * rowsPerPage, signals.length))
 				.map((signal) => {
 					const { _id, ...rest } = signal.toObject();
 
@@ -126,10 +190,11 @@ export class SignalService {
 		}
 	}
 
-	public async getPaginatedSignals(
-		query: Record<string, string | string[]>,
-		status: SignalStatus[]
-	) {
+	public async getPaginatedSignals({
+		query,
+		status,
+		isSignalTriggered,
+	}: IGetPaginatedSignalInput) {
 		const rowsPerPage = query.rowsPerPage
 			? Number.parseInt(query.rowsPerPage as string, 10)
 			: DEFAULT_ROWS_PER_PAGE;
@@ -149,8 +214,14 @@ export class SignalService {
 				keyword,
 				startAfterDoc,
 				status,
+				isSignalTriggered,
 			}),
-			this.getSignalCount(),
+			this.getSignalCount({
+				status: { $in: status },
+				...(typeof isSignalTriggered === "boolean" && {
+					isSignalTriggered,
+				}),
+			}),
 		]);
 
 		if (!signals) {
@@ -217,9 +288,9 @@ export class SignalService {
 		}
 	}
 
-	public async getSignalCount(): Promise<number> {
+	public async getSignalCount(filter?: Record<string, any>): Promise<number> {
 		try {
-			const totalSignal = await Signal.countDocuments();
+			const totalSignal = await Signal.countDocuments(filter);
 			return totalSignal;
 		} catch (error: any) {
 			throw new Error(error.message);
@@ -288,7 +359,10 @@ export class SignalService {
 
 				let priceChange: number = 0;
 				// Calcute priceChange only after signal is triggered
-				if (status === SignalStatus.ACTIVE || status === SignalStatus.PAUSED) {
+				if (
+					status === SignalStatus.ACTIVE ||
+					(status === SignalStatus.PAUSED && isSignalTriggered)
+				) {
 					if (tradeSide) {
 						if (tradeSide === TradeSide.SHORT) {
 							priceChange = Number(
@@ -328,6 +402,10 @@ export class SignalService {
 											status, // else update to the new status
 										],
 									},
+									// Conditionally set endedAt only when status becomes INACTIVE
+									...(status === SignalStatus.INACTIVE && {
+										endedAt: new Date().toISOString(),
+									}),
 								},
 							},
 						],
@@ -360,6 +438,7 @@ export class SignalService {
 		// Calculate isSignalTradable (either True or False based on conditions below)
 		// Check if signal status is pending or active
 		// Check if price is in range based on trade direction/side.
+		// Note: Once status moves beyond PENDING, isSignalTradable can be false but status won't revert
 		isSignalTradable =
 			(status === SignalStatus.PENDING || status === SignalStatus.ACTIVE) &&
 			(tradeSide === TradeSide.SHORT
@@ -372,12 +451,16 @@ export class SignalService {
 
 		// Calculate signal Status - Pending -> Active
 		// If signal is pending and signal is triggered, change status to active
+		// Once status moves beyond PENDING, it can never go back
 		if (status === SignalStatus.PENDING && isSignalTriggered) {
 			status = SignalStatus.ACTIVE;
 		}
 
 		// Calcute targetProfit, stopLoss, maxGain only after signal is triggered
-		if (status === SignalStatus.ACTIVE || status === SignalStatus.PAUSED) {
+		if (
+			status === SignalStatus.ACTIVE ||
+			(status === SignalStatus.PAUSED && isSignalTriggered)
+		) {
 			// Update target profits
 			targetProfits = targetProfits.map((target) => {
 				let isReached = target.isReached;
@@ -426,6 +509,12 @@ export class SignalService {
 			if (status === SignalStatus.ACTIVE && (allTargetProfitsReached || stopLossReached)) {
 				status = SignalStatus.INACTIVE;
 			}
+		}
+
+		// Final safeguard: Ensure status never moves backwards
+		// Once a signal moves beyond PENDING, it can never return to PENDING
+		if (signal.status !== SignalStatus.PENDING && status === SignalStatus.PENDING) {
+			status = signal.status; // Keep the original status
 		}
 
 		// Return updated signal with computed flags

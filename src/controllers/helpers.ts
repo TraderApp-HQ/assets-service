@@ -21,6 +21,8 @@ export const formatSignalResponse = (signal: ISignalResponse) => {
 		maxGain: signal.maxGain,
 		currentChange: signal.currentChange,
 		currentPrice: signal.currentPrice,
+		leverage: signal.leverage,
+		tradeSide: signal.tradeSide,
 		baseAsset: {
 			id: signal.baseAsset._id,
 			name: signal.baseAsset.name,

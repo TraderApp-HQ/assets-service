@@ -43,5 +43,6 @@ export async function getKucoinMarkets() {
 		await insertTradingPlatformPairs(symbols, platform);
 	} catch (err: any) {
 		console.log("Error getting kucoin markets: ", err.message);
+		throw err;
 	}
 }

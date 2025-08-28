@@ -165,5 +165,6 @@ export const updateCoinsCategory = async () => {
 		await Asset.updateMany({}, { $set: { category: Category.CRYPTO } });
 	} catch (err: any) {
 		console.log("Error updating coins category: ", err.code, err.message);
+		throw err;
 	}
 };

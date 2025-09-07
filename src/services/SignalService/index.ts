@@ -72,21 +72,8 @@ export class SignalService {
 				);
 			}
 
-			// Calcualte signal leverage
-			const leverage = this.calculateLeverage({
-				entryPrice: props.entryPrice,
-				stopLossPrice: props.stopLoss.price,
-				tradeSide: props.tradeSide as TradeSide,
-			});
-
-			const newSignalData = {
-				...props,
-				leverage,
-			};
-
 			// Create a new Signal document using the provided props
-			// const signal = new Signal(props);
-			const signal = new Signal(newSignalData);
+			const signal = new Signal(props);
 
 			// Save the signal to the database
 			await signal.save();

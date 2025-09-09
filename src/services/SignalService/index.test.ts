@@ -40,7 +40,7 @@ describe("Signal Service", () => {
 	});
 
 	describe("createSignal", () => {
-		it("creates a signal with computed leverage and inactivates existing signals for the same baseAsset", async () => {
+		it("creates a signal with inputed leverage and inactivates existing signals for the same baseAsset", async () => {
 			const service = new SignalService();
 
 			// 1) Create initial BTC signal
@@ -58,6 +58,7 @@ describe("Signal Service", () => {
 				// tweak prices so leverage changes
 				entryPrice: 41000,
 				stopLoss: { ...bitcoinSignalData.stopLoss, price: 36000 },
+				leverage: 7,
 			};
 			const second = await service.createSignal(secondInput);
 			expect(second).toBeTruthy();

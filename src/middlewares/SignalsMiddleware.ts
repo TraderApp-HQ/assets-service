@@ -80,6 +80,7 @@ export async function validateCreateSignalRequest(
 			tradeSide: Joi.string()
 				.valid(...Object.values(TradeSide))
 				.label("Trade side"),
+			leverage: Joi.number().label("Leverage"),
 		});
 
 		/* Validate request body.

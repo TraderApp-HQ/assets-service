@@ -35,6 +35,7 @@ export async function createSignalHandler(req: Request, res: Response, next: Nex
 		category,
 		tradeSide,
 		tradeType,
+		leverage,
 	} = req.body as ISignal;
 
 	// generate id for signal
@@ -72,6 +73,7 @@ export async function createSignalHandler(req: Request, res: Response, next: Nex
 			category,
 			tradeSide,
 			tradeType,
+			leverage,
 		};
 
 		const signal = await signalService.createSignal(newSignal);

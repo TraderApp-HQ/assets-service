@@ -79,6 +79,7 @@ export interface ISignalServiceGetSignalsParams {
 	keyword?: string;
 	status?: SignalStatus[];
 	populateFields?: PopulateOptions[];
+	isSignalTriggered?: boolean;
 }
 
 export interface ISignalServiceUpdateSignalByIdProps {
@@ -101,12 +102,15 @@ export interface ISignalResponse extends Document {
 	candlestick: Candlestick;
 	risk: SignalRisk;
 	isSignalTradable: boolean;
+	isSignalTriggered: boolean;
 	chartUrl: string;
 	status: SignalStatus;
 	maxGain: number;
 	createdAt: string;
 	endedAt?: string;
 	supportedTradingPlatforms: ITradingPlatform[];
+	leverage: number;
+	tradeSide: string;
 }
 
 export interface IActiveSignalsData {
@@ -146,4 +150,17 @@ export interface ISignalOrderBook {
 export interface IRemoveSignal {
 	signalId: string;
 	tradingPlatform: TradingPlatform;
+}
+
+export interface ICalculateLeverageInput {
+	entryPrice: number;
+	stopLossPrice: number;
+	tradeSide: TradeSide;
+	maintenanceMarginRate?: number;
+}
+
+export interface IGetPaginatedSignalInput {
+	query: Record<string, string | string[]>;
+	status: SignalStatus[];
+	isSignalTriggered?: boolean;
 }

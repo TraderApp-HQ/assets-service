@@ -14,6 +14,7 @@ export const formatSignalResponse = (signal: ISignalResponse) => {
 		candlestick: signal.candlestick,
 		risk: signal.risk,
 		isSignalTradable: signal.isSignalTradable,
+		isSignalTriggered: signal.isSignalTriggered,
 		chartUrl: signal.chartUrl,
 		status: signal.status,
 		createdAt: signal.createdAt,
@@ -21,6 +22,8 @@ export const formatSignalResponse = (signal: ISignalResponse) => {
 		maxGain: signal.maxGain,
 		currentChange: signal.currentChange,
 		currentPrice: signal.currentPrice,
+		leverage: signal.leverage,
+		tradeSide: signal.tradeSide,
 		baseAsset: {
 			id: signal.baseAsset._id,
 			name: signal.baseAsset.name,

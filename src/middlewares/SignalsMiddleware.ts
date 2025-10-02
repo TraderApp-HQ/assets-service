@@ -275,3 +275,43 @@ export async function validateUpdateSignalByIdRequest(
 		next(err);
 	}
 }
+
+export async function validategetSignalCurrentPriceRequest(
+	req: Request,
+	_res: Response,
+	next: NextFunction
+) {
+	try {
+		// Check accessToken and admin role
+		await checkAdmin(req);
+
+		const querySchema = Joi.object({
+			asset: Joi.string().required().label("Asset"),
+			quote: Joi.string().required().label("Quote"),
+		});
+
+		// Validate req.query
+		const { error, value } = querySchema.validate(req.query, {
+			abortEarly: true,
+		});
+
+		if (error) {
+			error.message = error.message.replace(/\"/g, "");
+			next(error);
+			return;
+		}
+
+		// Additional validation to reject "undefined" string values
+		if (value.asset === "undefined" || value.quote === "undefined") {
+			const error = new Error("Asset and quote parameters cannot be 'undefined'");
+			next(error);
+			return;
+		}
+
+		req.query = value;
+
+		next();
+	} catch (err: any) {
+		next(err);
+	}
+}

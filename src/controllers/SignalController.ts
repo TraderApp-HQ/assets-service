@@ -13,6 +13,7 @@ import { formatSignalResponse } from "./helpers";
 import { SignalService } from "../services/SignalService";
 import { HttpStatus } from "../utils/httpStatus";
 import { SignalStatus } from "../config/enums";
+import { getAssetCurrentPrice } from "../utils/assetPrice";
 
 export async function createSignalHandler(req: Request, res: Response, next: NextFunction) {
 	const signalService: SignalService = new SignalService();
@@ -161,10 +162,11 @@ export async function getSignalsHandler(req: Request, res: Response, next: NextF
 export async function getActiveSignalsHandler(req: Request, res: Response, next: NextFunction) {
 	const signalService: SignalService = new SignalService();
 	try {
-		const signalsResponse = await signalService.getPaginatedSignals(
-			req.query as Record<string, string>,
-			[SignalStatus.ACTIVE, SignalStatus.PAUSED]
-		);
+		const signalsResponse = await signalService.getPaginatedSignals({
+			query: req.query as Record<string, string>,
+			status: [SignalStatus.ACTIVE, SignalStatus.PAUSED],
+			isSignalTriggered: true, // To filter for active and paused signals using isSignalTriggered flag
+		});
 
 		if (!signalsResponse.success) {
 			res.status(HttpStatus.NOT_FOUND).json(
@@ -193,10 +195,11 @@ export async function getActiveSignalsHandler(req: Request, res: Response, next:
 export async function getPendingSignalsHandler(req: Request, res: Response, next: NextFunction) {
 	const signalService: SignalService = new SignalService();
 	try {
-		const signalsResponse = await signalService.getPaginatedSignals(
-			req.query as Record<string, string>,
-			[SignalStatus.PENDING]
-		);
+		const signalsResponse = await signalService.getPaginatedSignals({
+			query: req.query as Record<string, string>,
+			status: [SignalStatus.PENDING, SignalStatus.PAUSED],
+			isSignalTriggered: false, // To filter for pending and paused signals using isSignalTriggered flag
+		});
 		if (!signalsResponse.success) {
 			res.status(HttpStatus.NOT_FOUND).json(
 				apiResponseHandler({
@@ -224,10 +227,10 @@ export async function getPendingSignalsHandler(req: Request, res: Response, next
 export async function getInActiveSignalsHandler(req: Request, res: Response, next: NextFunction) {
 	const signalService: SignalService = new SignalService();
 	try {
-		const signalsResponse = await signalService.getPaginatedSignals(
-			req.query as Record<string, string>,
-			[SignalStatus.INACTIVE]
-		);
+		const signalsResponse = await signalService.getPaginatedSignals({
+			query: req.query as Record<string, string>,
+			status: [SignalStatus.INACTIVE],
+		});
 		if (!signalsResponse.success) {
 			res.status(HttpStatus.NOT_FOUND).json(
 				apiResponseHandler({
@@ -299,6 +302,30 @@ export async function updateSignalByIdHandler(req: Request, res: Response, next:
 				type: ResponseType.SUCCESS,
 				message: ResponseMessage.UPDATE_SIGNAL,
 				object: signal,
+			})
+		);
+	} catch (err) {
+		console.log(err);
+		next(err);
+	}
+}
+
+export async function getSignalCurrentPrice(req: Request, res: Response, next: NextFunction) {
+	try {
+		const asset = req.query.asset as string;
+		const quote = req.query.quote as string;
+
+		const price = await getAssetCurrentPrice({ asset, quote });
+
+		if (!price) {
+			throw new Error(`Fialed to get current price for ${asset}/${quote}`);
+		}
+
+		res.status(HttpStatus.OK).json(
+			apiResponseHandler({
+				type: ResponseType.SUCCESS,
+				message: ResponseMessage.SIGNAL_PRICE,
+				object: { price },
 			})
 		);
 	} catch (err) {

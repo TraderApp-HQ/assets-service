@@ -66,6 +66,7 @@ export enum WSChannel {
 export enum TradingPlatform {
 	binance = "binance",
 	kucoin = "kucoin",
+	bybit = "bybit",
 }
 
 export enum AssetData {

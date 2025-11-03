@@ -81,6 +81,7 @@ async function main() {
 	try {
 		console.log("Connecting to MongoDB...");
 		await mongoose.connect(assetsServiceSecrets.ASSETS_SERVICE_DB_URL);
+		// await mongoose.connect(process.env.ASSETS_SERVICE_DB_URL ?? "");
 		console.log("Connected to MongoDB successfully.");
 	} catch (error: any) {
 		console.error("Error connecting to MongoDB: ", error.message);

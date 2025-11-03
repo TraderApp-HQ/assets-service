@@ -2,37 +2,38 @@
 // import axios from "axios";
 import { config } from "dotenv";
 import { getAllCurrencies, getTradingPlatformData, insertTradingPlatformPairs } from "./helpers";
-import { kucoinExchangeData, KucoinSymbol } from "./kucoinExchangeData";
+import { bybitExchangeData, BybitSymbol } from "./bybitExchangeData";
 
 // load env variables
 config();
 
-export async function getKucoinMarkets() {
-	// kucoin api endpoint
-	// const url = "https://api.kucoin.com/api/v2/symbols";
+export async function getBybitMarkets() {
+	// bybit api endpoint for spot trading pairs
+	// const url = "https://api.bybit.com/v5/market/instruments-info?category=spot";
 
 	const symbols: { [k: string]: any } = {};
 
 	try {
-		// retrieve all currencies & kucoin data from db
+		// retrieve all currencies & bybit data from db
 		const [currencies, platform] = await Promise.all([
 			getAllCurrencies(),
-			getTradingPlatformData("kucoin"),
+			getTradingPlatformData("bybit"),
 		]);
 
-		// fetch from kucoin api
+		// fetch from bybit api
 		// const res = await axios({
 		// 	method: "get",
 		// 	url,
 		// });
 		// const result = res.data;
 
-		// loop through and get only active markets in our speciefied currencies. E.g USDT etc
+		// loop through and get only active markets in our specified currencies. E.g USDT etc
 		Object.keys(currencies).forEach((currency: any) => {
 			const assets: any[] = [];
-			kucoinExchangeData.forEach((symbol: KucoinSymbol) => {
-				if (symbol.enableTrading && symbol.quoteCurrency === currency) {
-					assets.push(symbol.baseCurrency);
+			bybitExchangeData.forEach((symbol: BybitSymbol) => {
+				// Check if trading is enabled and matches our currency
+				if (symbol.status === "Trading" && symbol.quoteCoin === currency) {
+					assets.push(symbol.baseCoin);
 				}
 			});
 
@@ -43,7 +44,7 @@ export async function getKucoinMarkets() {
 		// insert exchange pairs
 		await insertTradingPlatformPairs(symbols, platform);
 	} catch (err: any) {
-		console.log("Error getting kucoin markets: ", err.message);
+		console.log("Error getting bybit markets: ", err.message);
 		throw err;
 	}
 }

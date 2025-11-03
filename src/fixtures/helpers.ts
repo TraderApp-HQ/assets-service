@@ -68,8 +68,11 @@ export async function insertTradingPlatformPairs(
 	// filter out symbols not in db
 	Object.entries(symbols).forEach((symbol: any) => {
 		symbols[symbol[0]] = symbol[1].filter((item: any) => {
-			if (coins[item]) return item;
-			else symbolsMissing.push(item); // get symbols missing
+			if (coins[item]) {
+				return item;
+			} else {
+				symbolsMissing.push(item); // get symbols missing
+			}
 		});
 	});
 
@@ -110,12 +113,12 @@ export async function insertTradingPlatformPairs(
 	// insert pairs
 	if (pairs.length) {
 		await TradingPlatformPair.insertMany(pairs, { ordered: false });
-		console.log("Trading platform pairs inserted");
+		console.log("Trading platform pairs inserted", { pairs });
 	}
 
 	if (symbolsMissing.length) {
 		await UnknownCoin.insertMany(symbolsMissing, { ordered: false });
-		console.log("unknown coins inserted");
+		console.log("unknown coins inserted", { symbolsMissing });
 	}
 }
 
